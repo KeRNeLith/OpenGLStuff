@@ -33,7 +33,7 @@ void WrapperSDL::EventController::doEventsLoop(SDL_Window* window, DisplayManage
 		while (SDL_PollEvent(&event))
 		{ 
 			// Gestion de l'événement et modification des variables
-			end = handle_SDL_Event(&event, window, displayParams);
+			end = handleSDLEvent(&event, window, displayParams);
 		}
 	}
 }

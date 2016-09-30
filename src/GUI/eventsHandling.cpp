@@ -93,7 +93,7 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
         {
             displayParams->camera().updateTargetX(MouseData::mouseX - event->motion.x);
             displayParams->camera().updateTargetZ(MouseData::mouseY - event->motion.y);
-
+            
             // Mise à jour du modèle
             // Non implémenté
             MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles
