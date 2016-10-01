@@ -18,19 +18,21 @@
 DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     : m_windowWidth(windowWidth)
     , m_windowHeight(windowHeigth)
-    , m_model()// Construction du modèle
+    , m_model()
+    , m_render("data/fichiers3DS/Audi_tt.3ds")
     , m_camera(// Perspective
                50.0, m_windowWidth / GLdouble(m_windowHeight),
                // Plans clipping
                0.0, 100.0,
                // Position
-               0.0, 0.0, -50.0,
+               -500.0, -550.0, 500.0,/*0.0, 0.0, -50.0,*/
                // Focus
                0.0, 0.0,  0.0,
                // Verticale
-               0.0, 1.0, 0.0)
+               1.0, 1.0, 1.0/*0.0, 1.0, 0.0*/)
 {
 	FramesData::init();
+    RenderingModel::init(); // Paramètres de rendu
 }
 
 void DisplayManager::display()
@@ -42,22 +44,17 @@ void DisplayManager::display()
 	}
 
     // Efface les buffers de profondeur et couleurs
-    /*float grayLevel = m_model.getGrayLevel();
-    // On efface le buffer vidéo (fenêtre graphique)
-    glClearColor(	grayLevel,
-                    grayLevel,
-                    grayLevel,
-                    1.0);*/
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    RenderingModel::initView();
 
     // On se place dans le repère monde
     Camera::clearModelView();
+
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera.applyCameraCoordinates();
 
     // Dessin
-    glutSolidTeapot(5);
+    m_render.drawScene();
+    //glutSolidTeapot(5);
 }
 
 void DisplayManager::resize(GLint l, GLint h)

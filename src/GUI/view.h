@@ -11,6 +11,7 @@
 #define VIEW_H
 
 #include "Models/model.h"
+#include "Models/renderingmodel.h"
 #include "Camera/camera.h"
 
 /**
@@ -23,6 +24,7 @@ private:
     GLint m_windowHeight; 	///< Hauteur de la vue.
 
     Model m_model;          ///< Modèle de données à afficher.
+    RenderingModel m_render;///< Modèle de rendu de scène 3D.
 
     Camera m_camera;        ///< Caméra visionnant la scène.
 

@@ -38,5 +38,9 @@ install_manifest.txt
 CTestTestfile.cmake
 /build/*appOpenGL*
 
+# Unzipped and useless files
+data/*
+lib/assimp*
+
 # Other
 *.user
