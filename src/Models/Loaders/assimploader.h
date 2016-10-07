@@ -8,10 +8,21 @@
 #ifndef ASSIMPLOADER_H
 #define ASSIMPLOADER_H
 
-#include <memory>
 #include <string>
 
 #include "loader.h"
+
+#ifdef __GNUC__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
+#endif
+
+#include <assimp/Importer.hpp>      // C++ importer interface
+
+#ifdef __GNUC__
+#pragma GCC diagnostic pop
+#endif
 
 class aiScene;
 
@@ -22,7 +33,8 @@ class AssimpLoader
         : public Loader
 {
 private:
-    std::unique_ptr<const aiScene> m_scene; ///< Scène 3D.
+    Assimp::Importer m_importer;    ///< Importeur de fichier (Assimp).
+    const aiScene* m_scene;         ///< Scène 3D (Désallocation managée par m_importer).
 
     std::vector< std::vector< GLfloat* > > m_vertices;              ///< Tableau des tableaux de vertices (Chaque entrée du tableau correspond aux vertices d'un mesh ASSIMP).
     std::vector< std::vector< std::vector<unsigned int> > > m_faces;///< Tableau des tableaux de faces (Chaque entrée du tableau correspond aux faces d'un mesh ASSIMP, chaque face comportant un tableau de ).

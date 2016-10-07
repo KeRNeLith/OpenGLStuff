@@ -12,10 +12,9 @@
 #ifdef __GNUC__
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
+#pragma GCC diagnostic ignored "-Wconversion"
 #endif
 
-#include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
@@ -25,6 +24,7 @@
 
 AssimpLoader::AssimpLoader(const std::string& sceneFilename)
     : Loader()
+    , m_importer()
     , m_scene(loadScene(sceneFilename))
     , m_vertices()
     , m_faces()
@@ -79,22 +79,20 @@ AssimpLoader::~AssimpLoader()
 
 const aiScene* AssimpLoader::loadScene(const std::string& sceneFilename)
 {
-    Assimp::Importer importer;
-
-    const aiScene* scene = importer.ReadFile( sceneFilename,
-                                              aiProcess_FindDegenerates |
-                                              aiProcess_Triangulate     |
-                                              aiProcess_SortByPType);
+    const aiScene* scene = m_importer.ReadFile(   sceneFilename,
+                                                  aiProcess_FindDegenerates |
+                                                  aiProcess_Triangulate     |
+                                                  aiProcess_SortByPType);
 
     // If the import failed, report it
     if (!scene)
     {
-        std::cerr << "Impossible to import scene: " << sceneFilename << std::endl << " Reason : " << importer.GetErrorString() << std::endl;
+        std::cerr << "Impossible to import scene: " << sceneFilename << std::endl << " Reason : " << m_importer.GetErrorString() << std::endl;
 
         return nullptr;
     }
 
-    return importer.GetOrphanedScene();
+    return scene;
 }
 
 GLenum AssimpLoader::modes(int meshIndex) const
