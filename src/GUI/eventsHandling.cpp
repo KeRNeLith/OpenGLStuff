@@ -206,9 +206,9 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 
             GLdouble newPos[3] =
             {
-                center[0] + 0.9 * (camPos[0] - center[0]),
-                center[1] + 0.9 * (camPos[1] - center[1]),
-                center[2] + 0.9 * (camPos[2] - center[2])
+                center[0] + 1/1.1 * (camPos[0] - center[0]),
+                center[1] + 1/1.1 * (camPos[1] - center[1]),
+                center[2] + 1/1.1 * (camPos[2] - center[2])
             };
 
             displayParams->camera().setPosition(newPos);

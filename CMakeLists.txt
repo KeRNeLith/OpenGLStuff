@@ -46,7 +46,7 @@ file(GLOB_RECURSE app_src src/*.cpp)
 file(GLOB_RECURSE app_headers src/*.h)
 
 # Include OpenGL GLUT and SDL2
-#include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} )
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} )
 
 # Executable #-------------------------------------------------------------------------------------
 add_executable ( ${CMAKE_PROJECT_NAME}

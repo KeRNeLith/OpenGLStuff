@@ -8,11 +8,12 @@
 #ifndef RENDERINGMODEL_H
 #define RENDERINGMODEL_H
 
+#include <memory>
 #include <string>
 
 #include <GL/glut.h>
 
-class aiScene;
+class Loader;
 
 /**
  * @brief The Model class Gère les modèles de rendu et d'éclairage de la scène.
@@ -20,15 +21,7 @@ class aiScene;
 class RenderingModel
 {
 private:
-    const aiScene* m_scene; ///< Scène 3D.
-
-    /**
-     * @brief Charge la scène dont le nom de fichier est spécifié.
-     * Note : Il est nécessaire de gérer la désallocation des ressources allouées à la scène.
-     * @param sceneFilename Nom du fichier contenant la scène 3D à charger.
-     * @return Scène chargée, nullptr si le chargement échou.
-     */
-    const aiScene* loadScene(const std::string& sceneFilename);
+    std::unique_ptr<const Loader> m_object; ///< Scène ou objet chargé.
 
 public:
     /**
@@ -83,7 +76,7 @@ public:
     static void applyMaterial(/* Material material */);
 
     /**
-     * @brief Dessine la scène chargée.
+     * @brief Dessine la scène ou l'objet chargé.
      */
     void drawScene();
 };

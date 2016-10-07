@@ -54,7 +54,6 @@ void DisplayManager::display()
 
     // Dessin
     m_render.drawScene();
-    //glutSolidTeapot(5);
 }
 
 void DisplayManager::resize(GLint l, GLint h)

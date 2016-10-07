@@ -9,39 +9,16 @@
 
 #include <iostream>
 
-#include <assimp/Importer.hpp>      // C++ importer interface
-#include <assimp/scene.h>           // Output data structure
-#include <assimp/postprocess.h>     // Post processing flags
+#include "Loaders/assimploader.h"
 
 RenderingModel::RenderingModel(const std::string& sceneFilename)
     // Read the given file with some example postprocessing
-    : m_scene(loadScene(sceneFilename))
+    : m_object(new AssimpLoader(sceneFilename))
 {
 }
 
 RenderingModel::~RenderingModel()
 {
-    delete m_scene;
-}
-
-const aiScene* RenderingModel::loadScene(const std::string& sceneFilename)
-{
-    Assimp::Importer importer;
-
-    const aiScene* scene = importer.ReadFile( sceneFilename,
-                                              aiProcess_FindDegenerates |
-                                              aiProcess_Triangulate     |
-                                              aiProcess_SortByPType);
-
-    // If the import failed, report it
-    if (!scene)
-    {
-        std::cerr << "Impossible to import scene: " << sceneFilename << std::endl << " Reason : " << importer.GetErrorString() << std::endl;
-
-        return nullptr;
-    }
-
-    return importer.GetOrphanedScene();
 }
 
 void RenderingModel::init()
@@ -96,25 +73,30 @@ void RenderingModel::drawScene()
 {
     glBegin(GL_LINES);
 
-    const unsigned int numMesh = m_scene->mNumMeshes;
+    const auto numMesh = m_object->meshCount();
     // Pour chaque objets de la scène
     for (unsigned int m = 0 ; m < numMesh ; ++m)
     {
-        const aiMesh* mesh = m_scene->mMeshes[m];
-        const unsigned int numFaces = mesh->mNumFaces;
+        // Tableaux des vertices et des faces du mesh traité
+        const auto& vertices = m_object->vertices(m);
+        const auto& faces = m_object->faces(m);
+
+        // Nombre de face du mesh
+        const auto numFaces = faces.size();
 
         // Pour chaque face de l'objet
         for (unsigned int f = 0 ; f < numFaces ; ++f)
         {
-            const aiFace& face = mesh->mFaces[f];
-            const unsigned int numVertice = face.mNumIndices;
+            // Face courante
+            const auto& face = faces[f];
 
-            // Pour chaque sommet de la face
+            // Nombre de vertices de la face
+            const auto numVertice = face.size();
+
+            // Pour chaque sommet de la face place le sommet dans la scène 3D
             for (unsigned int v = 0 ; v < numVertice ; ++v)
             {
-                aiVector3D pos = mesh->mVertices[ face.mIndices[v] ];
-
-                glVertex3f(GLfloat(pos.x), GLfloat(pos.y), GLfloat(pos.z));
+                glVertex3fv( vertices[ face[v] ] );
             }
         }
     }
