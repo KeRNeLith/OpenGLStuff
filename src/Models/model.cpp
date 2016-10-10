@@ -10,16 +10,15 @@
 #include "model.h"
 
 Model::Model()
-	: m_grayLevel(0.0f)
+    : m_sunRadius(6)
+    , m_earthRadius(m_sunRadius / double(2))
+    , m_sunCoords({{ 0, 0, 0 }})
+    , m_earthCoords({{ 5, 5, 5 }})
 {
 }
 
 void Model::update()
 {
-	m_grayLevel += 0.01f;
-	if (m_grayLevel > 1.0f)
-	{
-		m_grayLevel = 0.0f;
-	}
+
 }
 

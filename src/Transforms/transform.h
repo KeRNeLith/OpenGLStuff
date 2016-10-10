@@ -80,6 +80,16 @@ struct GeometricTransform
      * @param factorZ Changement d'échelle sur l'axe Z.
      */
     static void scale(double factorX, double factorY, double factorZ);
+
+    /**
+     * @brief Sauvegarde la matrice courante dans la pile des matrices de transformations.
+     */
+    static void pushMatrix();
+
+    /**
+     * @brief Restaure la matrice du dessus de la pile des matrices de transformations.
+     */
+    static void popMatrix();
 };
 
 #endif	// GEOMETRIC_TRANSFORM_H

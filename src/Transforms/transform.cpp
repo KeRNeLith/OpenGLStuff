@@ -60,3 +60,12 @@ void GeometricTransform::scale(double factorX, double factorY, double factorZ)
     glScaled(factorX, factorY, factorZ);
 }
 
+void GeometricTransform::pushMatrix()
+{
+    glPushMatrix();
+}
+
+void GeometricTransform::popMatrix()
+{
+    glPopMatrix();
+}

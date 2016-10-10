@@ -41,14 +41,6 @@ void DisplayManager::display()
 		std::cout << FramesData::getFPSDescriptor() << std::endl;
 	}
 
-    // Efface les buffers de profondeur et couleurs
-    /*float grayLevel = m_model.getGrayLevel();
-    // On efface le buffer vidéo (fenêtre graphique)
-    glClearColor(	grayLevel,
-                    grayLevel,
-                    grayLevel,
-                    1.0);*/
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // On se place dans le repère monde
@@ -57,7 +49,18 @@ void DisplayManager::display()
     m_camera.applyCameraCoordinates();
 
     // Dessin
-    glutSolidTeapot(5);
+    GeometricTransform::pushMatrix();
+    // Sun
+    std::array<double, 3> posSun = m_model.getSunCoords();
+    GeometricTransform::translate(posSun[0], posSun[1], posSun[2]);
+    glutWireSphere(m_model.getSunSize(), 24, 24);
+
+    GeometricTransform::popMatrix();
+
+    // Earth
+    std::array<double, 3> posEarth = m_model.getEarthCoords();
+    GeometricTransform::translate(posEarth[0], posEarth[1], posEarth[2]);
+    glutWireSphere(m_model.getEarthSize(), 24, 24);
 }
 
 void DisplayManager::resize(GLint l, GLint h)
