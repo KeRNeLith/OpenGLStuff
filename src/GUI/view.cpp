@@ -29,8 +29,10 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                0.0, 0.0,  0.0,
                // Verticale
                0.0, 1.0, 0.0)
+    , m_renderWheel()
 {
 	FramesData::init();
+    RenderingModel::init(); // Paramètres de rendu
 }
 
 void DisplayManager::display()
@@ -42,14 +44,7 @@ void DisplayManager::display()
 	}
 
     // Efface les buffers de profondeur et couleurs
-    /*float grayLevel = m_model.getGrayLevel();
-    // On efface le buffer vidéo (fenêtre graphique)
-    glClearColor(	grayLevel,
-                    grayLevel,
-                    grayLevel,
-                    1.0);*/
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    RenderingModel::initView();
 
     // On se place dans le repère monde
     Camera::clearModelView();
@@ -57,7 +52,7 @@ void DisplayManager::display()
     m_camera.applyCameraCoordinates();
 
     // Dessin
-    glutSolidTeapot(5);
+    m_renderWheel.drawScene();
 }
 
 void DisplayManager::resize(GLint l, GLint h)
