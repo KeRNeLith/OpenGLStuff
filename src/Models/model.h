@@ -20,8 +20,13 @@ class Model
 private:
     double m_sunRadius;     ///< Rayon du soleil (2 fois supérieur à la terre).
     double m_earthRadius;   ///< Rayon de la terre (2 fois inférieur au soleil).
+
     std::array<double, 3> m_sunCoords;      ///< Coordonnées du centre du soleil.
     std::array<double, 3> m_earthCoords;    ///< Coordonnées du centre de la terre.
+
+    double m_internalEarthRotationAngle;        ///< Angle de rotation de la terre sur elle même.
+    double m_earthRotationAngle;                ///< Angle de rotation de la terre autour du soleil.
+    std::array<double, 3> m_earthRotationAxis;  ///< Axe de rotation de la terre autour du soleil.
 
 public:
     /**
@@ -69,6 +74,33 @@ public:
     double getEarthSize() const
     {
         return m_earthRadius;
+    }
+
+    /**
+     * @brief Récupère l'angle de rotation de la terre sur elle même.
+     * @return Angle de rotation de la terre sur elle même.
+     */
+    double getInternalEarthRotationAngle() const
+    {
+        return m_internalEarthRotationAngle;
+    }
+
+    /**
+     * @brief Récupère l'angle de rotation de la terre autour du soleil.
+     * @return Angle de rotation de la terre autour du soleil.
+     */
+    double getEarthRotationAngle() const
+    {
+        return m_earthRotationAngle;
+    }
+
+    /**
+     * @brief Récupère l'axe de rotation de la terre autour du soleil.
+     * @return Axe de rotation de la terre autour du soleil.
+     */
+    const std::array<double, 3>& getEarthRotationAxis() const
+    {
+        return m_earthRotationAxis;
     }
 };
 

@@ -24,7 +24,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                // Plans clipping
                0.0, 100.0,
                // Position
-               0.0, 0.0, -50.0,
+               0.0, 25.0, 50.0,
                // Focus
                0.0, 0.0,  0.0,
                // Verticale
@@ -33,12 +33,13 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
 	FramesData::init();
 }
 
+
 void DisplayManager::display()
 {
 	// Affichage des Frames par seconde (FPS)
 	if (FramesData::update())
 	{
-		std::cout << FramesData::getFPSDescriptor() << std::endl;
+        std::cout << FramesData::getFPSDescriptor() << std::endl;
 	}
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -50,17 +51,29 @@ void DisplayManager::display()
 
     // Dessin
     GeometricTransform::pushMatrix();
-    // Sun
-    std::array<double, 3> posSun = m_model.getSunCoords();
+    // Soleil
+    const std::array<double, 3>& posSun = m_model.getSunCoords();
     GeometricTransform::translate(posSun[0], posSun[1], posSun[2]);
     glutWireSphere(m_model.getSunSize(), 24, 24);
 
     GeometricTransform::popMatrix();
 
-    // Earth
-    std::array<double, 3> posEarth = m_model.getEarthCoords();
+    GeometricTransform::pushMatrix();
+
+    // Terre
+    const std::array<double, 3>& rotationAxisEarth = m_model.getEarthRotationAxis();
+    const std::array<double, 3>& posEarth = m_model.getEarthCoords();
+
+    // Rotation autour du soleil
+    GeometricTransform::rotate(m_model.getEarthRotationAngle(), rotationAxisEarth[0], rotationAxisEarth[1], rotationAxisEarth[2]);
+    // Place la terre sur son orbite
     GeometricTransform::translate(posEarth[0], posEarth[1], posEarth[2]);
+    // Rotation interne à la terre
+    GeometricTransform::rotate(m_model.getInternalEarthRotationAngle(), rotationAxisEarth[0], rotationAxisEarth[1], rotationAxisEarth[2]);
+
     glutWireSphere(m_model.getEarthSize(), 24, 24);
+
+    GeometricTransform::popMatrix();
 }
 
 void DisplayManager::resize(GLint l, GLint h)
