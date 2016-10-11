@@ -9,8 +9,6 @@
 
 #include "model.h"
 
-#include "Tools/convert.h"
-
 Model::Model()
     : m_sunRadius(6)
     , m_earthRadius(m_sunRadius / double(2))
