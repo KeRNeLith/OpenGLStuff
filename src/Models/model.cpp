@@ -10,19 +10,14 @@
 #include "model.h"
 
 Model::Model()
-    : m_sunRadius(6)
-    , m_earthRadius(m_sunRadius / double(2))
-    , m_sunCoords({{ 0, 0, 0 }})
-    , m_earthCoords({{ 3*m_sunRadius, 0, 0 }})
-    , m_internalEarthRotationAngle(0)
-    , m_earthRotationAngle(0)
-    , m_earthRotationAxis({{ 0, 1, 0 }})    // Vertical
+    : m_wheelSpeed(0.1)
+    , m_step(0)
+    , m_wheelRotationAxis({{ 1, 0, 0 }})    // Axe X
 {
 }
 
 void Model::update()
 {
-    m_internalEarthRotationAngle += 2;
-    m_earthRotationAngle += 1;
+    m_step += 10;
 }
 

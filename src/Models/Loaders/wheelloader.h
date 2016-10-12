@@ -12,10 +12,10 @@ class WheelLoader
 {
 private:
     const double m_width;               ///< Largeur de la roue.
-    const double m_radius;
-    const unsigned int m_nbQuads;
-    std::vector< GLfloat* > m_vertices;
-    std::vector< std::vector<unsigned int> > m_faces;
+    const double m_radius;              ///< Rayon de la roue.
+    const unsigned int m_nbQuads;       ///< Nombre de quads voulus pour la roue.
+    std::vector< GLfloat* > m_vertices; ///< Sommets définissant la roue.
+    std::vector< std::vector<unsigned int> > m_faces;   ///< Faces de la roue.
 
 public:
     /**
@@ -25,6 +25,9 @@ public:
      * @param nbQuads Nombre de quads pour former la roue.
      */
     WheelLoader(double width = 0.5, double radius = 1, unsigned int nbQuads = 12);
+    // Interdit la copie
+    WheelLoader(const WheelLoader& other) = delete;
+    WheelLoader& operator= (const WheelLoader& other) = delete;
 
     /**
      * @brief Destructeur.

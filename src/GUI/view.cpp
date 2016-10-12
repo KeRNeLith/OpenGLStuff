@@ -55,6 +55,8 @@ void DisplayManager::display()
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Dessin
+    const std::array<double, 3>& wheelRotationAxis = m_model.getWheelRotationAxis();
+    GeometricTransform::rotate(m_model.getWheelAngle(), wheelRotationAxis[0], wheelRotationAxis[1], wheelRotationAxis[2]);
     m_renderWheel.drawScene();
 }
 

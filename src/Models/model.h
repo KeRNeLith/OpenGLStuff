@@ -18,15 +18,9 @@
 class Model
 {
 private:
-    double m_sunRadius;     ///< Rayon du soleil (2 fois supérieur à la terre).
-    double m_earthRadius;   ///< Rayon de la terre (2 fois inférieur au soleil).
-
-    std::array<double, 3> m_sunCoords;      ///< Coordonnées du centre du soleil.
-    std::array<double, 3> m_earthCoords;    ///< Coordonnées du centre de la terre.
-
-    double m_internalEarthRotationAngle;        ///< Angle de rotation de la terre sur elle même.
-    double m_earthRotationAngle;                ///< Angle de rotation de la terre autour du soleil.
-    std::array<double, 3> m_earthRotationAxis;  ///< Axe de rotation de la terre autour du soleil.
+    double m_wheelSpeed;    ///< Vitesse de rotation d'une roue.
+    double m_step;          ///< Etape de rotation d'une roue.
+    std::array<double, 3> m_wheelRotationAxis;  ///< Axe de rotation d'une roue.
 
 public:
     /**
@@ -41,66 +35,30 @@ public:
 	
 	// Accesseurs
     /**
-     * @brief Récupère les coordonnées du soleil.
-     * @return Coordonnées du soleil.
+     * @brief Récupère la vitesse de rotation d'une roue.
+     * @return Vitesse de rotation d'une roue.
      */
-    const std::array<double, 3>& getSunCoords() const
+    double getWheelSpeed() const
     {
-        return m_sunCoords;
+        return m_wheelSpeed;
     }
 
     /**
-     * @brief Récupère les coordonnées de la terre.
-     * @return Coordonnées de la terre.
+     * @brief Récupère l'angle de rotation d'une roue.
+     * @return Angle de rotation d'une roue.
      */
-    const std::array<double, 3>& getEarthCoords() const
+    double getWheelAngle() const
     {
-        return m_earthCoords;
+        return m_step*m_wheelSpeed;
     }
 
     /**
-     * @brief Récupère la taille du soleil.
-     * @return Taille du soleil.
+     * @brief Récupère l'axe de rotation d'une roue.
+     * @return Axe de rotation d'une roue.
      */
-    double getSunSize() const
+    const std::array<double, 3>& getWheelRotationAxis() const
     {
-        return m_sunRadius;
-    }
-
-    /**
-     * @brief Récupère la taille de la terre.
-     * @return Taille de la terre.
-     */
-    double getEarthSize() const
-    {
-        return m_earthRadius;
-    }
-
-    /**
-     * @brief Récupère l'angle de rotation de la terre sur elle même.
-     * @return Angle de rotation de la terre sur elle même.
-     */
-    double getInternalEarthRotationAngle() const
-    {
-        return m_internalEarthRotationAngle;
-    }
-
-    /**
-     * @brief Récupère l'angle de rotation de la terre autour du soleil.
-     * @return Angle de rotation de la terre autour du soleil.
-     */
-    double getEarthRotationAngle() const
-    {
-        return m_earthRotationAngle;
-    }
-
-    /**
-     * @brief Récupère l'axe de rotation de la terre autour du soleil.
-     * @return Axe de rotation de la terre autour du soleil.
-     */
-    const std::array<double, 3>& getEarthRotationAxis() const
-    {
-        return m_earthRotationAxis;
+        return m_wheelRotationAxis;
     }
 };
 

@@ -45,7 +45,6 @@ WheelLoader::~WheelLoader()
     }
 }
 
-
 unsigned int WheelLoader::meshCount() const
 {
     return 1;
