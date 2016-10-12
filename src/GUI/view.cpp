@@ -24,7 +24,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                // Plans clipping
                0.0, 100.0,
                // Position
-               0.0, 0.0, -50.0,
+               0.0, 0.0, 10.0,
                // Focus
                0.0, 0.0,  0.0,
                // Verticale
@@ -50,6 +50,9 @@ void DisplayManager::display()
     Camera::clearModelView();
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera.applyCameraCoordinates();
+
+    // Dessin fil de fer
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Dessin
     m_renderWheel.drawScene();
