@@ -1,10 +1,10 @@
 /******************************************************************************\
-*     Copyright (C) 2016 by Alexandre Rabérin                                  * 
-*     Based on Copyright (C) 2016 by Rémy Malgouyres                           * 
-*     http://malgouyres.org                                                    * 
-*                                                                              * 
-* The program is distributed under the terms of the GNU General Public License * 
-*                                                                              * 
+*     Copyright (C) 2016 by Alexandre Rabérin                                  *
+*     Based on Copyright (C) 2016 by Rémy Malgouyres                           *
+*     http://malgouyres.org                                                    *
+*                                                                              *
+* The program is distributed under the terms of the GNU General Public License *
+*                                                                              *
 \******************************************************************************/
 
 #ifndef GEOMETRIC_TRANSFORM_H
@@ -80,6 +80,16 @@ struct GeometricTransform
      * @param factorZ Changement d'échelle sur l'axe Z.
      */
     static void scale(double factorX, double factorY, double factorZ);
+
+    /**
+     * @brief Sauvegarde la matrice courante dans la pile des matrices de transformations.
+     */
+    static void pushMatrix();
+
+    /**
+     * @brief Restaure la matrice du dessus de la pile des matrices de transformations.
+     */
+    static void popMatrix();
 };
 
 #endif	// GEOMETRIC_TRANSFORM_H
