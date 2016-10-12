@@ -20,6 +20,7 @@ class RenderScene
 private:
     const Model& m_model;       ///< Modèle de données de l'application (Gère l'évolution dans le temps).
     RenderModel m_wheelRender;  ///< Modèle de roue.
+    RenderModel m_cubeRender;   ///< Modèle de cube.
 
     /**
      * @brief Dessine un essieu.

@@ -19,14 +19,31 @@ class Loader;
  */
 class RenderModel
 {
+public:
+    /**
+     * @brief The ModelType enum Enumère tous les types de modèles disponibles.
+     */
+    enum ModelType
+    {
+        CUBE,
+        WHEEL
+    };
+
 private:
     std::unique_ptr<const Loader> m_object; ///< Scène ou objet chargé.
+
+    /**
+     * @brief Charge un objet correspondant au type de modèle spécifié.
+     * @param type Type du modèle à instancier.
+     * @return Instance du modèle choisi.
+     */
+    Loader* loadObject(RenderModel::ModelType type);
 
 public:
     /**
      * @brief Constructeur.
      */
-    RenderModel();
+    RenderModel(RenderModel::ModelType type);
     // Interdit la copie
     RenderModel(const RenderModel& other) = delete;
     RenderModel& operator= (const RenderModel& other) = delete;

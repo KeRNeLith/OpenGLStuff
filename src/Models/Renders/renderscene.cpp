@@ -13,7 +13,8 @@
 
 RenderScene::RenderScene(const Model& model)
     : m_model(model)
-    , m_wheelRender()
+    , m_wheelRender(RenderModel::WHEEL)
+    , m_cubeRender(RenderModel::CUBE)
 {
 }
 
@@ -25,14 +26,14 @@ void RenderScene::drawAxle()
     GeometricTransform::rotate(m_model.getWheelAngle(), wheelRotationAxis[0], wheelRotationAxis[1], wheelRotationAxis[2]);
 
     GeometricTransform::pushMatrix();
-    GeometricTransform::translate(-5.0, 0, 0);
+    GeometricTransform::translate(-2.5, 0, 0);
 
     m_wheelRender.drawObject();
 
     GeometricTransform::popMatrix();
     GeometricTransform::pushMatrix();
 
-    GeometricTransform::translate(5.0, 0.0, 0.0);
+    GeometricTransform::translate(2.5, 0.0, 0.0);
     m_wheelRender.drawObject();
 
     GeometricTransform::popMatrix();
@@ -40,8 +41,8 @@ void RenderScene::drawAxle()
     // Dessin essieu
     glLineWidth(5);
     glBegin(GL_LINES);
-    glVertex3f(-5.0, 0.0, 0.0);
-    glVertex3f(5, 0.0, 0.0);
+    glVertex3f(-2.5, 0.0, 0.0);
+    glVertex3f(2.5, 0.0, 0.0);
     glEnd();
     glLineWidth(1);
 
@@ -50,5 +51,31 @@ void RenderScene::drawAxle()
 
 void RenderScene::drawScene()
 {
+    GeometricTransform::pushMatrix();
+    GeometricTransform::scale(4.0, 2.0, 6.0);
+    GeometricTransform::translate(0.0, 0.5, 0.0);
+    m_cubeRender.drawObject();
+
+    GeometricTransform::popMatrix();
+
+    GeometricTransform::pushMatrix();
+    GeometricTransform::scale(2.5, 1.0, 3.0);
+    GeometricTransform::translate(0.0, 2.5, 0.0);
+    m_cubeRender.drawObject();
+
+    GeometricTransform::popMatrix();
+
+    GeometricTransform::pushMatrix();
+    GeometricTransform::translate(0.0, 0.0, 2.5);
+
     drawAxle();
+
+    GeometricTransform::popMatrix();
+
+    GeometricTransform::pushMatrix();
+    GeometricTransform::translate(0.0, 0.0, -2.5);
+
+    drawAxle();
+
+    GeometricTransform::popMatrix();
 }

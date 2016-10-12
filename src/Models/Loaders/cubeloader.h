@@ -5,34 +5,29 @@
 *                                                                              *
 \******************************************************************************/
 
-#ifndef WHEELLOADER_H
-#define WHEELLOADER_H
+#ifndef CUBELOADER_H
+#define CUBELOADER_H
 
 #include "basicloader.h"
 
 /**
- * @brief The WheelLoader class Gère un modèle 3D en forme de roue de voiture.
- * Par défaut : Largeur 0.5, Rayon 1, Axe de symétrie : axe Z, formée de 12 quads.
+ * @brief The CubeLoader class Gère un modèle 3D en forme de cube.
  */
-class WheelLoader
+class CubeLoader
         : public BasicLoader
 {
 private:
-    const double m_width;               ///< Largeur de la roue.
-    const double m_radius;              ///< Rayon de la roue.
-    const unsigned int m_nbQuads;       ///< Nombre de quads voulus pour la roue.
+    double m_width;     ///< Largeur du côté du carré.
 
 public:
     /**
      * @brief Constructeur.
-     * @param width Largeur de la roue.
-     * @param radius Rayon de la roue.
-     * @param nbQuads Nombre de quads pour former la roue.
+     * @param width Dimension du cube.
      */
-    WheelLoader(double width = 0.5, double radius = 1, unsigned int nbQuads = 12);
+    CubeLoader(double width = 1);
     // Interdit la copie
-    WheelLoader(const WheelLoader& other) = delete;
-    WheelLoader& operator= (const WheelLoader& other) = delete;
+    CubeLoader(const CubeLoader& other) = delete;
+    CubeLoader& operator= (const CubeLoader& other) = delete;
 
     /**
      * @brief See Loader#meshCount()
@@ -44,4 +39,4 @@ public:
     GLenum modes(int meshIndex = 0) const override;
 };
 
-#endif // WHEELLOADER_H
+#endif // CUBELOADER_H

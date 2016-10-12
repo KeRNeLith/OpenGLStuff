@@ -7,16 +7,30 @@
 
 #include "rendermodel.h"
 
+#include "Models/Loaders/cubeloader.h"
 #include "Models/Loaders/wheelloader.h"
 
-RenderModel::RenderModel()
+RenderModel::RenderModel(RenderModel::ModelType type)
     // Read the given file with some example postprocessing
-    : m_object(new WheelLoader())
+    : m_object(loadObject(type))
 {
 }
 
 RenderModel::~RenderModel()
 {
+}
+
+Loader* RenderModel::loadObject(RenderModel::ModelType type)
+{
+    switch (type)
+    {
+    case RenderModel::CUBE:
+        return new CubeLoader();
+    case RenderModel::WHEEL:
+        return new WheelLoader();
+    default:
+        return new CubeLoader();
+    }
 }
 
 void RenderModel::init()

@@ -10,12 +10,10 @@
 #include "Tools/convert.h"
 
 WheelLoader::WheelLoader(double width, double radius, unsigned int nbQuads)
-    : Loader()
+    : BasicLoader()
     , m_width(width)
     , m_radius(radius)
     , m_nbQuads(nbQuads)
-    , m_vertices()
-    , m_faces()
 {
     // Création des sommets
     const double step = toRad(360 / double(m_nbQuads));
@@ -44,14 +42,6 @@ WheelLoader::WheelLoader(double width, double radius, unsigned int nbQuads)
     }
 }
 
-WheelLoader::~WheelLoader()
-{
-    for (auto it = m_vertices.begin() ; it != m_vertices.end() ; ++it)
-    {
-        delete[] (*it);
-    }
-}
-
 unsigned int WheelLoader::meshCount() const
 {
     return 1;
@@ -60,14 +50,4 @@ unsigned int WheelLoader::meshCount() const
 GLenum WheelLoader::modes(int /*meshIndex*/) const
 {
     return GL_QUADS;
-}
-
-const std::vector< GLfloat* >& WheelLoader::vertices(int /*meshIndex*/) const
-{
-    return m_vertices;
-}
-
-const std::vector< std::vector<unsigned int> >& WheelLoader::faces(int /*meshIndex*/) const
-{
-    return m_faces;
 }
