@@ -1,3 +1,10 @@
+/******************************************************************************\
+*     Copyright (C) 2016 by Alexandre Rabérin                                  *
+*                                                                              *
+* The program is distributed under the terms of the GNU General Public License *
+*                                                                              *
+\******************************************************************************/
+
 #ifndef CONVERT_H
 #define CONVERT_H
 

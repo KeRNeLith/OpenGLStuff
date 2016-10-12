@@ -5,8 +5,8 @@
 *                                                                              * 
 \******************************************************************************/
 
-#ifndef RENDERINGMODEL_H
-#define RENDERINGMODEL_H
+#ifndef RenderModel_H
+#define RenderModel_H
 
 #include <memory>
 
@@ -15,9 +15,9 @@
 class Loader;
 
 /**
- * @brief The Model class Gère les modèles de rendu et d'éclairage de la scène.
+ * @brief The Model class Gère le modèle de rendu et d'éclairage d'un objet.
  */
-class RenderingModel
+class RenderModel
 {
 private:
     std::unique_ptr<const Loader> m_object; ///< Scène ou objet chargé.
@@ -26,14 +26,14 @@ public:
     /**
      * @brief Constructeur.
      */
-    RenderingModel();
+    RenderModel();
     // Interdit la copie
-    RenderingModel(const RenderingModel& other) = delete;
-    RenderingModel& operator= (const RenderingModel& other) = delete;
+    RenderModel(const RenderModel& other) = delete;
+    RenderModel& operator= (const RenderModel& other) = delete;
     /**
      * @brief Destructeur.
      */
-    ~RenderingModel();
+    ~RenderModel();
 
     /**
      * @brief Initialiser les paramètres globaux du rendu de la scène.
@@ -74,10 +74,10 @@ public:
     static void applyMaterial(/* Material material */);
 
     /**
-     * @brief Dessine la scène ou l'objet chargé.
+     * @brief Dessine l'objet chargé.
      */
-    void drawScene();
+    void drawObject();
 };
 
-#endif	// RENDERINGMODEL_H
+#endif	// RenderModel_H
 

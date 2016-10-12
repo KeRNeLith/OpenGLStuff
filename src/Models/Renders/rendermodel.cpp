@@ -5,37 +5,37 @@
 *                                                                              * 
 \******************************************************************************/
 
-#include "renderingmodel.h"
+#include "rendermodel.h"
 
-#include "Loaders/wheelloader.h"
+#include "Models/Loaders/wheelloader.h"
 
-RenderingModel::RenderingModel()
+RenderModel::RenderModel()
     // Read the given file with some example postprocessing
     : m_object(new WheelLoader())
 {
 }
 
-RenderingModel::~RenderingModel()
+RenderModel::~RenderModel()
 {
 }
 
-void RenderingModel::init()
+void RenderModel::init()
 {
     // Réglage de la couleur de fond
     glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
-void RenderingModel::initView()
+void RenderModel::initView()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderingModel::applyLightPointPosition(GLint lightId, const GLfloat position[4])
+void RenderModel::applyLightPointPosition(GLint lightId, const GLfloat position[4])
 {
     glLightfv(lightId, GL_POSITION, position);
 }
 
-void RenderingModel::applyLightPointIntensity(  GLint lightId,
+void RenderModel::applyLightPointIntensity(     GLint lightId,
                                                 const GLfloat diffuseIntensity[4],
                                                 const GLfloat specularIntensity[4])
 {
@@ -44,17 +44,17 @@ void RenderingModel::applyLightPointIntensity(  GLint lightId,
     glEnable(lightId);
 }
 
-void RenderingModel::disableLightPoint(GLint lightId)
+void RenderModel::disableLightPoint(GLint lightId)
 {
     glDisable(lightId);
 }
 
-void RenderingModel::applyMaterial(/* Material material */)
+void RenderModel::applyMaterial(/* Material material */)
 {
     // TODO later
 }
 
-void RenderingModel::drawScene()
+void RenderModel::drawObject()
 {
     const auto numMesh = m_object->meshCount();
     // Pour chaque objets de la scène
