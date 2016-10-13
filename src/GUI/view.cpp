@@ -24,7 +24,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                // Plans clipping
                0.0, 100.0,
                // Position
-               10.0, 10.0, 10.0,
+               0.0, 0.0, 10.0,
                // Focus
                0.0, 0.0,  0.0,
                // Verticale
@@ -49,7 +49,8 @@ void DisplayManager::display()
     // On se place dans le repère monde
     Camera::clearModelView();
     // Applique le changement de repère de la caméra dans le ModelView
-    m_camera.applyCameraCoordinates();
+    //m_camera.applyCameraCoordinates();
+    GeometricTransform::translate(0.0, 0.0, -m_camera.getDistance());
 
     // Dessin fil de fer
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);

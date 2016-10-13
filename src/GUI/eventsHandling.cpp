@@ -84,7 +84,8 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 		if (MouseData::middleButtonPressed)
 		{
 			// Mise à jour du modèle
-			// Non implémenté
+            displayParams->camera().updateDistance(MouseData::mouseY - event->motion.y);
+
 			MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles 
 			MouseData::mouseY = event->motion.y; // Coordonnées de la souris 
 		}

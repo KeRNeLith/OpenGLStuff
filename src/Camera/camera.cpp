@@ -18,6 +18,7 @@ Camera::Camera(GLdouble openAngleY, GLdouble aspect,
     , m_apsect(aspect)
     , m_zNear(zNear)
     , m_zFar(zFar)
+    , m_distance(posZ)
 {
     m_position[0] = posX;
     m_position[1] = posY;

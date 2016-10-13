@@ -25,6 +25,9 @@ private:
     GLdouble m_zNear;       ///< Plan de clipping proche.
     GLdouble m_zFar;        ///< Plan de clipping loin.
 
+    // Alternative au gluLookAt
+    GLdouble m_distance;    ///< Distance à l'origine de la scène observée.
+
     // La position et l'orientation de la caméra est donnée par
     // les paramètres de l'opération Look At
     GLdouble m_position[3];     ///< Position de la caméra (x, y, z).
@@ -302,6 +305,34 @@ public:
     void setVerticalVector(GLdouble verticalVector[3])
     {
         memcpy(m_verticalVector, verticalVector, 3 * sizeof(GLdouble));
+    }
+
+    // Distance à la scène : Alternative au gluLookAt
+    /**
+     * @brief Récupère à la distance de la caméra à la scène.
+     * @return Distance de la caméra à la scène.
+     */
+    GLdouble getDistance() const
+    {
+        return m_distance;
+    }
+
+    /**
+     * @brief Met à jour la distance de la caméra à la scène.
+     * @param dist Distance de la caméra à la scène.
+     */
+    void setDistance(GLdouble dist)
+    {
+        m_distance = dist;
+    }
+
+    /**
+     * @brief Met à jour la distance de la caméra relativement à sa distance actuelle.
+     * @param offset Déplacement sur l'axe Z.
+     */
+    void updateDistance(GLdouble offset)
+    {
+        m_distance += offset;
     }
 
     // Valeurs intrinsèques
