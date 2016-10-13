@@ -88,6 +88,7 @@ public:
     // Position
     /**
      * @brief Récupère à la position X de la caméra.
+     * @return Position X de la caméra.
      */
     GLdouble getPosX() const
     {
@@ -96,6 +97,7 @@ public:
 
     /**
      * @brief Récupère à la position Y de la caméra.
+     * @return Position Y de la caméra.
      */
     GLdouble getPosY() const
     {
@@ -104,6 +106,7 @@ public:
 
     /**
      * @brief Récupère à la position Z de la caméra.
+     * @return Position Z de la caméra.
      */
     GLdouble getPosZ() const
     {
@@ -129,7 +132,7 @@ public:
     }
 
     /**
-     * @brief Met à la position X de la caméra.
+     * @brief Met à jour la position X de la caméra.
      * @param posX Nouvelle position X de la caméra.
      */
     void setPosX(GLdouble posX)
@@ -138,7 +141,7 @@ public:
     }
 
     /**
-     * @brief Met à la position Y de la caméra.
+     * @brief Met à jour la position Y de la caméra.
      * @param posY Nouvelle position Y de la caméra.
      */
     void setPosY(GLdouble posY)
@@ -147,7 +150,7 @@ public:
     }
 
     /**
-     * @brief Met à la position Z de la caméra.
+     * @brief Met à jour la position Z de la caméra.
      * @param posZ Nouvelle position Z de la caméra.
      */
     void setPosZ(GLdouble posZ)
@@ -156,7 +159,7 @@ public:
     }
 
     /**
-     * @brief Met à la position X de la caméra relativement à sa position actuelle.
+     * @brief Met à jour la position X de la caméra relativement à sa position actuelle.
      * @param offsetX Déplacement sur l'axe X.
      */
     void updatePosX(GLdouble offsetX)
@@ -165,7 +168,7 @@ public:
     }
 
     /**
-     * @brief Met à la position Y de la caméra relativement à sa position actuelle.
+     * @brief Met à jour la position Y de la caméra relativement à sa position actuelle.
      * @param offsetY Déplacement sur l'axe Y.
      */
     void updatePosY(GLdouble offsetY)
@@ -174,7 +177,7 @@ public:
     }
 
     /**
-     * @brief Met à la position Z de la caméra relativement à sa position actuelle.
+     * @brief Met à jour la position Z de la caméra relativement à sa position actuelle.
      * @param offsetZ Déplacement sur l'axe Z.
      */
     void updatePosZ(GLdouble offsetZ)
@@ -185,6 +188,7 @@ public:
     // Target point
     /**
      * @brief Récupère à la coordonnée X du point cible de la caméra.
+     * @return Coordonnée X de la cible de la caméra.
      */
     GLdouble getTargetX() const
     {
@@ -193,6 +197,7 @@ public:
 
     /**
      * @brief Récupère à la coordonnée Y du point cible de la caméra.
+     * @return Coordonnée Y de la cible de la caméra.
      */
     GLdouble getTargetY() const
     {
@@ -201,6 +206,7 @@ public:
 
     /**
      * @brief Récupère à la coordonnée Z du point cible de la caméra.
+     * @return Coordonnée Z de la cible de la caméra.
      */
     GLdouble getTargetZ() const
     {
@@ -209,7 +215,7 @@ public:
 
     /**
      * @brief Récupère le point cible de la caméra.
-     * @return Ciblede la caméra.
+     * @return Cible de la caméra.
      */
     const GLdouble* getTargetPoint() const
     {
@@ -218,7 +224,7 @@ public:
 
     /**
      * @brief Met à jour le point cible de la caméra.
-     * @param targetPosition Nouvaux point cible.
+     * @param targetPosition Nouvau point cible.
      */
     void setTargetPosition(GLdouble targetPosition[3])
     {
@@ -226,7 +232,7 @@ public:
     }
 
     /**
-     * @brief Met à la coordonnée X de la cible de la caméra.
+     * @brief Met à jour la coordonnée X de la cible de la caméra.
      * @param posX Nouvelle position X de la cible de la caméra.
      */
     void setTargetX(GLdouble posX)
@@ -235,7 +241,7 @@ public:
     }
 
     /**
-     * @brief Met à la coordonnée Y de la cible de la caméra.
+     * @brief Met à jour la coordonnée Y de la cible de la caméra.
      * @param posY Nouvelle position Y de la cible de la caméra.
      */
     void setTargetY(GLdouble posY)
@@ -244,7 +250,7 @@ public:
     }
 
     /**
-     * @brief Met à la coordonnée Z de la cible de la caméra.
+     * @brief Met à jour la coordonnée Z de la cible de la caméra.
      * @param posZ Nouvelle position Z de la cible de la caméra.
      */
     void setTargetZ(GLdouble posZ)
@@ -253,7 +259,7 @@ public:
     }
 
     /**
-     * @brief Met à la coordonnée X de la cible de la caméra relativement à sa position actuelle.
+     * @brief Met à jour la coordonnée X de la cible de la caméra relativement à sa position actuelle.
      * @param offsetX Déplacement sur l'axe X.
      */
     void updateTargetX(GLdouble offsetX)
@@ -262,7 +268,7 @@ public:
     }
 
     /**
-     * @brief Met à la coordonnée Y de la cible de la caméra relativement à sa position actuelle.
+     * @brief Met à jour la coordonnée Y de la cible de la caméra relativement à sa position actuelle.
      * @param offsetY Déplacement sur l'axe Y.
      */
     void updateTargetY(GLdouble offsetY)
@@ -271,7 +277,7 @@ public:
     }
 
     /**
-     * @brief Met à la coordonnée Z de la cible de la caméra relativement à sa position actuelle.
+     * @brief Met à jour la coordonnée Z de la cible de la caméra relativement à sa position actuelle.
      * @param offsetZ Déplacement sur l'axe Z.
      */
     void updateTargetZ(GLdouble offsetZ)
