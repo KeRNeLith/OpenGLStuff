@@ -50,9 +50,9 @@ void GeometricTransform::translate(double vecX, double vecY, double vecZ)
     glTranslated(vecX, vecY, vecZ);
 }
 
-void GeometricTransform::rotate(double vecX, double vecY, double vecZ, double angle)
+void GeometricTransform::rotate(double angle, double vecX, double vecY, double vecZ)
 {
-    glRotated(vecX, vecY, vecZ, angle);
+    glRotated(angle, vecX, vecY, vecZ);
 }
 
 void GeometricTransform::scale(double factorX, double factorY, double factorZ)

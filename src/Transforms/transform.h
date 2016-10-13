@@ -66,12 +66,12 @@ struct GeometricTransform
 
     /**
      * @brief Applique une rotation autour de l'axe passant par 0, dirigée par un vecteur donné.
+     * @param angle Angle de rotation.
      * @param vecX Axe de rotation (X).
      * @param vecY Axe de rotation (Y).
      * @param vecZ Axe de rotation (Z).
-     * @param angle Angle de rotation.
      */
-    static void rotate(double vecX, double vecY, double vecZ, double angle);
+    static void rotate(double angle, double vecX, double vecY, double vecZ);
 
     /**
      * @brief Applique un changement d'échelle (affinités orthogonales) sur chaque axe.
