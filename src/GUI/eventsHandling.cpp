@@ -75,8 +75,10 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 	case SDL_MOUSEMOTION: // Mouvement de la souris 
 		if (MouseData::leftButtonPressed)
 		{   
-			// Mise à jour du modèle
-            // Non implémenté
+            // Mise à jour du modèle
+            displayParams->camera().updateElevation(event->motion.y - MouseData::mouseY);
+            displayParams->camera().updateAzimuth(event->motion.x - MouseData::mouseX);
+
 			MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles 
 			MouseData::mouseY = event->motion.y; // Coordonnées de la souris 
 		}
@@ -84,7 +86,7 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 		if (MouseData::middleButtonPressed)
 		{
 			// Mise à jour du modèle
-            displayParams->camera().updateDistance(MouseData::mouseY - event->motion.y);
+            displayParams->camera().updateDistance(event->motion.y - MouseData::mouseY);
 
 			MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles 
 			MouseData::mouseY = event->motion.y; // Coordonnées de la souris 
