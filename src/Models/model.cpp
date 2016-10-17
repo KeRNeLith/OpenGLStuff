@@ -10,16 +10,14 @@
 #include "model.h"
 
 Model::Model()
-	: m_grayLevel(0.0f)
+    : m_wheelSpeed(0.1)
+    , m_step(0)
+    , m_wheelRotationAxis({{ 1, 0, 0 }})    // Axe X
 {
 }
 
 void Model::update()
 {
-	m_grayLevel += 0.01f;
-	if (m_grayLevel > 1.0f)
-	{
-		m_grayLevel = 0.0f;
-	}
+    m_step += 10;
 }
 

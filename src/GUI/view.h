@@ -11,6 +11,8 @@
 #define VIEW_H
 
 #include "Models/model.h"
+#include "Models/Renders/renderscene.h"
+
 #include "Camera/camera.h"
 
 /**
@@ -25,6 +27,8 @@ private:
     Model m_model;          ///< Modèle de données à afficher.
 
     Camera m_camera;        ///< Caméra visionnant la scène.
+
+    RenderScene m_render;   ///< Gère le rendu d'une scène.
 
 public:
     /**

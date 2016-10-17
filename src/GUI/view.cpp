@@ -24,13 +24,15 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                // Plans clipping
                0.0, 100.0,
                // Position
-               0.0, 0.0, -50.0,
+               0.0, 10.0, 20.0,
                // Focus
                0.0, 0.0,  0.0,
                // Verticale
-               0.0, 1.0, 0.0)
+               0.0, 1.0, 0.0),
+    m_render(m_model)
 {
 	FramesData::init();
+  RenderModel::init();
 }
 
 void DisplayManager::display()
@@ -41,37 +43,35 @@ void DisplayManager::display()
 		std::cout << FramesData::getFPSDescriptor() << std::endl;
 	}
 
-    // Efface les buffers de profondeur et couleurs
-    /*float grayLevel = m_model.getGrayLevel();
-    // On efface le buffer vidéo (fenêtre graphique)
-    glClearColor(	grayLevel,
-                    grayLevel,
-                    grayLevel,
-                    1.0);*/
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+   // Efface les buffers de profondeur et couleurs
+    RenderModel::initView();
 
     // On se place dans le repère monde
     Camera::clearModelView();
+    
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera.applyCameraCoordinates();
+    
+    // Dessin fil de fer
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Dessin
-    glutSolidTeapot(5);
+    m_render.drawScene();
+    
 }
 
 void DisplayManager::resize(GLint l, GLint h)
 {
 	m_windowWidth = l;
-    m_windowHeight = h;
+  m_windowHeight = h;
 
-    // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé
-    m_camera.setAspect(m_windowWidth / GLdouble(m_windowHeight));
+  // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé
+  m_camera.setAspect(m_windowWidth / GLdouble(m_windowHeight));
 
-    // Surface de rendu : on recadre la fenêtre centrée en (0, 0) aux bonnes dimensions
-    GeometricTransform::viewport(0, 0, GLsizei(m_windowWidth), GLsizei(m_windowHeight));
+  // Surface de rendu : on recadre la fenêtre centrée en (0, 0) aux bonnes dimensions
+  GeometricTransform::viewport(0, 0, GLsizei(m_windowWidth), GLsizei(m_windowHeight));
 
-    // Redéfinit la projection en perspective
-    m_camera.applyPerspectiveProjection();
+  // Redéfinit la projection en perspective
+  m_camera.applyPerspectiveProjection();
 }
 
