@@ -89,6 +89,12 @@ public:
      */
     void applyCameraCoordinates();
 
+    /**
+     * @brief Applique le changement de repère de la caméra aux primitives graphiques (via des rotations et une translation).
+     * Note : Seuls les objets affichés ultérieurement sont affichés.
+     */
+    void applyCameraPosition();
+
     // Accesseurs / Setters
     // Position
     /**

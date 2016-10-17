@@ -50,10 +50,7 @@ void DisplayManager::display()
     Camera::clearModelView();
     // Applique le changement de repère de la caméra dans le ModelView
     //m_camera.applyCameraCoordinates();
-    GeometricTransform::translate(0.0, 0.0, -m_camera.getDistance());
-    GeometricTransform::rotate(m_camera.getAzimuth(), 0.0, 1.0, 0.0);
-    GeometricTransform::rotate(m_camera.getElevation(), 1.0, 0.0, 0.0);
-    //GeometricTransform::translate(0.0, 0.0, -m_camera.getDistance());
+    m_camera.applyCameraPosition();
 
     // Dessin fil de fer
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
