@@ -18,6 +18,9 @@ Camera::Camera(GLdouble openAngleY, GLdouble aspect,
     , m_apsect(aspect)
     , m_zNear(zNear)
     , m_zFar(zFar)
+    , m_distance(posZ)
+    , m_azimuth(0)
+    , m_elevation(0)
 {
     m_position[0] = posX;
     m_position[1] = posY;
@@ -60,3 +63,9 @@ void Camera::applyCameraCoordinates()
     GeometricTransform::lookAt(m_position, m_targetPoint, m_verticalVector);
 }
 
+void Camera::applyCameraPosition()
+{
+    GeometricTransform::translate(0.0, 0.0, -m_distance);
+    GeometricTransform::rotate(m_azimuth, 0.0, 1.0, 0.0);
+    GeometricTransform::rotate(m_elevation, 1.0, 0.0, 0.0);
+}
