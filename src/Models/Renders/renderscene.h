@@ -17,15 +17,8 @@ class Model;
  */
 class RenderScene
 {
-private:
+protected:
     const Model& m_model;       ///< Modèle de données de l'application (Gère l'évolution dans le temps).
-    RenderModel m_wheelRender;  ///< Modèle de roue.
-    RenderModel m_cubeRender;   ///< Modèle de cube.
-
-    /**
-     * @brief Dessine un essieu.
-     */
-    void drawAxle();
 
 public:
     /**
@@ -37,7 +30,7 @@ public:
     /**
      * @brief Dessine la scène.
      */
-    void drawScene();
+    virtual void drawScene() const =0;
 };
 
 #endif // RENDERSCENE_H

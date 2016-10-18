@@ -11,6 +11,8 @@
 
 #include <iostream>
 
+#include "Models/Renders/car.h"
+
 #include "Tools/frames.h"
 
 #include "Transforms/transform.h"
@@ -29,7 +31,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                0.0, 0.0,  0.0,
                // Verticale
                0.0, 1.0, 0.0)
-    , m_render(m_model)
+    , m_render(new Car(m_model))
 {
     FramesData::init();
     RenderModel::init(); // Paramètres de rendu
@@ -56,7 +58,7 @@ void DisplayManager::display()
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Dessin
-    m_render.drawScene();
+    m_render->drawScene();
 }
 
 void DisplayManager::resize(GLint l, GLint h)

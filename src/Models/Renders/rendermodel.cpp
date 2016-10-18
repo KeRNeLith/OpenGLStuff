@@ -68,7 +68,7 @@ void RenderModel::applyMaterial(/* Material material */)
     // TODO later
 }
 
-void RenderModel::drawObject()
+void RenderModel::drawObject() const
 {
     const auto numMesh = m_object->meshCount();
     // Pour chaque objets de la scène

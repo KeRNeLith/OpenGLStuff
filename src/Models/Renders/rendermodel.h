@@ -93,7 +93,7 @@ public:
     /**
      * @brief Dessine l'objet chargé.
      */
-    void drawObject();
+    void drawObject() const;
 };
 
 #endif	// RenderModel_H

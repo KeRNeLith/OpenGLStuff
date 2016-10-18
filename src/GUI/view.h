@@ -10,6 +10,8 @@
 #ifndef VIEW_H
 #define VIEW_H
 
+#include <memory>
+
 #include "Models/model.h"
 #include "Models/Renders/renderscene.h"
 
@@ -28,7 +30,7 @@ private:
 
     Camera m_camera;        ///< Caméra visionnant la scène.
 
-    RenderScene m_render;   ///< Gère le rendu d'une scène.
+    std::unique_ptr<const RenderScene> m_render;   ///< Gère le rendu d'une scène.
 
 public:
     /**
