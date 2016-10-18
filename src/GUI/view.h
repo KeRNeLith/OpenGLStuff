@@ -10,9 +10,14 @@
 #ifndef VIEW_H
 #define VIEW_H
 
+#include <memory>
+
+#include <GL/glut.h>
+
+#include "Camera/camera.h"
+
 #include "Models/model.h"
 #include "Models/renderingmodel.h"
-#include "Camera/camera.h"
 
 /**
  * @brief The DisplayManager class Gère les paramètres d'affichage de la vue.
@@ -26,7 +31,7 @@ private:
     Model m_model;          ///< Modèle de données à afficher.
     RenderingModel m_render;///< Modèle de rendu de scène 3D.
 
-    Camera m_camera;        ///< Caméra visionnant la scène.
+    std::unique_ptr<Camera> m_camera;   ///< Caméra visionnant la scène.
 
 public:
     /**
@@ -64,7 +69,7 @@ public:
      * @brief Permet l'accès au modèle de la caméra en lecture/écriture.
      * @return Modèle de la caméra.
      */
-    Camera& camera()
+    std::unique_ptr<Camera>& camera()
     {
         return m_camera;
     }

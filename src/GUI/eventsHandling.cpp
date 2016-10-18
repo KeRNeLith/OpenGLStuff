@@ -11,8 +11,11 @@
 
 #include <iostream>
 
-#include "Tools/mouse.h"
+#include "Camera/cartesiancamera.h"
+
 #include "GUI/view.h"
+
+#include "Tools/mouse.h"
 
 /**
  * @brief Gestion d'un événement SDL extrait de la file.
@@ -91,8 +94,9 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 
         if (MouseData::rightButtonPressed)
         {
-            displayParams->camera().updateTargetX(MouseData::mouseX - event->motion.x);
-            displayParams->camera().updateTargetZ(MouseData::mouseY - event->motion.y);
+            CartesianCamera* camera = static_cast<CartesianCamera*>(displayParams->camera().get());
+            camera->updateTargetX(MouseData::mouseX - event->motion.x);
+            camera->updateTargetZ(MouseData::mouseY - event->motion.y);
             
             // Mise à jour du modèle
             // Non implémenté
@@ -122,6 +126,8 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
     // Événements liés au clavier
     case SDL_KEYDOWN:
     {
+        CartesianCamera* camera = static_cast<CartesianCamera*>(displayParams->camera().get());
+
         int direction = -1;
         switch (event->key.keysym.sym)
         {
@@ -136,7 +142,7 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
                 // Handle 'x'
             }*/
 
-            displayParams->camera().updatePosX(GLdouble(direction));
+            camera->updatePosX(GLdouble(direction));
             break;
 
         case SDLK_y:
@@ -150,7 +156,7 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
                 // Handle 'y'
             }*/
 
-            displayParams->camera().updatePosY(GLdouble(direction));
+            camera->updatePosY(GLdouble(direction));
             break;
 
         case SDLK_z:
@@ -164,7 +170,7 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
                 // Handle 'z'
             }*/
 
-            displayParams->camera().updatePosZ(GLdouble(direction));
+            camera->updatePosZ(GLdouble(direction));
             break;
 
         case SDLK_a:
@@ -178,58 +184,58 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
                 // Handle 'a'
             }*/
 
-            displayParams->camera().updateOpenAngle(GLdouble(direction));
-            displayParams->camera().applyPerspectiveProjection();
+            camera->updateOpenAngle(GLdouble(direction));
+            camera->applyPerspectiveProjection();
             break;
 
         case SDLK_e:
         {
-            const GLdouble* center = displayParams->camera().getTargetPoint();
-            const GLdouble* camPos = displayParams->camera().getPosition();
+            const std::array<GLdouble, 3>& center = camera->getTargetPoint();
+            const std::array<GLdouble, 3>& camPos = camera->getPosition();
 
-            GLdouble newPos[3] =
-            {
+            const std::array<GLdouble, 3> newPos =
+            {{
                 center[0] + 1.1 * (camPos[0] - center[0]),
                 center[1] + 1.1 * (camPos[1] - center[1]),
                 center[2] + 1.1 * (camPos[2] - center[2])
-            };
+            }};
 
-            displayParams->camera().setPosition(newPos);
+            camera->setPosition(newPos);
 
             break;
         }
 
         case SDLK_r:
         {
-            const GLdouble* center = displayParams->camera().getTargetPoint();
-            const GLdouble* camPos = displayParams->camera().getPosition();
+            const std::array<GLdouble, 3>& center = camera->getTargetPoint();
+            const std::array<GLdouble, 3>& camPos = camera->getPosition();
 
-            GLdouble newPos[3] =
-            {
+            const std::array<GLdouble, 3> newPos =
+            {{
                 center[0] + 1/1.1 * (camPos[0] - center[0]),
                 center[1] + 1/1.1 * (camPos[1] - center[1]),
                 center[2] + 1/1.1 * (camPos[2] - center[2])
-            };
+            }};
 
-            displayParams->camera().setPosition(newPos);
+            camera->setPosition(newPos);
 
             break;
         }
 
         case SDLK_UP:
-            displayParams->camera().updatePosY(GLdouble(1));
+            camera->updatePosY(GLdouble(1));
             break;
 
         case SDLK_DOWN:
-            displayParams->camera().updatePosY(GLdouble(-1));
+            camera->updatePosY(GLdouble(-1));
             break;
 
         case SDLK_LEFT:
-            displayParams->camera().updateTargetY(-1);
+            camera->updateTargetY(-1);
             break;
 
         case SDLK_RIGHT:
-            displayParams->camera().updateTargetY(1);
+            camera->updateTargetY(1);
             break;
 
         default:
