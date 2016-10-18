@@ -82,7 +82,8 @@ const aiScene* AssimpLoader::loadScene(const std::string& sceneFilename)
     const aiScene* scene = m_importer.ReadFile(   sceneFilename,
                                                   aiProcess_FindDegenerates |
                                                   aiProcess_Triangulate     |
-                                                  aiProcess_SortByPType);
+                                                  aiProcess_SortByPType     |
+                                                  aiProcess_GenNormals);
 
     // If the import failed, report it
     if (!scene)

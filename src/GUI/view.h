@@ -17,6 +17,8 @@
 #include "Camera/camera.h"
 
 #include "Models/model.h"
+#include "Models/Lights/lightsource.h"
+#include "Models/Renders/renderscene.h"
 
 /**
  * @brief The DisplayManager class Gère les paramètres d'affichage de la vue.
@@ -30,6 +32,10 @@ private:
     Model m_model;          ///< Modèle de données à afficher.
 
     std::unique_ptr<Camera> m_camera;   ///< Caméra visionnant la scène.
+
+    LightSource m_lights;   ///< Gère les différentes sources d'éclairage de la scène.
+
+    RenderScene m_scene;    ///< Scène OpenGL à dessiner.
 
 public:
     /**

@@ -13,6 +13,8 @@
 
 #include "Camera/cartesiancamera.h"
 
+#include "Models/Lights/pointlightsource.h"
+
 #include "Tools/frames.h"
 
 #include "Transforms/transform.h"
@@ -26,13 +28,23 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Plans clipping
                                    0.0, 100.0,
                                    // Position
-                                   0.0, 0.0, 50.0,
+                                   0.0, 0.0, 10.0,
                                    // Focus
                                    0.0, 0.0,  0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
+    , m_lights()
+    , m_scene(m_model)
 {
 	FramesData::init();
+    RenderModel::init();
+    PointLightSource::init();
+
+    // Source 0
+    if (!m_lights.addLightSource(LightSource::LandmarkType::CAMERA, GL_LIGHT0, 40.0, 20.0, -20.0))
+    {
+        std::cerr << "Impossible d'ajouter la source lumineuse GL_LIGHT0" << std::endl;
+    }
 }
 
 void DisplayManager::display()
@@ -44,22 +56,25 @@ void DisplayManager::display()
 	}
 
     // Efface les buffers de profondeur et couleurs
-    /*float grayLevel = m_model.getGrayLevel();
-    // On efface le buffer vidéo (fenêtre graphique)
-    glClearColor(	grayLevel,
-                    grayLevel,
-                    grayLevel,
-                    1.0);*/
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    RenderModel::initView();
 
     // On se place dans le repère monde
     Camera::clearModelView();
+
+    // Positionnement des lumières qui sont dans le repère caméra
+    m_lights.applyLightPositions(LightSource::LandmarkType::CAMERA);
+
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera->applyCameraCoordinates();
 
+    // Positionnement des lumières qui sont dans le repère monde
+    m_lights.applyLightPositions(LightSource::LandmarkType::WORLD);
+
+    // Applique les intensités lumineuses des sources
+    m_lights.applyLightIntensities();
+
     // Dessin
-    glutSolidTeapot(5);
+    m_scene.drawScene();
 }
 
 void DisplayManager::resize(GLint l, GLint h)
