@@ -11,6 +11,8 @@
 
 #include <iostream>
 
+#include "Camera/sphericalcamera.h"
+
 #include "Models/Renders/car.h"
 
 #include "Tools/frames.h"
@@ -21,16 +23,11 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     : m_windowWidth(windowWidth)
     , m_windowHeight(windowHeigth)
     , m_model()// Construction du modèle
-    , m_camera(// Perspective
-               50.0, m_windowWidth / GLdouble(m_windowHeight),
-               // Plans clipping
-               0.0, 100.0,
-               // Position
-               0.0, 0.0, 10.0,
-               // Focus
-               0.0, 0.0,  0.0,
-               // Verticale
-               0.0, 1.0, 0.0)
+    , m_camera(new SphericalCamera(// Perspective
+                                   50.0, m_windowWidth / GLdouble(m_windowHeight),
+                                   // Plans clipping
+                                   0.0, 100.0,
+                                   10.0, 0.0, 0.0))
     , m_render(new Car(m_model))
 {
     FramesData::init();
@@ -50,9 +47,9 @@ void DisplayManager::display()
 
     // On se place dans le repère monde
     Camera::clearModelView();
+
     // Applique le changement de repère de la caméra dans le ModelView
-    //m_camera.applyCameraCoordinates();
-    m_camera.applyCameraPosition();
+    m_camera->applyCameraCoordinates();
 
     // Dessin fil de fer
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -67,12 +64,12 @@ void DisplayManager::resize(GLint l, GLint h)
     m_windowHeight = h;
 
     // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé
-    m_camera.setAspect(m_windowWidth / GLdouble(m_windowHeight));
+    m_camera->setAspect(m_windowWidth / GLdouble(m_windowHeight));
 
     // Surface de rendu : on recadre la fenêtre centrée en (0, 0) aux bonnes dimensions
     GeometricTransform::viewport(0, 0, GLsizei(m_windowWidth), GLsizei(m_windowHeight));
 
     // Redéfinit la projection en perspective
-    m_camera.applyPerspectiveProjection();
+    m_camera->applyPerspectiveProjection();
 }
 

@@ -11,8 +11,11 @@
 
 #include <iostream>
 
-#include "Tools/mouse.h"
+#include "Camera/sphericalcamera.h"
+
 #include "GUI/view.h"
+
+#include "Tools/mouse.h"
 
 /**
  * @brief Gestion d'un événement SDL extrait de la file.
@@ -73,11 +76,14 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 		break;  
 		
 	case SDL_MOUSEMOTION: // Mouvement de la souris 
+    {
+        SphericalCamera* camera = static_cast<SphericalCamera*>(displayParams->camera().get());
+
 		if (MouseData::leftButtonPressed)
 		{   
             // Mise à jour du modèle
-            displayParams->camera().updateElevation(event->motion.y - MouseData::mouseY);
-            displayParams->camera().updateAzimuth(event->motion.x - MouseData::mouseX);
+            camera->updateElevation(event->motion.y - MouseData::mouseY);
+            camera->updateAzimuth(event->motion.x - MouseData::mouseX);
 
 			MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles 
 			MouseData::mouseY = event->motion.y; // Coordonnées de la souris 
@@ -86,7 +92,7 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 		if (MouseData::middleButtonPressed)
 		{
 			// Mise à jour du modèle
-            displayParams->camera().updateDistance(event->motion.y - MouseData::mouseY);
+            camera->updateDistance(event->motion.y - MouseData::mouseY);
 
 			MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles 
 			MouseData::mouseY = event->motion.y; // Coordonnées de la souris 
@@ -99,6 +105,7 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
             MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles
             MouseData::mouseY = event->motion.y; // Coordonnées de la souris
         }
+    }
 	break;       
 	
 	//////////////////////////////////////////////////////
