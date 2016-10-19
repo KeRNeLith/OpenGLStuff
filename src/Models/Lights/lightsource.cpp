@@ -66,33 +66,33 @@ void LightSource::removeLightSource(GLenum lightId)
 
 void LightSource::applyLightPositions(LightSource::LandmarkType type)
 {
-    auto& sources = getSourcesFromLandmark(type);
-    std::for_each(sources.begin(), sources.end(), [](const PointLightSource& light)
+    const auto& sources = getSourcesFromLandmark(type);
+    for (const auto& light : sources)
     {
        light.applyLightPointPosition();
-    });
+    }
 }
 
 void LightSource::applyLightIntensities()
 {
-    std::for_each(m_sourcesCameraLandmark.begin(), m_sourcesCameraLandmark.end(), [](const PointLightSource& light)
+    for (const auto& light : m_sourcesCameraLandmark)
     {
        light.applyLightPointIntensity();
-    });
+    }
 
-    std::for_each(m_sourcesWorldLandmark.begin(), m_sourcesWorldLandmark.end(), [](const PointLightSource& light)
+    for (const auto& light : m_sourcesWorldLandmark)
     {
        light.applyLightPointIntensity();
-    });
+    }
 }
 
 void LightSource::disableLightSources(LightSource::LandmarkType type)
 {
-    auto& sources = getSourcesFromLandmark(type);
-    std::for_each(sources.begin(), sources.end(), [](const PointLightSource& light)
+    const auto& sources = getSourcesFromLandmark(type);
+    for (const auto& light : sources)
     {
        light.disableLightPoint();
-    });
+    }
 }
 
 std::vector<PointLightSource>& LightSource::getSourcesFromLandmark(LightSource::LandmarkType type)

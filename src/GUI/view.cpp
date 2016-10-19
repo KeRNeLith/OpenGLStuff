@@ -26,9 +26,9 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     , m_camera(new CartesianCamera(// Perspective
                                    50.0, m_windowWidth / GLdouble(m_windowHeight),
                                    // Plans clipping
-                                   0.0, 100.0,
+                                   1.0, 100.0,
                                    // Position
-                                   0.0, 0.0, 10.0,
+                                   0.0, 0.0, 50.0,
                                    // Focus
                                    0.0, 0.0,  0.0,
                                    // Verticale
@@ -74,7 +74,8 @@ void DisplayManager::display()
     m_lights.applyLightIntensities();
 
     // Dessin
-    m_scene.drawScene();
+    //m_scene.drawScene();
+    glutSolidTeapot(10);
 }
 
 void DisplayManager::resize(GLint l, GLint h)
