@@ -74,8 +74,7 @@ void DisplayManager::display()
     m_lights.applyLightIntensities();
 
     // Dessin
-    //m_scene.drawScene();
-    glutSolidTeapot(10);
+    m_scene.drawScene();
 }
 
 void DisplayManager::resize(GLint l, GLint h)

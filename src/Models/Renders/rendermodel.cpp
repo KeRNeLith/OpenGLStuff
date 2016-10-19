@@ -29,9 +29,12 @@ void RenderModel::initView()
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void RenderModel::applyMaterial(/* Material material */)
+void RenderModel::applyMaterial(const Material& material)
 {
-    // TODO later
+    glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, material.getAmbient().data());
+    glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, material.getDiffuse().data());
+    glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, material.getSpecular().data());
+    glMaterialf(GL_FRONT_AND_BACK, GL_SHININESS, material.getShininess());
 }
 
 void RenderModel::drawObject()

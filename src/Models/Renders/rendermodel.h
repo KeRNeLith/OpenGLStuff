@@ -12,6 +12,8 @@
 
 #include <GL/glut.h>
 
+#include "Models/Renders/material.h"
+
 class Loader;
 
 /**
@@ -47,8 +49,9 @@ public:
 
     /**
      * @brief Applique des propriétés de matériaux pour les rendus d'objets suivants.
+     * @param material Matériau à appliquer.
      */
-    static void applyMaterial(/* Material material */);
+    static void applyMaterial(const Material& material);
 
     /**
      * @brief Dessine l'objet chargé.
