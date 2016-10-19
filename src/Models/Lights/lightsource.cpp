@@ -95,6 +95,35 @@ void LightSource::disableLightSources(LightSource::LandmarkType type)
     }
 }
 
+PointLightSource* LightSource::getLightSource(GLenum lightId)
+{
+    PointLightSource* ret = nullptr;
+
+    auto it = std::find_if(m_sourcesCameraLandmark.begin(), m_sourcesCameraLandmark.end(), [&lightId](const PointLightSource& light)
+    {
+        return light.getLightId() == lightId;
+    });
+
+    if (it == m_sourcesCameraLandmark.cend())
+    {
+        it = std::find_if(m_sourcesWorldLandmark.begin(), m_sourcesWorldLandmark.end(), [&lightId](const PointLightSource& light)
+        {
+            return light.getLightId() == lightId;
+        });
+
+        if (it != m_sourcesCameraLandmark.cend())
+        {
+            ret = &(*it);
+        }
+    }
+    else
+    {
+        ret = &(*it);
+    }
+
+    return ret;
+}
+
 std::vector<PointLightSource>& LightSource::getSourcesFromLandmark(LightSource::LandmarkType type)
 {
     if (type == LightSource::LandmarkType::CAMERA)

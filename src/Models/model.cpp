@@ -9,17 +9,19 @@
 
 #include "model.h"
 
+#include <iostream>
+
 Model::Model()
-	: m_grayLevel(0.0f)
+    : m_lights()
 {
+    // Source 0
+    if (!m_lights.addLightSource(LightSource::LandmarkType::CAMERA, GL_LIGHT0, 40.0, 20.0, -20.0))
+    {
+        std::cerr << "Impossible d'ajouter la source lumineuse GL_LIGHT0" << std::endl;
+    }
 }
 
 void Model::update()
 {
-	m_grayLevel += 0.01f;
-	if (m_grayLevel > 1.0f)
-	{
-		m_grayLevel = 0.0f;
-	}
 }
 

@@ -11,9 +11,9 @@ Material::Material(GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
                    GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB,
                    GLfloat specularR, GLfloat specularG, GLfloat specularB,
                    GLfloat shininess)
-    : m_ambient({{ ambientR, ambientG, ambientB }})
-    , m_diffuse({{ diffuseR, diffuseG, diffuseB }})
-    , m_specular({{ specularR, specularG, specularB }})
+    : m_ambient({{ ambientR, ambientG, ambientB, 1.0 }})
+    , m_diffuse({{ diffuseR, diffuseG, diffuseB, 1.0 }})
+    , m_specular({{ specularR, specularG, specularB, 1.0 }})
     , m_shininess(shininess)
 {
 

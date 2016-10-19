@@ -57,6 +57,12 @@ void PointLightSource::applyLightPointIntensity() const
     PointLightSource::applyLightPointIntensity(m_lightId, m_diffuseIntensity, m_specularIntensity);
 }
 
+void PointLightSource::setLightPointIntensities(const std::array<GLfloat, 4>& diffuseIntensity, const std::array<GLfloat, 4>& specularIntensity)
+{
+    setLightPointDiffuseIntensity(diffuseIntensity);
+    setLightPointSpecularIntensity(specularIntensity);
+}
+
 void PointLightSource::enableLightPoint(GLint lightId)
 {
     glEnable(lightId);

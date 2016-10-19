@@ -10,14 +10,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "Lights/lightsource.h"
+
 /**
  * @brief The Model class Gère le modèle de données de l'application.
  */
 class Model
 {
 private:
-	// Niveau de gris du fond
-    float m_grayLevel;  // TEMPORARY
+    LightSource m_lights;   ///< Gère les différentes sources d'éclairage de la scène.
 
 public:
     /**
@@ -31,10 +32,13 @@ public:
 	void update();
 	
 	// Accesseurs
-    // TEMPORARY
-	float getGrayLevel() const
+    /**
+     * @brief Récupère le modèle des sources d'éclairage en lecture/écriture.
+     * @return Modèle des sources d'éclairage.
+     */
+    LightSource& getLights()
 	{
-		return m_grayLevel;
+        return m_lights;
 	}
 };
 

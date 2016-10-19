@@ -200,6 +200,63 @@ public:
     {
         m_position[2] += offsetZ;
     }
+
+    /**
+     * @brief Récupère les coefficients de réflexion diffuse de la source de lumière.
+     * @return Coefficients de réflexion diffuse.
+     */
+    const std::array<GLfloat, 4>& getLightPointDiffuseIntensity() { return m_diffuseIntensity; }
+
+    /**
+     * @brief Affecte les coefficients de diffusion à la source de lumière.
+     * @param diffuseIntensity Intensité diffuse de la lumière.
+     */
+    void setLightPointDiffuseIntensity(const std::array<GLfloat, 4>& diffuseIntensity) { m_diffuseIntensity = diffuseIntensity; }
+
+    /**
+     * @brief Met à jour les coefficients de diffusion à la source de lumière.
+     * @param diffuseIntensityR Intensité diffuse sur la composante rouge.
+     * @param diffuseIntensityG Gntensité diffuse sur la composante vert.
+     * @param diffuseIntensityB Intensité diffuse sur la composante bleu.
+     */
+    void updateLightPointDiffuseIntensity(GLfloat diffuseIntensityR, GLfloat diffuseIntensityG, GLfloat diffuseIntensityB)
+    {
+        m_diffuseIntensity[0] += diffuseIntensityR;
+        m_diffuseIntensity[1] += diffuseIntensityG;
+        m_diffuseIntensity[2] += diffuseIntensityB;
+    }
+
+    /**
+     * @brief Récupère les coefficients de réflexion spéculaire de la source de lumière.
+     * @return Coefficients de réflexion diffuse.
+     */
+    const std::array<GLfloat, 4>& getLightPointSpecularIntensity() { return m_specularIntensity; }
+
+    /**
+     * @brief Affecte les coefficients spéculaire à la source de lumière.
+     * @param specularIntensity Intensité spéculaire de la lumière.
+     */
+    void setLightPointSpecularIntensity(const std::array<GLfloat, 4>& specularIntensity) { m_specularIntensity = specularIntensity; }
+
+    /**
+     * @brief Met à jour les coefficients spéculaire à la source de lumière.
+     * @param specularIntensityR Intensité spéculaire sur la composante rouge.
+     * @param specularIntensityG Intensité spéculaire sur la composante vert.
+     * @param specularIntensityB Intensité spéculaire sur la composante bleu.
+     */
+    void updateLightPointSpecularIntensity(GLfloat specularIntensityR, GLfloat specularIntensityG, GLfloat specularIntensityB)
+    {
+        m_specularIntensity[0] += specularIntensityR;
+        m_specularIntensity[1] += specularIntensityG;
+        m_specularIntensity[2] += specularIntensityB;
+    }
+
+    /**
+     * @brief Affecte les coefficients de diffusion et spéculaire à la source de lumière.
+     * @param diffuseIntensity Intensité diffuse de la lumière.
+     * @param specularIntensity Intensité spéculaire de la lumière.
+     */
+    void setLightPointIntensities(const std::array<GLfloat, 4>& diffuseIntensity, const std::array<GLfloat, 4>& specularIntensity);
 };
 
 #endif // POINTLIGHTSOURCE_H

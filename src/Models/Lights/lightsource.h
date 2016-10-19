@@ -95,6 +95,14 @@ public:
      */
     void disableLightSources(LightSource::LandmarkType type);
 
+    // Accesseurs
+    /**
+     * @brief Essaye de récupérer la source lumineuse correspondant à l'id spécifié.
+     * @param lightId Id de la source lumineuse.
+     * @return Pointeur sur la source lumineuse correspondante à l'id, sinon nullptr.
+     */
+    PointLightSource* getLightSource(GLenum lightId);
+
     /**
      * @brief Récupère le tableaux des sources lumineuse, soit dans le repère monde soit dans le repère caméra.
      * @param type Type de repère.

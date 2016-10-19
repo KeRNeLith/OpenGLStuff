@@ -96,7 +96,42 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
             MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles
             MouseData::mouseY = event->motion.y; // Coordonnées de la souris
         }
-	break;       
+    break;
+
+    //////////////////////////////////////////////////////
+    // Événements liés au clavier
+    case SDL_KEYDOWN:
+    {
+        float direction = -0.05f;
+        switch (event->key.keysym.sym)
+        {
+        case SDLK_i:
+        {
+            if (event->key.keysym.mod & KMOD_SHIFT)
+            {
+                // Handle 'I'
+                direction *= -1;
+            }
+            /*else
+            {
+                // Handle 'i'
+            }*/
+
+            PointLightSource* source = displayParams->model().getLights().getLightSource(GL_LIGHT0);
+
+            if (source)
+            {
+                source->updateLightPointDiffuseIntensity(direction, direction, direction);
+                source->updateLightPointSpecularIntensity(direction, direction, direction);
+            }
+            break;
+        }
+        default:
+            std::cerr << "Touche non gérée" << std::endl;
+            break;
+        }
+    }
+    break;
 	
 	//////////////////////////////////////////////////////
 	// Événements perso : raffraîchissement de la vue

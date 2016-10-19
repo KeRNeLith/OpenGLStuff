@@ -30,21 +30,14 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Position
                                    0.0, 0.0, 50.0,
                                    // Focus
-                                   0.0, 0.0,  0.0,
+                                   0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
-    , m_lights()
     , m_scene(m_model)
 {
 	FramesData::init();
     RenderModel::init();
     PointLightSource::init();
-
-    // Source 0
-    if (!m_lights.addLightSource(LightSource::LandmarkType::CAMERA, GL_LIGHT0, 40.0, 20.0, -20.0))
-    {
-        std::cerr << "Impossible d'ajouter la source lumineuse GL_LIGHT0" << std::endl;
-    }
 }
 
 void DisplayManager::display()
@@ -62,19 +55,20 @@ void DisplayManager::display()
     Camera::clearModelView();
 
     // Positionnement des lumières qui sont dans le repère caméra
-    m_lights.applyLightPositions(LightSource::LandmarkType::CAMERA);
+    m_model.getLights().applyLightPositions(LightSource::LandmarkType::CAMERA);
 
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera->applyCameraCoordinates();
 
     // Positionnement des lumières qui sont dans le repère monde
-    m_lights.applyLightPositions(LightSource::LandmarkType::WORLD);
+    m_model.getLights().applyLightPositions(LightSource::LandmarkType::WORLD);
 
     // Applique les intensités lumineuses des sources
-    m_lights.applyLightIntensities();
+    m_model.getLights().applyLightIntensities();
 
     // Dessin
     m_scene.drawScene();
+    glutSolidTeapot(10);
 }
 
 void DisplayManager::resize(GLint l, GLint h)
