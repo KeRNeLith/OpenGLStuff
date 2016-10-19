@@ -1,5 +1,5 @@
 /******************************************************************************\
-*     Copyright (C) 2016 by Alexandre Rabérin                                  *
+*     Copyright (C) 2016 by Adrien Pierreval                                   *
 *                                                                              *
 * The program is distributed under the terms of the GNU General Public License *
 *                                                                              *
