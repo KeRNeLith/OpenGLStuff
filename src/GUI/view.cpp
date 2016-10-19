@@ -11,6 +11,8 @@
 
 #include <iostream>
 
+#include "Camera/cartesiancamera.h"
+
 #include "Tools/frames.h"
 
 #include "Transforms/transform.h"
@@ -62,8 +64,9 @@ void DisplayManager::display()
 
 void DisplayManager::resize(GLint l, GLint h)
 {
-	m_windowWidth = l;
+  m_windowWidth = l;
   m_windowHeight = h;
+
 
   // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé
   m_camera.setAspect(m_windowWidth / GLdouble(m_windowHeight));
@@ -74,4 +77,3 @@ void DisplayManager::resize(GLint l, GLint h)
   // Redéfinit la projection en perspective
   m_camera.applyPerspectiveProjection();
 }
-

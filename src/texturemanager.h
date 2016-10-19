@@ -1,4 +1,0 @@
-#ifndef TEXTUREMANAGER_H
-#define TEXTUREMANAGER_H
-
-#endif // TEXTUREMANAGER_H
