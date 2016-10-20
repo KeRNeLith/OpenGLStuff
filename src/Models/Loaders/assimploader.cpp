@@ -27,7 +27,10 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
     , m_importer()
     , m_scene(loadScene(sceneFilename))
     , m_vertices()
+    , m_normals()
     , m_faces()
+    , m_materials()
+    , m_meshMaterials()
 {
     const unsigned int numMesh = m_scene->mNumMeshes;
     // Pour chaque objets de la scène
@@ -36,13 +39,15 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
         const aiMesh* mesh = m_scene->mMeshes[m];
 
         std::vector< GLfloat* > meshVertices;
+        std::vector< GLfloat* > meshNormals;
 
         /// Traite les vertices
         const unsigned int numVertices = mesh->mNumVertices;
-        // Pour chaque sommet du mesh
+        // Pour chaque sommet du mesh on récupère les coordonnées du sommet et de sa normale
         for (unsigned int v = 0 ; v < numVertices ; ++v)
         {
             aiVector3D& pos = mesh->mVertices[v];
+            aiVector3D& norm = mesh->mNormals[v];
 
             // Utilise les données d'Assimp sans copie
             // ATTENTION: Il est nécessaire que les GLfloat et les float aient la même taille
@@ -50,9 +55,11 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
             // actuelles. En effet, on se base sur la principe qui fait
             // que les données membres d'une classe sont contigues en mémoire.
             meshVertices.push_back( (GLfloat*) &(pos.x) );
+            meshNormals.push_back( (GLfloat*) &(norm.x) );
         }
 
         m_vertices.push_back(meshVertices);
+        m_normals.push_back(meshNormals);
 
         /// Traite les faces
         const unsigned int numFaces = mesh->mNumFaces;
@@ -70,6 +77,42 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
         }
 
         m_faces.push_back(meshFaces);
+
+        // Indice du matériau du maillage
+        m_meshMaterials.push_back(mesh->mMaterialIndex);
+    }
+
+    /// Traite les matériaux
+    const unsigned int numMaterials = m_scene->mNumMaterials;
+    // Pour chaque matériau
+    for (unsigned int m = 0 ; m < numMaterials ; ++m)
+    {
+        const aiMaterial* mat = m_scene->mMaterials[m];
+
+        aiColor3D ambiant(0.0f, 0.0f, 0.0f);
+        aiColor3D diffuse(0.0f, 0.0f, 0.0f);
+        aiColor3D specular(0.0f, 0.0f, 0.0f);
+        float shininess = 0.0f;
+
+        // Récupère les valeurs du matériau
+        if (AI_SUCCESS == mat->Get(AI_MATKEY_COLOR_AMBIENT, ambiant)
+            && AI_SUCCESS == mat->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)
+            && AI_SUCCESS == mat->Get(AI_MATKEY_COLOR_SPECULAR, specular)
+            && AI_SUCCESS == mat->Get(AI_MATKEY_SHININESS, shininess))
+        {
+            // Construit le matériau correspondant
+            m_materials.push_back(Material( ambiant.r, ambiant.g, ambiant.b,
+                                            diffuse.r, diffuse.g, diffuse.b,
+                                            specular.r, specular.g, specular.b,
+                                            shininess));
+        }
+        // Cas où il y a eu un echec lors de la récupération des propriétés du matériau
+        // Ne devrait pas arriver
+        else
+        {
+            // Place un matériau par défaut
+            m_materials.push_back(Material());
+        }
     }
 }
 
@@ -96,7 +139,7 @@ const aiScene* AssimpLoader::loadScene(const std::string& sceneFilename)
     return scene;
 }
 
-GLenum AssimpLoader::modes(int meshIndex) const
+GLenum AssimpLoader::mode(int meshIndex) const
 {
     GLenum ret = GL_POINTS;
 
@@ -129,7 +172,17 @@ const std::vector< GLfloat* >& AssimpLoader::vertices(int meshIndex) const
     return m_vertices[meshIndex];
 }
 
+const std::vector< GLfloat* >& AssimpLoader::normals(int meshIndex) const
+{
+    return m_normals[meshIndex];
+}
+
 const std::vector< std::vector<unsigned int> >& AssimpLoader::faces(int meshIndex) const
 {
     return m_faces[meshIndex];
+}
+
+const Material& AssimpLoader::material(int meshIndex) const
+{
+    return m_materials[ m_meshMaterials[meshIndex] ];
 }

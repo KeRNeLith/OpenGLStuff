@@ -14,6 +14,8 @@
 #include "Camera/cartesiancamera.h"
 
 #include "Models/Lights/pointlightsource.h"
+#include "Models/Renders/teapot.h"
+#include "Models/Renders/customscene.h"
 
 #include "Tools/frames.h"
 
@@ -26,14 +28,14 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     , m_camera(new CartesianCamera(// Perspective
                                    50.0, m_windowWidth / GLdouble(m_windowHeight),
                                    // Plans clipping
-                                   1.0, 100.0,
+                                   1.0, 2000.0,
                                    // Position
-                                   0.0, 0.0, 50.0,
+                                   0.0, 300.0, 800.0,
                                    // Focus
                                    0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
-    , m_scene(m_model)
+    , m_scene(new CustomScene(m_model))
 {
 	FramesData::init();
     RenderModel::init();
@@ -74,8 +76,7 @@ void DisplayManager::display()
     // Dessin
     // Applique le matériau
     RenderModel::applyMaterial(m_model.getDefaultMaterial());
-    m_scene.drawScene();
-    glutSolidTeapot(10);
+    m_scene->drawScene();
 }
 
 void DisplayManager::resize(GLint l, GLint h)

@@ -32,7 +32,7 @@ private:
 
     std::unique_ptr<Camera> m_camera;   ///< Caméra visionnant la scène.
 
-    RenderScene m_scene;    ///< Scène OpenGL à dessiner.
+    std::unique_ptr<RenderScene> m_scene;    ///< Scène OpenGL à dessiner.
 
 public:
     /**

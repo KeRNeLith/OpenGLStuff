@@ -8,8 +8,6 @@
 #ifndef RENDERSCENE_H
 #define RENDERSCENE_H
 
-#include "rendermodel.h"
-
 class Model;
 
 /**
@@ -28,9 +26,14 @@ public:
     RenderScene(const Model& model);
 
     /**
+     * @brief Destructeur.
+     */
+    virtual ~RenderScene();
+
+    /**
      * @brief Dessine la scène.
      */
-    void drawScene();
+    virtual void drawScene() =0;
 };
 
 #endif // RENDERSCENE_H

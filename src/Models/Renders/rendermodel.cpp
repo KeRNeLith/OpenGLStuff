@@ -8,9 +8,10 @@
 #include "rendermodel.h"
 
 #include "Models/Loaders/loader.h"
+#include "Models/Loaders/assimploader.h"
 
-RenderModel::RenderModel()
-    : m_object(nullptr)
+RenderModel::RenderModel(const std::string& filename)
+    : m_object(new AssimpLoader(filename))
 {
 }
 
@@ -43,11 +44,15 @@ void RenderModel::drawObject()
     // Pour chaque objets de la scène
     for (unsigned int m = 0 ; m < numMesh ; ++m)
     {
-        glBegin(m_object->modes(m));
+        glBegin(m_object->mode(m));
 
         // Tableaux des vertices et des faces du mesh traité
         const auto& vertices = m_object->vertices(m);
+        const auto& normals = m_object->normals(m);
         const auto& faces = m_object->faces(m);
+
+        // Applique le matériau de l'objet
+        RenderModel::applyMaterial(m_object->material(m));
 
         // Nombre de face du mesh
         const auto numFaces = faces.size();
@@ -64,6 +69,7 @@ void RenderModel::drawObject()
             // Pour chaque sommet de la face place le sommet dans la scène 3D
             for (unsigned int v = 0 ; v < numVertice ; ++v)
             {
+                glNormal3fv( normals[ face[v] ] );
                 glVertex3fv( vertices[ face[v] ] );
             }
         }

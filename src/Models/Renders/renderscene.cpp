@@ -16,7 +16,7 @@ RenderScene::RenderScene(const Model& model)
 {
 }
 
-void RenderScene::drawScene()
+RenderScene::~RenderScene()
 {
-    // Nothing for the moment
+
 }

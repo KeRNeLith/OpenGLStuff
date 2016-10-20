@@ -37,7 +37,10 @@ private:
     const aiScene* m_scene;         ///< Scène 3D (Désallocation managée par m_importer).
 
     std::vector< std::vector< GLfloat* > > m_vertices;              ///< Tableau des tableaux de vertices (Chaque entrée du tableau correspond aux vertices d'un mesh ASSIMP).
+    std::vector< std::vector< GLfloat* > > m_normals;               ///< Tableau des tableaux de normales (Chaque entrée du tableau correspond aux normales d'un mesh ASSIMP).
     std::vector< std::vector< std::vector<unsigned int> > > m_faces;///< Tableau des tableaux de faces (Chaque entrée du tableau correspond aux faces d'un mesh ASSIMP, chaque face comportant un tableau de ).
+    std::vector< Material > m_materials;                            ///< Tableau de matériaux (Chaque entrée du tableau correspond à un matériau d'une scène ASSIMP).
+    std::vector< unsigned int > m_meshMaterials;                    ///< Tableau des indices des matériaux par maillage.
 
     /**
      * @brief Charge la scène dont le nom de fichier est spécifié.
@@ -50,7 +53,7 @@ private:
 public:
     /**
      * @brief Constructor.
-     * @param sceneFilename Path to the 3D model file.
+     * @param sceneFilename Chemin vers le modèle 3D.
      */
     AssimpLoader(const std::string& sceneFilename);
     // Interdit la copie
@@ -69,15 +72,23 @@ public:
     /**
      * @brief See Loader#modes()
      */
-    GLenum modes(int meshIndex = 0) const override;
+    GLenum mode(int meshIndex = 0) const override;
     /**
      * @brief See Loader#vertices(int)
      */
     const std::vector< GLfloat* >& vertices(int meshIndex = 0) const override;
     /**
+     * @brief See Loader#normals(int)
+     */
+    const std::vector< GLfloat* >& normals(int meshIndex = 0) const override;
+    /**
      * @brief See Loader#faces(int)
      */
     const std::vector< std::vector<unsigned int> >& faces(int meshIndex = 0) const override;
+    /**
+     * @brief See Loader#material(int)
+     */
+    const Material& material(int meshIndex = 0) const override;
 };
 
 #endif // ASSIMPLOADER_H

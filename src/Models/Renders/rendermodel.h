@@ -27,8 +27,9 @@ private:
 public:
     /**
      * @brief Constructeur.
+     * @param filename Chemin du fichier à charger.
      */
-    RenderModel();
+    RenderModel(const std::string& filename);
     // Interdit la copie
     RenderModel(const RenderModel& other) = delete;
     RenderModel& operator= (const RenderModel& other) = delete;

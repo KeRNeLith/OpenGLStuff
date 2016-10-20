@@ -33,7 +33,7 @@ Model::Model()
     // Source 1
     if (!m_lights.addLightSource(LightSource::LandmarkType::WORLD,
                                  GL_LIGHT1,
-                                 20.0, 0.0, 0.0,
+                                 0.0, 400.0, 400.0,
                                  0.6f, 0.6f, 0.6f,
                                  0.6f, 0.6f, 0.6f))
     {
@@ -46,6 +46,6 @@ void Model::update()
     m_defaultMaterial.setAmbiant(m_ambiant, m_ambiant, m_ambiant);
     m_defaultMaterial.setShininess(m_shininess);
 
-    m_light1RotationAngle += 0.5;
+    m_light1RotationAngle += 1;
 }
 

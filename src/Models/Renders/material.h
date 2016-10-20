@@ -37,10 +37,10 @@ public:
      * @param specularB Composante bleu du coefficient de réflexion spéculaire.
      * @param shininess Brillance.
      */
-    Material(GLfloat ambientR, GLfloat ambientG, GLfloat ambientB,
-             GLfloat diffuseR, GLfloat diffuseG, GLfloat diffuseB,
-             GLfloat specularR, GLfloat specularG, GLfloat specularB,
-             GLfloat shininess);
+    Material(GLfloat ambientR = 0.2f, GLfloat ambientG = 0.2f, GLfloat ambientB = 0.2f,
+             GLfloat diffuseR = 0.2f, GLfloat diffuseG = 0.2f, GLfloat diffuseB = 0.2f,
+             GLfloat specularR = 0.2f, GLfloat specularG = 0.2f, GLfloat specularB = 0.2f,
+             GLfloat shininess = 120.0f);
 
     // Accesseurs
     /**

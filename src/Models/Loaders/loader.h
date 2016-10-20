@@ -12,6 +12,8 @@
 
 #include <GL/glut.h>
 
+#include "Models/Renders/material.h"
+
 /**
  * @brief The Loader class is an abstract interface that define methods that provide access to mesh modelling data.
  */
@@ -40,7 +42,7 @@ public:
      * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
      * @return Mode de dessin (Une parmi : GL_POINTS, GL_LINES, GL_TRIANGLES, GL_QUADS et GL_POLYGON).
      */
-    virtual GLenum modes(int meshIndex = 0) const =0;
+    virtual GLenum mode(int meshIndex = 0) const =0;
 
     /**
      * @brief Récupère le tableaux des sommets associés au maillage spécifié en paramètre.
@@ -50,11 +52,25 @@ public:
     virtual const std::vector< GLfloat* >& vertices(int meshIndex = 0) const =0;
 
     /**
+     * @brief Récupère le tableaux des normales associés sommets du maillage spécifié en paramètre.
+     * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
+     * @return Tableau des normals du maillage spécifié.
+     */
+    virtual const std::vector< GLfloat* >& normals(int meshIndex = 0) const =0;
+
+    /**
      * @brief Récupère le tableaux des faces associées au maillage spécifié en paramètre.
      * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
      * @return Tableau des faces du maillage spécifié (Indices des sommets nécessaires).
      */
     virtual const std::vector< std::vector<unsigned int> >& faces(int meshIndex = 0) const =0;
+
+    /**
+     * @brief Récupère le tableaux des matériaux associés à l'objet.
+     * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
+     * @return Matériau associé à l'objet.
+     */
+    virtual const Material& material(int meshIndex = 0) const =0;
 };
 
 #endif // LOADER_H
