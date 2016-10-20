@@ -28,7 +28,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Position
                                    0.0, 25.0, 50.0,
                                    // Focus
-                                   0.0, 0.0,  0.0,
+                                   0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
 {
