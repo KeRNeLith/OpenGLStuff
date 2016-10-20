@@ -10,6 +10,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <array>
+
 #include "Lights/lightsource.h"
 
 #include "Models/Renders/material.h"
@@ -25,6 +27,9 @@ private:
     float m_ambiant;            ///< Coefficient de lumière ambiante.
 
     LightSource m_lights;       ///< Gère les différentes sources d'éclairage de la scène.
+
+    std::array<double, 3> m_light1RotationAxis; ///< Axe de rotation de la source lumineuse GL_LIGHT1.
+    double m_light1RotationAngle;               ///< Angle de rotation de la source lumineuse GL_LIGHT1.
 
 public:
     /**
@@ -74,6 +79,24 @@ public:
     {
         m_ambiant += offset;
         clip(m_ambiant, 0.0f, 1.0f);
+    }
+
+    /**
+     * @brief Récupère l'angle de rotation de la source lumineuse GL_LIGHT1.
+     * @return Angle de rotation.
+     */
+    double getLight1RotationAngle() const
+    {
+        return m_light1RotationAngle;
+    }
+
+    /**
+     * @brief Récupère l'axe de rotation de la source lumineuse GL_LIGHT1.
+     * @return Axe de rotation.
+     */
+    const std::array<double, 3>& getLight1RotationAxis() const
+    {
+        return m_light1RotationAxis;
     }
 };
 

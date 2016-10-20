@@ -60,8 +60,13 @@ void DisplayManager::display()
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera->applyCameraCoordinates();
 
+    GeometricTransform::pushMatrix();
+    const auto& axis = m_model.getLight1RotationAxis();
+    GeometricTransform::rotate(m_model.getLight1RotationAngle(), axis[0], axis[1], axis[2]);
+
     // Positionnement des lumières qui sont dans le repère monde
     m_model.getLights().applyLightPositions(LightSource::LandmarkType::WORLD);
+    GeometricTransform::popMatrix();
 
     // Applique les intensités lumineuses des sources
     m_model.getLights().applyLightIntensities();

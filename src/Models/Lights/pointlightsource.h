@@ -28,7 +28,7 @@ private:
 public:
     /**
      * @brief Constructeur.
-     * @param ligthId Id de la lumière.
+     * @param lightId Id de la lumière.
      * @param posX Position X de la source lumineuse.
      * @param posY Position Y de la source lumineuse.
      * @param posZ Position Z de la source lumineuse.
@@ -66,13 +66,11 @@ public:
 
     /**
      * @brief Positionne la source de lumière courante dans le repère courant.
-     * @param lightId Id de la source de lumière.
      */
     void applyLightPointPosition() const;
 
     /**
      * @brief Active la source de lumière courante et règle son intensité lumineuse (diffuse et spéculaire).
-     * @param lightId Id de la source de lumière.
      */
     void applyLightPointIntensity() const;
 
