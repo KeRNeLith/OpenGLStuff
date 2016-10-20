@@ -13,7 +13,7 @@
 #include <GL/glut.h>
 
 /**
- * Classe de gestion de la Caméra.
+ * @brief The Camera class Classe de gestion de la Caméra.
  */
 class Camera
 {
@@ -130,7 +130,7 @@ public:
 
     /**
      * @brief Met à jour le plan de clipping proche.
-     * @param aspect Nouveau plan de clipping proche.
+     * @param zNear Nouveau plan de clipping proche.
      */
     void setNearClipping(GLdouble zNear)
     {
@@ -148,7 +148,7 @@ public:
 
     /**
      * @brief Met à jour le plan de clipping loin.
-     * @param aspect Nouveau plan de clipping loin.
+     * @param zFar Nouveau plan de clipping loin.
      */
     void setFarClipping(GLdouble zFar)
     {
