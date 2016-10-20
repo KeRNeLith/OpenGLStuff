@@ -26,9 +26,9 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Plans clipping
                                    0.0, 100.0,
                                    // Position
-                                   0.0, 0.0, -50.0,
+                                   0.0, 0.0, 50.0,
                                    // Focus
-                                   0.0, 0.0,  0.0,
+                                   0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
 {
