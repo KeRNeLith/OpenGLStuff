@@ -26,11 +26,12 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Plans clipping
                                    0.0, 100.0,
                                    // Position
-                                   0.0, 0.0, 50.0,
+                                   0.0, 25.0, 25.0,
                                    // Focus
                                    0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
+    , m_render(m_model) 
 {
 	FramesData::init();
   RenderModel::init();
@@ -51,7 +52,7 @@ void DisplayManager::display()
     Camera::clearModelView();
     
     // Applique le changement de repère de la caméra dans le ModelView
-    m_camera.applyCameraCoordinates();
+    m_camera->applyCameraCoordinates();
     
     // Dessin fil de fer
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
@@ -68,11 +69,11 @@ void DisplayManager::resize(GLint l, GLint h)
 
 
   // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé
-  m_camera.setAspect(m_windowWidth / GLdouble(m_windowHeight));
+  m_camera->setAspect(m_windowWidth / GLdouble(m_windowHeight));
 
   // Surface de rendu : on recadre la fenêtre centrée en (0, 0) aux bonnes dimensions
   GeometricTransform::viewport(0, 0, GLsizei(m_windowWidth), GLsizei(m_windowHeight));
 
   // Redéfinit la projection en perspective
-  m_camera.applyPerspectiveProjection();
+  m_camera->applyPerspectiveProjection();
 }

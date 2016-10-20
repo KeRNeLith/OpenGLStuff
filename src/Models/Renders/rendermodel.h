@@ -9,8 +9,9 @@
 #define RenderModel_H
 
 #include <memory>
-
 #include <GL/glut.h>
+
+#include "Models/Textures/texturemanager.h"
 
 class Loader;
 
@@ -90,9 +91,9 @@ public:
     static void applyMaterial(/* Material material */);
 
     /**
-     * @brief Dessine l'objet chargé.
+     * @brief Dessine l'objet chargé et applique les textures.
      */
-    void drawObject();
+    void drawObject(const TextureManager &);
 };
 
 #endif	// RenderModel_H

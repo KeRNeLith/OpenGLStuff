@@ -23,10 +23,10 @@ Loader* RenderModel::loadObject(RenderModel::ModelType type)
 {
     switch (type)
     {
-    case RenderModel::CYLINDER:
-        return new CylinderLoader();
-    default:
-        return new CylinderLoader();
+        case RenderModel::CYLINDER:
+            return new CylinderLoader();
+        default:
+            return new CylinderLoader();
     }
 }
 
@@ -65,13 +65,25 @@ void RenderModel::applyMaterial(/* Material material */)
     // TODO later
 }
 
-void RenderModel::drawObject()
+void RenderModel::drawObject(const TextureManager & texture)
 {
+    // Préparation de la texture
+    glEnable(GL_TEXTURE_2D);
+    texture.selectTexture2D();
+
     const auto numMesh = m_object->meshCount();
     // Pour chaque objets de la scène
     for (unsigned int m = 0 ; m < numMesh ; ++m)
     {
         glBegin(m_object->modes(m));
+
+        // Vecteur de coordonnées pour les textures
+        const std::vector< std::vector<GLfloat> > & texCoords = {   {0.0, 0.0},
+                                                                    {1.0, 0.0},
+                                                                    {1.0, 1.0},
+                                                                    {0.0, 1.0} };
+
+        unsigned int t = 0;     // Indice sur textCoords
 
         // Tableaux des vertices et des faces du mesh traité
         const auto& vertices = m_object->vertices(m);
@@ -92,6 +104,13 @@ void RenderModel::drawObject()
             // Pour chaque sommet de la face place le sommet dans la scène 3D
             for (unsigned int v = 0 ; v < numVertice ; ++v)
             {
+                // Placement texture
+                if((f == 0 || f == (numFaces - 3)) && v < 2)
+                {
+                    glTexCoord2f(texCoords[t][0], texCoords[t][1]);
+                    t++;
+                }
+
                 glVertex3fv( vertices[ face[v] ] );
             }
         }

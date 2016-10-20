@@ -19,5 +19,5 @@ RenderScene::RenderScene(const Model& model)
 
 void RenderScene::drawScene()
 {
-    m_cylinderRender.drawObject();
+    m_cylinderRender.drawObject(m_model.getTexture());
 }

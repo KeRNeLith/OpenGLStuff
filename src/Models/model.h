@@ -12,15 +12,15 @@
 
 #include <array>
 
+#include "Models/Textures/texturemanager.h"
+
 /**
  * @brief The Model class Gère le modèle de données de l'application.
  */
 class Model
 {
 private:
-    double m_wheelSpeed;    ///< Vitesse de rotation d'une roue.
-    double m_step;          ///< Etape de rotation d'une roue.
-    std::array<double, 3> m_wheelRotationAxis;  ///< Axe de rotation d'une roue.
+    TextureManager m_texture;
 
 public:
     /**
@@ -38,28 +38,11 @@ public:
      * @brief Récupère la vitesse de rotation d'une roue.
      * @return Vitesse de rotation d'une roue.
      */
-    double getWheelSpeed() const
+    const TextureManager & getTexture() const
     {
-        return m_wheelSpeed;
+        return m_texture;
     }
 
-    /**
-     * @brief Récupère l'angle de rotation d'une roue.
-     * @return Angle de rotation d'une roue.
-     */
-    double getWheelAngle() const
-    {
-        return m_step*m_wheelSpeed;
-    }
-
-    /**
-     * @brief Récupère l'axe de rotation d'une roue.
-     * @return Axe de rotation d'une roue.
-     */
-    const std::array<double, 3>& getWheelRotationAxis() const
-    {
-        return m_wheelRotationAxis;
-    }
 };
 
 #endif	// MODEL_H

@@ -17,6 +17,7 @@
 #include "Camera/camera.h"
 
 #include "Models/model.h"
+#include "Models/Renders/renderscene.h"
 
 /**
  * @brief The DisplayManager class Gère les paramètres d'affichage de la vue.
