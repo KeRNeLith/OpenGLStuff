@@ -67,6 +67,8 @@ void DisplayManager::display()
     m_model.getLights().applyLightIntensities();
 
     // Dessin
+    // Applique le matériau
+    RenderModel::applyMaterial(m_model.getDefaultMaterial());
     m_scene.drawScene();
     glutSolidTeapot(10);
 }

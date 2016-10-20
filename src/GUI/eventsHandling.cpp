@@ -102,9 +102,42 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
     // Événements liés au clavier
     case SDL_KEYDOWN:
     {
-        float direction = -0.05f;
+        int direction = -1;
         switch (event->key.keysym.sym)
         {
+        case SDLK_a:
+        {
+            if (event->key.keysym.mod & KMOD_SHIFT)
+            {
+                // Handle 'A'
+                direction *= -1;
+            }
+            /*else
+            {
+                // Handle 'a'
+            }*/
+
+            float step = 0.05f * float(direction);
+            displayParams->model().updateAmbiant(step);
+
+            break;
+        }
+        case SDLK_b:
+        {
+            if (event->key.keysym.mod & KMOD_SHIFT)
+            {
+                // Handle 'B'
+                direction *= -1;
+            }
+            /*else
+            {
+                // Handle 'b'
+            }*/
+
+            float step = 1.0f * float(direction);
+            displayParams->model().updateShininess(step);
+            break;
+        }
         case SDLK_i:
         {
             if (event->key.keysym.mod & KMOD_SHIFT)
@@ -121,8 +154,9 @@ bool WrapperSDL::EventController::handleSDLEvent(SDL_Event* event, SDL_Window* w
 
             if (source)
             {
-                source->updateLightPointDiffuseIntensity(direction, direction, direction);
-                source->updateLightPointSpecularIntensity(direction, direction, direction);
+                float step = 0.05f * float(direction);
+                source->updateLightPointDiffuseIntensity(step, step, step);
+                source->updateLightPointSpecularIntensity(step, step, step);
             }
             break;
         }

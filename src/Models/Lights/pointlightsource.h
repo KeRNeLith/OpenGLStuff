@@ -12,6 +12,8 @@
 
 #include <GL/glut.h>
 
+#include "Tools/general.h"
+
 /**
  * @brief The PointLightSource class Gère les données nécessaires à la mise en place de sources lumineuse.
  */
@@ -211,7 +213,15 @@ public:
      * @brief Affecte les coefficients de diffusion à la source de lumière.
      * @param diffuseIntensity Intensité diffuse de la lumière.
      */
-    void setLightPointDiffuseIntensity(const std::array<GLfloat, 4>& diffuseIntensity) { m_diffuseIntensity = diffuseIntensity; }
+    void setLightPointDiffuseIntensity(const std::array<GLfloat, 4>& diffuseIntensity)
+    {
+        m_diffuseIntensity = diffuseIntensity;
+
+        clip(m_diffuseIntensity[0], 0.0f, 1.0f);
+        clip(m_diffuseIntensity[1], 0.0f, 1.0f);
+        clip(m_diffuseIntensity[2], 0.0f, 1.0f);
+        clip(m_diffuseIntensity[3], 0.0f, 1.0f);
+    }
 
     /**
      * @brief Met à jour les coefficients de diffusion à la source de lumière.
@@ -221,6 +231,10 @@ public:
      */
     void updateLightPointDiffuseIntensity(GLfloat diffuseIntensityR, GLfloat diffuseIntensityG, GLfloat diffuseIntensityB)
     {
+        clip(diffuseIntensityR, 0.0f, 1.0f);
+        clip(diffuseIntensityG, 0.0f, 1.0f);
+        clip(diffuseIntensityB, 0.0f, 1.0f);
+
         m_diffuseIntensity[0] += diffuseIntensityR;
         m_diffuseIntensity[1] += diffuseIntensityG;
         m_diffuseIntensity[2] += diffuseIntensityB;
@@ -236,7 +250,15 @@ public:
      * @brief Affecte les coefficients spéculaire à la source de lumière.
      * @param specularIntensity Intensité spéculaire de la lumière.
      */
-    void setLightPointSpecularIntensity(const std::array<GLfloat, 4>& specularIntensity) { m_specularIntensity = specularIntensity; }
+    void setLightPointSpecularIntensity(const std::array<GLfloat, 4>& specularIntensity)
+    {
+        m_specularIntensity = specularIntensity;
+
+        clip(m_specularIntensity[0], 0.0f, 1.0f);
+        clip(m_specularIntensity[1], 0.0f, 1.0f);
+        clip(m_specularIntensity[2], 0.0f, 1.0f);
+        clip(m_specularIntensity[3], 0.0f, 1.0f);
+    }
 
     /**
      * @brief Met à jour les coefficients spéculaire à la source de lumière.
@@ -246,6 +268,10 @@ public:
      */
     void updateLightPointSpecularIntensity(GLfloat specularIntensityR, GLfloat specularIntensityG, GLfloat specularIntensityB)
     {
+        clip(specularIntensityR, 0.0f, 1.0f);
+        clip(specularIntensityG, 0.0f, 1.0f);
+        clip(specularIntensityB, 0.0f, 1.0f);
+
         m_specularIntensity[0] += specularIntensityR;
         m_specularIntensity[1] += specularIntensityG;
         m_specularIntensity[2] += specularIntensityB;

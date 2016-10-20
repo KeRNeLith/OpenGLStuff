@@ -50,6 +50,19 @@ public:
     const std::array<GLfloat, 4>& getAmbient() const { return m_ambient; }
 
     /**
+     * @brief Affecte les coefficients ambiant.
+     * @param ambiantR Composante rouge du coefficient de réflexion ambiant.
+     * @param ambiantG Composante verte du coefficient de réflexion ambiant.
+     * @param ambiantB Composante bleu du coefficient de réflexion ambiant.
+     */
+    void setAmbiant(float ambiantR, float ambiantG, float ambiantB)
+    {
+        m_ambient[0] = ambiantR;
+        m_ambient[1] = ambiantG;
+        m_ambient[2] = ambiantB;
+    }
+
+    /**
      * @brief Récupère les coefficients de réflexion diffuse.
      * @return Coefficient de réflexion diffuse.
      */
@@ -66,6 +79,12 @@ public:
      * @return Brillance.
      */
     GLfloat getShininess() const { return m_shininess; }
+
+    /**
+     * @brief Affecte la brillance.
+     * @param shininess Brillance.
+     */
+    void setShininess(float shininess) { m_shininess = shininess; }
 };
 
 #endif // MATERIAL_H

@@ -11,8 +11,16 @@
 
 #include <iostream>
 
+#include "Tools/general.h"
+
 Model::Model()
-    : m_lights()
+    : m_defaultMaterial(0.2f, 0.2f, 0.2f,
+                        1.0f, 0.0f, 1.0f,
+                        1.0f, 0.0f, 1.0f,
+                        120.0f)
+    , m_shininess(120.0f)
+    , m_ambiant(0.2f)
+    , m_lights()
 {
     // Source 0
     if (!m_lights.addLightSource(LightSource::LandmarkType::CAMERA, GL_LIGHT0, 40.0, 20.0, -20.0))
@@ -23,5 +31,7 @@ Model::Model()
 
 void Model::update()
 {
+    m_defaultMaterial.setAmbiant(m_ambiant, m_ambiant, m_ambiant);
+    m_defaultMaterial.setShininess(m_shininess);
 }
 
