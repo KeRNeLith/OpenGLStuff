@@ -20,18 +20,17 @@
 DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     : m_windowWidth(windowWidth)
     , m_windowHeight(windowHeigth)
-    , m_model()// Construction du modèle
-    , m_camera(// Perspective
-               50.0, m_windowWidth / GLdouble(m_windowHeight),
-               // Plans clipping
-               0.0, 100.0,
-               // Position
-               0.0, 10.0, 20.0,
-               // Focus
-               0.0, 0.0,  0.0,
-               // Verticale
-               0.0, 1.0, 0.0),
-    m_render(m_model)
+    , m_model()                     // Construction du modèle
+    , m_camera(new CartesianCamera( // Perspective
+                                   50.0, m_windowWidth / GLdouble(m_windowHeight),
+                                   // Plans clipping
+                                   0.0, 100.0,
+                                   // Position
+                                   0.0, 0.0, 50.0,
+                                   // Focus
+                                   0.0, 0.0, 0.0,
+                                   // Verticale
+                                   0.0, 1.0, 0.0))
 {
 	FramesData::init();
   RenderModel::init();
