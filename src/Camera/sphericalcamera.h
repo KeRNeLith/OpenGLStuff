@@ -11,7 +11,7 @@
 #include "camera.h"
 
 /**
- * Classe de gestion de la Caméra utilisant des mouvements sphériques.
+ * @brief The SphericalCamera class Classe de gestion de la Caméra utilisant des mouvements sphériques.
  */
 class SphericalCamera
         : public Camera

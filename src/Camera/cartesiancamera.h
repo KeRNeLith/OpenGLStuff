@@ -13,7 +13,7 @@
 #include "camera.h"
 
 /**
- * Classe de gestion de la Caméra avec une gestion des coordonnées cartésiennes.
+ * @brief The CartesianCamera class Classe de gestion de la Caméra avec une gestion des coordonnées cartésiennes.
  */
 class CartesianCamera
         : public Camera
