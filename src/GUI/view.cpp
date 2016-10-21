@@ -1,17 +1,19 @@
 /******************************************************************************\
-*     Copyright (C) 2016 by Alexandre Rabérin                                  * 
-*     Based on Copyright (C) 2016 by Rémy Malgouyres                           * 
-*     http://malgouyres.org                                                    * 
-*                                                                              * 
-* The program is distributed under the terms of the GNU General Public License * 
-*                                                                              * 
-\******************************************************************************/ 
+*     Copyright (C) 2016 by Alexandre Rabérin                                  *
+*     Based on Copyright (C) 2016 by Rémy Malgouyres                           *
+*     http://malgouyres.org                                                    *
+*                                                                              *
+* The program is distributed under the terms of the GNU General Public License *
+*                                                                              *
+\******************************************************************************/
 
 #include "view.h"
 
 #include <iostream>
 
 #include "Camera/cartesiancamera.h"
+
+#include "Models/Renders/customscene.h"
 
 #include "Tools/frames.h"
 
@@ -24,47 +26,46 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     , m_camera(new CartesianCamera(// Perspective
                                    50.0, m_windowWidth / GLdouble(m_windowHeight),
                                    // Plans clipping
-                                   0.0, 100.0,
+                                   1.0, 100.0,
                                    // Position
-                                   0.0, 0.0, 50.0,
-                                   // Focus
+                                   0.0, 0.0, 10.0,
+                                   // Point cible
                                    0.0, 0.0, 0.0,
-                                   // Verticale
+                                   // Vecteur vertical
                                    0.0, 1.0, 0.0))
+    , m_render(new CustomScene(m_model))
 {
-	FramesData::init();
+    FramesData::init();
+    RenderModel::init(); // Paramètres de rendu
 }
 
 void DisplayManager::display()
 {
-	// Affichage des Frames par seconde (FPS)
-	if (FramesData::update())
-	{
-		std::cout << FramesData::getFPSDescriptor() << std::endl;
-	}
+    // Affichage des Frames par seconde (FPS)
+    if (FramesData::update())
+    {
+        std::cout << FramesData::getFPSDescriptor() << std::endl;
+    }
 
     // Efface les buffers de profondeur et couleurs
-    /*float grayLevel = m_model.getGrayLevel();
-    // On efface le buffer vidéo (fenêtre graphique)
-    glClearColor(	grayLevel,
-                    grayLevel,
-                    grayLevel,
-                    1.0);*/
-
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    RenderModel::initView();
 
     // On se place dans le repère monde
     Camera::clearModelView();
+
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera->applyCameraCoordinates();
 
+    // Dessin fil de fer
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
     // Dessin
-    glutSolidTeapot(5);
+    m_render->drawScene();
 }
 
 void DisplayManager::resize(GLint l, GLint h)
 {
-	m_windowWidth = l;
+    m_windowWidth = l;
     m_windowHeight = h;
 
     // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé

@@ -10,16 +10,10 @@
 #include "model.h"
 
 Model::Model()
-	: m_grayLevel(0.0f)
 {
 }
 
 void Model::update()
 {
-	m_grayLevel += 0.01f;
-	if (m_grayLevel > 1.0f)
-	{
-		m_grayLevel = 0.0f;
-	}
 }
 
