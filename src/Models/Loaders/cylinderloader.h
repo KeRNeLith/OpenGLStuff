@@ -29,7 +29,7 @@ public:
      * @param radius Rayon du cylindre.
      * @param nbMeridians Nombre de méridiens pour former le cylindre.
      */
-    CylinderLoader(double height = 4, double radius = 2, unsigned int nbMeridians = 50);
+    CylinderLoader(double height = 4, double radius = 5, unsigned int nbMeridians = 50);
     // Interdit la copie
     CylinderLoader(const CylinderLoader& other) = delete;
     CylinderLoader& operator= (const CylinderLoader& other) = delete;

@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "Camera/cartesiancamera.h"
+#include "Camera/sphericalcamera.h"
 
 #include "Models/Renders/customscene.h"
 
@@ -23,16 +23,12 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     : m_windowWidth(windowWidth)
     , m_windowHeight(windowHeigth)
     , m_model()// Construction du modèle
-    , m_camera(new CartesianCamera(// Perspective
+    , m_camera(new SphericalCamera(// Perspective
                                    50.0, m_windowWidth / GLdouble(m_windowHeight),
                                    // Plans clipping
                                    1.0, 100.0,
                                    // Position
-                                   0.0, 5.0, 10.0,
-                                   // Point cible
-                                   0.0, 0.0, 0.0,
-                                   // Vecteur vertical
-                                   0.0, 1.0, 0.0))
+                                   0.0, 0.0, 0.0))
     , m_render(new CustomScene(m_model))
 {
     FramesData::init();

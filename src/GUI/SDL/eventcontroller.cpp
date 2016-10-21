@@ -9,6 +9,7 @@
 
 #include <iostream>
 
+#include "Camera/sphericalcamera.h"
 #include "Tools/mouse.h"
 #include "GUI/view.h"
 
@@ -216,12 +217,17 @@ void EventController::handleMouseButtonUpEvent(SDL_Event* event, SDL_Window* /*w
     }
 }
 
-void EventController::handleMouseMotionEvent(SDL_Event* event, SDL_Window* /*window*/, DisplayManager* /*displayParams*/)
+void EventController::handleMouseMotionEvent(SDL_Event* event, SDL_Window* /*window*/, DisplayManager* displayParams)
 {
     if (MouseData::leftButtonPressed)
     {
         // Mise à jour du modèle
-        // Non implémenté
+        SphericalCamera* camera = static_cast<SphericalCamera*>(displayParams->camera().get());
+        if (camera)
+        {
+            camera->updateAzimuth(MouseData::mouseX - event->motion.x);
+        }
+
         MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles
         MouseData::mouseY = event->motion.y; // Coordonnées de la souris
     }
