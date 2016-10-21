@@ -43,14 +43,6 @@ void DisplayManager::display()
 		std::cout << FramesData::getFPSDescriptor() << std::endl;
 	}
 
-    // Efface les buffers de profondeur et couleurs
-    /*float grayLevel = m_model.getGrayLevel();
-    // On efface le buffer vidéo (fenêtre graphique)
-    glClearColor(	grayLevel,
-                    grayLevel,
-                    grayLevel,
-                    1.0);*/
-
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     // On se place dans le repère monde
@@ -59,7 +51,41 @@ void DisplayManager::display()
     m_camera->applyCameraCoordinates();
 
     // Dessin
-    glutSolidTeapot(5);
+    //////////////
+    /// TEST CODE
+    //////////////
+    //GLint nvertices = 3;
+    unsigned int nfaces = 1;
+
+    GLfloat vertices[][3] = {
+        { -0.5, 1.0, 0.0 },
+        { 1.0, -0.5, 0.0 },
+        { -1.0, -1.0, 0.0 }
+    };
+
+    GLfloat colors[][3] = {
+        { 1.0, 0.0, 0.0 },
+        { 0.0, 1.0, 0.0 },
+        { 0.0, 0.0, 1.0 }
+    };
+
+    GLuint faces[][3] = {
+        { 0, 1, 2 }
+    };
+
+    glBegin(GL_TRIANGLES);
+        for (unsigned int i = 0 ; i < nfaces ; ++i)
+        {
+            for (unsigned int j = 0 ; j < 3 ; ++j)
+            {
+                glColor3fv(colors[faces[i][j]]);
+                glVertex3fv(vertices[faces[i][j]]);
+            }
+        }
+    glEnd();
+    //////////////////
+    /// END TEST CODE
+    //////////////////
 }
 
 void DisplayManager::resize(GLint l, GLint h)

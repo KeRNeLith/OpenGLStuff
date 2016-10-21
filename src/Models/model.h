@@ -16,8 +16,6 @@
 class Model
 {
 private:
-	// Niveau de gris du fond
-    float m_grayLevel;  // TEMPORARY
 
 public:
     /**
@@ -31,11 +29,6 @@ public:
 	void update();
 	
 	// Accesseurs
-    // TEMPORARY
-	float getGrayLevel() const
-	{
-		return m_grayLevel;
-	}
 };
 
 #endif	// MODEL_H
