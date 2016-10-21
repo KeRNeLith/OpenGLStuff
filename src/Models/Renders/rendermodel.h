@@ -12,6 +12,8 @@
 
 #include <GL/glut.h>
 
+#include "Models/Textures/texturemanager.h"
+
 class Loader;
 
 /**
@@ -29,7 +31,7 @@ public:
     };
 
 private:
-    std::unique_ptr<const Loader> m_object; ///< Scène ou objet chargé.
+    std::unique_ptr<Loader> m_object; ///< Scène ou objet chargé.
 
     /**
      * @brief Charge un objet correspondant au type de modèle spécifié.
@@ -42,7 +44,7 @@ public:
     /**
      * @brief Constructeur.
      */
-    RenderModel(RenderModel::ModelType type);
+    RenderModel(RenderModel::ModelType type, const std::shared_ptr<TextureManager>& texture = nullptr);
     // Interdit la copie
     RenderModel(const RenderModel& other) = delete;
     RenderModel& operator= (const RenderModel& other) = delete;

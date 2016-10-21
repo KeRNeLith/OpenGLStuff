@@ -28,7 +28,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Plans clipping
                                    1.0, 100.0,
                                    // Position
-                                   0.0, 0.0, 10.0,
+                                   0.0, 5.0, 10.0,
                                    // Point cible
                                    0.0, 0.0, 0.0,
                                    // Vecteur vertical
@@ -55,9 +55,6 @@ void DisplayManager::display()
 
     // Applique le changement de repère de la caméra dans le ModelView
     m_camera->applyCameraCoordinates();
-
-    // Dessin fil de fer
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
     // Dessin
     m_render->drawScene();

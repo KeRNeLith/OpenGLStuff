@@ -7,10 +7,16 @@
 
 #include "loader.h"
 
-Loader::Loader()
+Loader::Loader(TextureManager* texture)
+    : m_texture(texture)
 {
 }
 
 Loader::~Loader()
 {
+}
+
+void Loader::selectTexture() const
+{
+    m_texture->selectTexture2D();
 }

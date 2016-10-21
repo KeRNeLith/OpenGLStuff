@@ -4,9 +4,9 @@
 
 #include "Transforms/transform.h"
 
-CustomScene::CustomScene(const Model &model)
+CustomScene::CustomScene(const Model& model)
     : RenderScene(model)
-    , m_cylinderRender(RenderModel::CYLINDER)
+    , m_cylinderRender(RenderModel::CYLINDER, m_model.getTexture())
 {
 
 }

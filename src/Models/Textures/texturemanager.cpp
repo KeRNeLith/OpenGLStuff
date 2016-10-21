@@ -16,6 +16,7 @@ TextureManager::TextureManager(const std::string& filePath)
     , m_buffer(0, 0, 0)
 {
     createBufferFromPicture(filePath);
+    createTexture2D();
 }
 
 TextureManager::~TextureManager()
@@ -82,7 +83,7 @@ void TextureManager::createTexture2D()
         mode = GL_LUMINANCE;
         break;
     case 3:
-        mode = GL_RG8;
+        mode = GL_RGB;
         break;
     case 4:
         mode = GL_RGBA;

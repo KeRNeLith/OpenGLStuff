@@ -10,12 +10,17 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <memory>
+
+#include "Models/Textures/texturemanager.h"
+
 /**
  * @brief The Model class Gère le modèle de données de l'application.
  */
 class Model
 {
 private:
+    std::shared_ptr<TextureManager> m_texture;   ///< Texture bitmap.
 
 public:
     /**
@@ -29,6 +34,14 @@ public:
 	void update();
 	
 	// Accesseurs
+    /**
+     * @brief Récupère un pointeur sur la texture.
+     * @return Pointeur sur la texture.
+     */
+    const std::shared_ptr<TextureManager>& getTexture() const
+    {
+        return m_texture;
+    }
 };
 
 #endif	// MODEL_H

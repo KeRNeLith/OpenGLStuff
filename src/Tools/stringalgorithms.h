@@ -83,7 +83,7 @@ bool startsWith(const std::basic_string<T>& str, const std::basic_string<T>& sta
 template <typename T>
 std::basic_string<T> toLower(const std::basic_string<T>& str)
 {
-    typename std::basic_string<T> out;
+    typename std::basic_string<T> out(str);
     std::transform(str.begin(), str.end(), out.begin(), ::tolower);
     return out;
 }

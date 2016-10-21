@@ -10,6 +10,7 @@
 #include "model.h"
 
 Model::Model()
+    : m_texture(new TextureManager("data/textures/texture.bmp"))
 {
 }
 
