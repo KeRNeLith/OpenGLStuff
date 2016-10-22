@@ -10,6 +10,8 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include <memory>
+
 #include "Shaders/shaderprogram.h"
 
 /**
@@ -18,7 +20,7 @@
 class Model
 {
 private:
-    ShaderProgram m_program;    ///< Programme shader.
+    std::shared_ptr<ShaderProgram> m_program;    ///< Programme shader.
 
 public:
     /**
@@ -32,6 +34,14 @@ public:
 	void update();
 	
 	// Accesseurs
+    /**
+     * @brief Récupère le programme shader actif.
+     * @return Programme shader.
+     */
+    std::weak_ptr<ShaderProgram> getShaderProgram() const
+    {
+        return m_program;
+    }
 };
 
 #endif	// MODEL_H

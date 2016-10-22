@@ -22,9 +22,9 @@
 /////////////////////////////////////////////////////////////////
 
 int main(int argc, char** argv)
-{  
-	MainApplication myApp(700, 700, "Mon Application SDL/OpenGL");
-	glutInit(&argc, argv);
+{
+    MainApplication myApp(700, 700, "Mon Application SDL/OpenGL");
+    glutInit(&argc, argv);
 
     // Affichage des versions d'OpenGL et GLSL disponible
     std::cout << "Version OpenGL : " << glGetString(GL_VERSION) << std::endl;
