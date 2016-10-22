@@ -44,3 +44,4 @@ CTestTestfile.cmake
 # Other
 *.user
 /lib/*
+/data/*

@@ -11,6 +11,8 @@ find_package(glm REQUIRED)
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
 # Search SDL2 using cmake/FindSDL2.cmake
 find_package(SDL2 REQUIRED)
+# Search assimp using cmake/Findassimp.cmake
+find_package(assimp REQUIRED)
 
 # C++ Warning Level #-------------------------------------------------------------------------------
 if ( CMAKE_COMPILER_IS_GNUCXX )
@@ -24,7 +26,7 @@ file(GLOB_RECURSE app_src src/*.cpp)
 file(GLOB_RECURSE app_headers src/*.h)
 
 # Include OpenGL GLUT and SDL2
-include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} )
+include_directories(${OPENGL_INCLUDE_DIRS} ${GLUT_INCLUDE_DIRS} ${SDL2_INCLUDE_DIR} ${assimp_INCLUDE_DIRS} )
 
 # Executable #-------------------------------------------------------------------------------------
 add_executable ( ${CMAKE_PROJECT_NAME}
@@ -37,4 +39,5 @@ target_link_libraries(	${CMAKE_PROJECT_NAME}
 						${OPENGL_LIBRARIES} 
 						${GLUT_LIBRARY} 
 						${SDL2_LIBRARY}
+                                                ${assimp_LIBRARIES}
 					 )

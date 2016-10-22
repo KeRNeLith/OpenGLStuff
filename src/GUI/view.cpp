@@ -1,17 +1,19 @@
 /******************************************************************************\
-*     Copyright (C) 2016 by Alexandre Rabérin                                  * 
-*     Based on Copyright (C) 2016 by Rémy Malgouyres                           * 
-*     http://malgouyres.org                                                    * 
-*                                                                              * 
-* The program is distributed under the terms of the GNU General Public License * 
-*                                                                              * 
-\******************************************************************************/ 
+*     Copyright (C) 2016 by Alexandre Rabérin                                  *
+*     Based on Copyright (C) 2016 by Rémy Malgouyres                           *
+*     http://malgouyres.org                                                    *
+*                                                                              *
+* The program is distributed under the terms of the GNU General Public License *
+*                                                                              *
+\******************************************************************************/
 
 #include "view.h"
 
 #include <iostream>
 
 #include "Camera/cartesiancamera.h"
+
+#include "Models/Renders/customscene.h"
 
 #include "Shaders/shaderutils.h"
 
@@ -26,24 +28,25 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     , m_camera(new CartesianCamera(// Perspective
                                    50.0, m_windowWidth / GLdouble(m_windowHeight),
                                    // Plans clipping
-                                   0.0, 100.0,
+                                   1.0, 1000.0,
                                    // Position
-                                   0.0, 0.0, 5.0,
+                                   0.0, 0.0, 20.0,
                                    // Focus
                                    0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
 {
-	FramesData::init();
+    FramesData::init();
+    RenderModel::init();
 }
 
 void DisplayManager::display()
 {
-	// Affichage des Frames par seconde (FPS)
-	if (FramesData::update())
-	{
-		std::cout << FramesData::getFPSDescriptor() << std::endl;
-	}
+    // Affichage des Frames par seconde (FPS)
+    if (FramesData::update())
+    {
+        std::cout << FramesData::getFPSDescriptor() << std::endl;
+    }
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -57,13 +60,15 @@ void DisplayManager::display()
     //////////////
     /// TEST CODE
     //////////////
+    CustomScene s(m_model);
+    s.drawScene();
     //GLint nvertices = 3;
     unsigned int nfaces = 1;
 
     GLfloat vertices[][3] = {
-        { 0.0, -0.5, 0.0 },
-        { 0.5, 0.5, 0.0 },
-        { -0.5, 0.5, 0.0 }
+        { 0.0, -0.5, 3.0 },
+        { 0.5, 0.5, 3.0 },
+        { -0.5, 0.5, 3.0 }
     };
 
     GLfloat colors[][3] = {
@@ -93,7 +98,7 @@ void DisplayManager::display()
 
 void DisplayManager::resize(GLint l, GLint h)
 {
-	m_windowWidth = l;
+    m_windowWidth = l;
     m_windowHeight = h;
 
     // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé
