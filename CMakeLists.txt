@@ -5,6 +5,7 @@ cmake_minimum_required ( VERSION 2.8.9 )
 
 find_package(OpenGL REQUIRED)
 find_package(GLUT REQUIRED)
+find_package(glm REQUIRED)
 
 # Load modules
 set(CMAKE_MODULE_PATH ${PROJECT_SOURCE_DIR}/cmake)
