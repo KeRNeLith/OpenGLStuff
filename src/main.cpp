@@ -15,7 +15,7 @@
 
 #include "MainApp/mainapplication.h"
 
-#include "Shaders/shaderutils.h"
+#include "Shaders/shaderprogram.h"
 
 /////////////////////////////////////////////////////////////////
 /// PROGRAMME PRINCIPAL                                       ///
@@ -30,19 +30,7 @@ int main(int argc, char** argv)
     std::cout << "Version OpenGL : " << glGetString(GL_VERSION) << std::endl;
     std::cout << "Version GLSL : " << glGetString(GL_SHADING_LANGUAGE_VERSION) << std::endl;
 
-    // Charge les shaders via un programme OpenGL
-    GLuint progID, vertexID, fragID;
-    ShaderUtils::createShadersProgram(progID, vertexID, fragID,
-                                      "src/Shaders/src/vertexShader.vert",
-                                      "src/Shaders/src/fragmentShader.frag");
-
-    // Utilise le programme créé
-    ShaderUtils::useShaderProgram(progID);
-
     myApp.doEventsLoop();
-
-    // Supprime le programme OpenGL
-    ShaderUtils::removeShaderProgram(progID);
 
 	return EXIT_SUCCESS;
 }

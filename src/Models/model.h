@@ -10,12 +10,15 @@
 #ifndef MODEL_H
 #define MODEL_H
 
+#include "Shaders/shaderprogram.h"
+
 /**
  * @brief The Model class Gère le modèle de données de l'application.
  */
 class Model
 {
 private:
+    ShaderProgram m_program;    ///< Programme shader.
 
 public:
     /**

@@ -10,7 +10,12 @@
 #include "model.h"
 
 Model::Model()
+    // Charge les shaders via un programme OpenGL
+    : m_program("src/Shaders/src/vertexShader.vert",
+                "src/Shaders/src/fragmentShader.frag")
 {
+    // Utilise le programme créé
+    m_program.useProgram();
 }
 
 void Model::update()
