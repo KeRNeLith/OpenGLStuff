@@ -13,6 +13,8 @@
 
 #include "Camera/cartesiancamera.h"
 
+#include "Shaders/shaderutils.h"
+
 #include "Tools/frames.h"
 
 #include "Transforms/transform.h"
@@ -26,7 +28,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Plans clipping
                                    0.0, 100.0,
                                    // Position
-                                   0.0, 0.0, 50.0,
+                                   0.0, 0.0, 5.0,
                                    // Focus
                                    0.0, 0.0, 0.0,
                                    // Verticale
@@ -45,10 +47,11 @@ void DisplayManager::display()
 
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    // On se place dans le repère monde
-    Camera::clearModelView();
-    // Applique le changement de repère de la caméra dans le ModelView
-    m_camera->applyCameraCoordinates();
+    // Calcul la matrice de visualisation
+    m_camera->applyCameraTransformation();
+
+     // Applique le changement de repère de la caméra (envoi de la matrice de transformation aux shaders)
+    ShaderUtils::instance().sendTransformMatrix(m_camera->getProjection(), m_camera->getVisualisation(), glm::mat4(1.0));
 
     // Dessin
     //////////////
@@ -58,9 +61,9 @@ void DisplayManager::display()
     unsigned int nfaces = 1;
 
     GLfloat vertices[][3] = {
-        { -0.5, 1.0, 0.0 },
-        { 1.0, -0.5, 0.0 },
-        { -1.0, -1.0, 0.0 }
+        { 0.0, -0.5, 0.0 },
+        { 0.5, 0.5, 0.0 },
+        { -0.5, 0.5, 0.0 }
     };
 
     GLfloat colors[][3] = {
@@ -96,10 +99,7 @@ void DisplayManager::resize(GLint l, GLint h)
     // On modifie l'aspect de la caméra au cas ou le rapport l/h aurait changé
     m_camera->setAspect(m_windowWidth / GLdouble(m_windowHeight));
 
-    // Surface de rendu : on recadre la fenêtre centrée en (0, 0) aux bonnes dimensions
-    GeometricTransform::viewport(0, 0, GLsizei(m_windowWidth), GLsizei(m_windowHeight));
-
-    // Redéfinit la projection en perspective
+    // Re-Calcul la matrice de projection
     m_camera->applyPerspectiveProjection();
 }
 

@@ -7,13 +7,15 @@
 
 #include "cartesiancamera.h"
 
+#include "Tools/convert.h"
+
 #include "../Transforms/transform.h"
 
-CartesianCamera::CartesianCamera(   GLdouble openAngleY, GLdouble aspect,
-                                    GLdouble zNear, GLdouble zFar,
-                                    GLdouble posX, GLdouble posY, GLdouble posZ,
-                                    GLdouble targetPointX, GLdouble targetPointY, GLdouble targetPointZ,
-                                    GLdouble verticalVectorX, GLdouble verticalVectorY, GLdouble verticalVectorZ)
+CartesianCamera::CartesianCamera(   double openAngleY, double aspect,
+                                    double zNear, double zFar,
+                                    double posX, double posY, double posZ,
+                                    double targetPointX, double targetPointY, double targetPointZ,
+                                    double verticalVectorX, double verticalVectorY, double verticalVectorZ)
     : Camera(openAngleY, aspect, zNear, zFar)
     , m_position({{ posX, posY, posZ }})
     , m_targetPoint({{ targetPointX, targetPointY, targetPointZ }})
@@ -21,15 +23,14 @@ CartesianCamera::CartesianCamera(   GLdouble openAngleY, GLdouble aspect,
 {
 }
 
-void CartesianCamera::lookAt(const std::array<GLdouble, 3>& position, const std::array<GLdouble, 3>& targetPoint, const std::array<GLdouble, 3>& verticalVector)
+void CartesianCamera::lookAt(const std::array<double, 3>& position, const std::array<double, 3>& targetPoint, const std::array<double, 3>& verticalVector)
 {
     setPosition(position);
     setTargetPosition(targetPoint);
     setVerticalVector(verticalVector);
 }
 
-void CartesianCamera::applyCameraCoordinates()
+void CartesianCamera::applyCameraTransformation()
 {
-    // Positionnement de la caméra
-    GeometricTransform::lookAt(m_position.data(), m_targetPoint.data(), m_verticalVector.data());
+    m_visualisationMatrix = glm::lookAt(toGLMVec3(m_position), toGLMVec3(m_targetPoint), toGLMVec3(m_verticalVector));
 }

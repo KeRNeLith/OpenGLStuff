@@ -9,9 +9,9 @@
 
 #include "../Transforms/transform.h"
 
-SphericalCamera::SphericalCamera(   GLdouble openAngleY, GLdouble aspect,
-                                    GLdouble zNear, GLdouble zFar,
-                                    GLdouble dist, GLdouble azimuth, GLdouble elevation)
+SphericalCamera::SphericalCamera(   double openAngleY, double aspect,
+                                    double zNear, double zFar,
+                                    double dist, double azimuth, double elevation)
     : Camera(openAngleY, aspect, zNear, zFar)
     , m_distance(dist)
     , m_azimuth(azimuth)
@@ -19,10 +19,10 @@ SphericalCamera::SphericalCamera(   GLdouble openAngleY, GLdouble aspect,
 {
 }
 
-void SphericalCamera::applyCameraCoordinates()
+void SphericalCamera::applyCameraTransformation()
 {
-    // Positionnement de la caméra
-    GeometricTransform::translate(0.0, 0.0, -m_distance);
-    GeometricTransform::rotate(m_azimuth, 0.0, 1.0, 0.0);
-    GeometricTransform::rotate(m_elevation, 1.0, 0.0, 0.0);
+    glm::mat4 visu(1.0);
+    visu = glm::translate(visu, glm::vec3(0.0, 0.0, -m_distance));
+    visu = glm::rotate(visu, float(m_azimuth), glm::vec3(0.0, 1.0, 0.0));
+    m_visualisationMatrix = glm::rotate(visu, float(m_elevation), glm::vec3(1.0, 0.0, 0.0));
 }

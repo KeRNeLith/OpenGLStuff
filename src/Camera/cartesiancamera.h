@@ -21,9 +21,9 @@ class CartesianCamera
 private:
     // La position et l'orientation de la caméra est donnée par
     // les paramètres de l'opération Look At
-    std::array<GLdouble, 3> m_position;     ///< Position de la caméra (x, y, z).
-    std::array<GLdouble, 3> m_targetPoint;  ///< Point cible de la caméra (Focus).
-    std::array<GLdouble, 3> m_verticalVector;   ///< Vecteur vertical à l'axe de vision de la caméra.
+    std::array<double, 3> m_position;     ///< Position de la caméra (x, y, z).
+    std::array<double, 3> m_targetPoint;  ///< Point cible de la caméra (Focus).
+    std::array<double, 3> m_verticalVector;   ///< Vecteur vertical à l'axe de vision de la caméra.
 
 public:
     /**
@@ -42,11 +42,11 @@ public:
      * @param verticalVectorY Coordonnée Y du vecteur vertical à l'axe de vision de la caméra.
      * @param verticalVectorZ Coordonnée Z du vecteur vertical à l'axe de vision de la caméra.
      */
-    CartesianCamera(    GLdouble openAngleY, GLdouble aspect,
-                        GLdouble zNear, GLdouble zFar,
-                        GLdouble posX, GLdouble posY, GLdouble posZ,
-                        GLdouble targetPointX, GLdouble targetPointY, GLdouble targetPointZ,
-                        GLdouble verticalVectorX, GLdouble verticalVectorY, GLdouble verticalVectorZ);
+    CartesianCamera(    double openAngleY, double aspect,
+                        double zNear, double zFar,
+                        double posX, double posY, double posZ,
+                        double targetPointX, double targetPointY, double targetPointZ,
+                        double verticalVectorX, double verticalVectorY, double verticalVectorZ);
 
     /**
      * @brief Redéfinit les paramètres de position et d'orientation de la caméra.
@@ -54,13 +54,12 @@ public:
      * @param targetPoint
      * @param verticalVector
      */
-    void lookAt(const std::array<GLdouble, 3>& position, const std::array<GLdouble, 3>& targetPoint, const std::array<GLdouble, 3>& verticalVector);
+    void lookAt(const std::array<double, 3>& position, const std::array<double, 3>& targetPoint, const std::array<double, 3>& verticalVector);
 
     /**
-     * @brief Applique le changement de repère de la caméra aux primitives graphiques (via gluLookAt).
-     * Note : Seuls les objets affichés ultérieurement sont affichés.
+     * @brief Applique le changement de repère de la caméra aux primitives graphiques.
      */
-    void applyCameraCoordinates() override;
+    void applyCameraTransformation() override;
 
     // Accesseurs / Setters
     // Position
@@ -68,7 +67,7 @@ public:
      * @brief Récupère à la position X de la caméra.
      * @return Position X de la caméra.
      */
-    GLdouble getPosX() const
+    double getPosX() const
     {
         return m_position[0];
     }
@@ -77,7 +76,7 @@ public:
      * @brief Récupère à la position Y de la caméra.
      * @return Position Y de la caméra.
      */
-    GLdouble getPosY() const
+    double getPosY() const
     {
         return m_position[1];
     }
@@ -86,7 +85,7 @@ public:
      * @brief Récupère à la position Z de la caméra.
      * @return Position Z de la caméra.
      */
-    GLdouble getPosZ() const
+    double getPosZ() const
     {
         return m_position[2];
     }
@@ -95,7 +94,7 @@ public:
      * @brief Récupère la position de la caméra.
      * @return Position de la caméra.
      */
-    const std::array<GLdouble, 3>& getPosition() const
+    const std::array<double, 3>& getPosition() const
     {
         return m_position;
     }
@@ -104,7 +103,7 @@ public:
      * @brief Met à jour la position de la caméra.
      * @param position Nouvelle position de la caméra.
      */
-    void setPosition(const std::array<GLdouble, 3>& position)
+    void setPosition(const std::array<double, 3>& position)
     {
         m_position = position;
     }
@@ -113,7 +112,7 @@ public:
      * @brief Met à jour la position X de la caméra.
      * @param posX Nouvelle position X de la caméra.
      */
-    void setPosX(GLdouble posX)
+    void setPosX(double posX)
     {
         m_position[0] = posX;
     }
@@ -122,7 +121,7 @@ public:
      * @brief Met à jour la position Y de la caméra.
      * @param posY Nouvelle position Y de la caméra.
      */
-    void setPosY(GLdouble posY)
+    void setPosY(double posY)
     {
         m_position[1] = posY;
     }
@@ -131,7 +130,7 @@ public:
      * @brief Met à jour la position Z de la caméra.
      * @param posZ Nouvelle position Z de la caméra.
      */
-    void setPosZ(GLdouble posZ)
+    void setPosZ(double posZ)
     {
         m_position[2] = posZ;
     }
@@ -140,7 +139,7 @@ public:
      * @brief Met à jour la position X de la caméra relativement à sa position actuelle.
      * @param offsetX Déplacement sur l'axe X.
      */
-    void updatePosX(GLdouble offsetX)
+    void updatePosX(double offsetX)
     {
         m_position[0] += offsetX;
     }
@@ -149,7 +148,7 @@ public:
      * @brief Met à jour la position Y de la caméra relativement à sa position actuelle.
      * @param offsetY Déplacement sur l'axe Y.
      */
-    void updatePosY(GLdouble offsetY)
+    void updatePosY(double offsetY)
     {
         m_position[1] += offsetY;
     }
@@ -158,7 +157,7 @@ public:
      * @brief Met à jour la position Z de la caméra relativement à sa position actuelle.
      * @param offsetZ Déplacement sur l'axe Z.
      */
-    void updatePosZ(GLdouble offsetZ)
+    void updatePosZ(double offsetZ)
     {
         m_position[2] += offsetZ;
     }
@@ -168,7 +167,7 @@ public:
      * @brief Récupère à la coordonnée X du point cible de la caméra.
      * @return Coordonnée X de la cible de la caméra.
      */
-    GLdouble getTargetX() const
+    double getTargetX() const
     {
         return m_targetPoint[0];
     }
@@ -177,7 +176,7 @@ public:
      * @brief Récupère à la coordonnée Y du point cible de la caméra.
      * @return Coordonnée Y de la cible de la caméra.
      */
-    GLdouble getTargetY() const
+    double getTargetY() const
     {
         return m_targetPoint[1];
     }
@@ -186,7 +185,7 @@ public:
      * @brief Récupère à la coordonnée Z du point cible de la caméra.
      * @return Coordonnée Z de la cible de la caméra.
      */
-    GLdouble getTargetZ() const
+    double getTargetZ() const
     {
         return m_targetPoint[2];
     }
@@ -195,7 +194,7 @@ public:
      * @brief Récupère le point cible de la caméra.
      * @return Cible de la caméra.
      */
-    const std::array<GLdouble, 3>& getTargetPoint() const
+    const std::array<double, 3>& getTargetPoint() const
     {
         return m_targetPoint;
     }
@@ -204,7 +203,7 @@ public:
      * @brief Met à jour le point cible de la caméra.
      * @param targetPosition Nouvau point cible.
      */
-    void setTargetPosition(const std::array<GLdouble, 3>& targetPosition)
+    void setTargetPosition(const std::array<double, 3>& targetPosition)
     {
         m_targetPoint = targetPosition;
     }
@@ -213,7 +212,7 @@ public:
      * @brief Met à jour la coordonnée X de la cible de la caméra.
      * @param posX Nouvelle position X de la cible de la caméra.
      */
-    void setTargetX(GLdouble posX)
+    void setTargetX(double posX)
     {
         m_targetPoint[0] = posX;
     }
@@ -222,7 +221,7 @@ public:
      * @brief Met à jour la coordonnée Y de la cible de la caméra.
      * @param posY Nouvelle position Y de la cible de la caméra.
      */
-    void setTargetY(GLdouble posY)
+    void setTargetY(double posY)
     {
         m_targetPoint[1] = posY;
     }
@@ -231,7 +230,7 @@ public:
      * @brief Met à jour la coordonnée Z de la cible de la caméra.
      * @param posZ Nouvelle position Z de la cible de la caméra.
      */
-    void setTargetZ(GLdouble posZ)
+    void setTargetZ(double posZ)
     {
         m_targetPoint[2] = posZ;
     }
@@ -240,7 +239,7 @@ public:
      * @brief Met à jour la coordonnée X de la cible de la caméra relativement à sa position actuelle.
      * @param offsetX Déplacement sur l'axe X.
      */
-    void updateTargetX(GLdouble offsetX)
+    void updateTargetX(double offsetX)
     {
         m_targetPoint[0] += offsetX;
     }
@@ -249,7 +248,7 @@ public:
      * @brief Met à jour la coordonnée Y de la cible de la caméra relativement à sa position actuelle.
      * @param offsetY Déplacement sur l'axe Y.
      */
-    void updateTargetY(GLdouble offsetY)
+    void updateTargetY(double offsetY)
     {
         m_targetPoint[1] += offsetY;
     }
@@ -258,7 +257,7 @@ public:
      * @brief Met à jour la coordonnée Z de la cible de la caméra relativement à sa position actuelle.
      * @param offsetZ Déplacement sur l'axe Z.
      */
-    void updateTargetZ(GLdouble offsetZ)
+    void updateTargetZ(double offsetZ)
     {
         m_targetPoint[2] += offsetZ;
     }
@@ -268,7 +267,7 @@ public:
      * @brief Récupère le vecteur verticale à l'axe de vision de la caméra.
      * @return Vecteur verticale à l'axe de vision de la caméra.
      */
-    const std::array<GLdouble, 3>& getVerticalVector() const
+    const std::array<double, 3>& getVerticalVector() const
     {
         return m_verticalVector;
     }
@@ -277,7 +276,7 @@ public:
      * @brief Met à jour le vecteur vertical à l'axe de la caméra.
      * @param verticalVector Nouveau vecteur vertical à l'axe de la caméra.
      */
-    void setVerticalVector(const std::array<GLdouble, 3>& verticalVector)
+    void setVerticalVector(const std::array<double, 3>& verticalVector)
     {
         m_verticalVector = verticalVector;
     }
