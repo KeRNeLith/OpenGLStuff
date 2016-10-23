@@ -12,20 +12,6 @@
 
 #include "loader.h"
 
-#ifdef __GNUC__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-#pragma GCC diagnostic ignored "-Wfloat-equal"
-#endif
-
-#include <assimp/Importer.hpp>      // C++ importer interface
-
-#ifdef __GNUC__
-#pragma GCC diagnostic pop
-#endif
-
-class aiScene;
-
 /**
  * @brief The AssimpLoader class Load a 3D model using the ASSIMP library.
  */
@@ -33,20 +19,24 @@ class AssimpLoader
         : public Loader
 {
 private:
-    Assimp::Importer m_importer;    ///< Importeur de fichier (Assimp).
-    const aiScene* m_scene;         ///< Scène 3D (Désallocation managée par m_importer).
-
+    unsigned int m_nbMesh;                                  ///< Nombre de mesh présent dans le fichier chargé via ASSIMP.
+    std::vector< GLenum > m_modes;                          ///< Tableau des modes de dessin par mesh chargé par ASSIMP.
     std::vector< std::vector< GLfloat > > m_vertices;       ///< Tableau des tableaux de vertices (Chaque entrée du tableau correspond aux vertices d'un mesh ASSIMP dont les coordonnées sont placés de manière contigus).
     std::vector< std::vector< unsigned int > > m_faces;     ///< Tableau des tableaux de faces (Chaque entrée du tableau correspond aux faces d'un mesh ASSIMP, dont les indices sont placés de manière contigus).
     std::vector< std::vector< GLfloat > > m_texCoords;      ///< Tableau des tableaux des coordonnées de texture (Chaque entrée du tableau correspond aux coordonnées de textures d'un mesh ASSIMP dont les coordonnées sont placés de manière contigus).
 
     /**
      * @brief Charge la scène dont le nom de fichier est spécifié.
-     * Note : Il est nécessaire de gérer la désallocation des ressources allouées à la scène.
      * @param sceneFilename Nom du fichier contenant la scène 3D à charger.
-     * @return Scène chargée, nullptr si le chargement échou.
      */
-    const aiScene* loadScene(const std::string& sceneFilename);
+    void loadScene(const std::string& sceneFilename);
+
+    /**
+     * @brief Convertit un mode de dessin de l'énumération de Assimp en mode de l'énumération d'OpenGL.
+     * @param assimpMode Mode de dessin de Assimp.
+     * @return Mode de dessin OpenGL.
+     */
+    GLenum getMode(unsigned int assimpMode);
 
 public:
     /**

@@ -13,8 +13,10 @@
 #pragma GCC diagnostic push
 #pragma GCC diagnostic ignored "-Weffc++"
 #pragma GCC diagnostic ignored "-Wconversion"
+#pragma GCC diagnostic ignored "-Wfloat-equal"
 #endif
 
+#include <assimp/Importer.hpp>      // C++ importer interface
 #include <assimp/scene.h>           // Output data structure
 #include <assimp/postprocess.h>     // Post processing flags
 
@@ -24,90 +26,95 @@
 
 AssimpLoader::AssimpLoader(const std::string& sceneFilename)
     : Loader()
-    , m_importer()
-    , m_scene(loadScene(sceneFilename))
+    , m_nbMesh(0)
+    , m_modes()
     , m_vertices()
     , m_faces()
     , m_texCoords()
 {
-    const unsigned int numMesh = m_scene->mNumMeshes;
-    // Pour chaque objets de la scène
-    for (unsigned int m = 0 ; m < numMesh ; ++m)
-    {
-        const aiMesh* mesh = m_scene->mMeshes[m];
-
-        std::vector< GLfloat > meshVertices;
-        std::vector< GLfloat > meshTexCoords;
-
-        /// Traite les vertices et coordonnées de texture
-        const unsigned int numVertices = mesh->mNumVertices;
-        // Pour chaque sommet du mesh
-        for (unsigned int v = 0 ; v < numVertices ; ++v)
-        {
-            aiVector3D& pos = mesh->mVertices[v];
-            meshVertices.push_back(pos.x);
-            meshVertices.push_back(pos.y);
-            meshVertices.push_back(pos.z);
-        }
-
-        // S'il y a des coordonnées de texture
-        if (mesh->mTextureCoords[0])
-        {
-            // Pour chaque sommet du mesh
-            for (unsigned int v = 0 ; v < numVertices ; ++v)
-            {
-                aiVector3D& tex = mesh->mTextureCoords[0][v];
-                meshTexCoords.push_back(tex.x);
-                meshTexCoords.push_back(tex.y);
-            }
-        }
-
-        m_vertices.push_back(meshVertices);
-        m_texCoords.push_back(meshTexCoords);
-
-        /// Traite les faces
-        const unsigned int numFaces = mesh->mNumFaces;
-        std::vector< unsigned int > meshFaces;
-
-        // Pour chaque face de l'objet
-        for (unsigned int f = 0 ; f < numFaces ; ++f)
-        {
-            const aiFace& face = mesh->mFaces[f];
-
-            std::copy(face.mIndices, face.mIndices + face.mNumIndices, std::back_inserter(meshFaces));
-        }
-
-        m_faces.push_back(meshFaces);
-    }
+    loadScene(sceneFilename);
 }
 
 AssimpLoader::~AssimpLoader()
 {
 }
 
-const aiScene* AssimpLoader::loadScene(const std::string& sceneFilename)
+void AssimpLoader::loadScene(const std::string& sceneFilename)
 {
-    const aiScene* scene = m_importer.ReadFile(   sceneFilename,
-                                                  aiProcess_FindDegenerates |
-                                                  aiProcess_Triangulate     |
-                                                  aiProcess_SortByPType);
+    Assimp::Importer importer;
+    const aiScene* scene = importer.ReadFile(   sceneFilename,
+                                                aiProcess_FindDegenerates |
+                                                aiProcess_Triangulate     |
+                                                aiProcess_SortByPType);
 
-    // If the import failed, report it
-    if (!scene)
+    // If the import succeed load scene
+    if (scene)
     {
-        std::cerr << "Impossible to import scene: " << sceneFilename << std::endl << " Reason : " << m_importer.GetErrorString() << std::endl;
+        const unsigned int numMesh = m_nbMesh = scene->mNumMeshes;
+        // Pour chaque objets de la scène
+        for (unsigned int m = 0 ; m < numMesh ; ++m)
+        {
+            const aiMesh* mesh = scene->mMeshes[m];
 
-        return nullptr;
+            /// Récupère le mode de dessin du mesh
+            m_modes.push_back(getMode(mesh->mPrimitiveTypes));
+
+            /// Traite les vertices et coordonnées de texture
+            std::vector< GLfloat > meshVertices;
+            std::vector< GLfloat > meshTexCoords;
+
+            const unsigned int numVertices = mesh->mNumVertices;
+            // Pour chaque sommet du mesh
+            for (unsigned int v = 0 ; v < numVertices ; ++v)
+            {
+                aiVector3D& pos = mesh->mVertices[v];
+                meshVertices.push_back(pos.x);
+                meshVertices.push_back(pos.y);
+                meshVertices.push_back(pos.z);
+            }
+
+            // S'il y a des coordonnées de texture
+            if (mesh->mTextureCoords[0])
+            {
+                // Pour chaque sommet du mesh
+                for (unsigned int v = 0 ; v < numVertices ; ++v)
+                {
+                    aiVector3D& tex = mesh->mTextureCoords[0][v];
+                    meshTexCoords.push_back(tex.x);
+                    meshTexCoords.push_back(tex.y);
+                }
+            }
+
+            m_vertices.push_back(meshVertices);
+            m_texCoords.push_back(meshTexCoords);
+
+            /// Traite les faces
+            const unsigned int numFaces = mesh->mNumFaces;
+            std::vector< unsigned int > meshFaces;
+
+            // Pour chaque face de l'objet
+            for (unsigned int f = 0 ; f < numFaces ; ++f)
+            {
+                const aiFace& face = mesh->mFaces[f];
+
+                std::copy(face.mIndices, face.mIndices + face.mNumIndices, std::back_inserter(meshFaces));
+            }
+
+            m_faces.push_back(meshFaces);
+        }
     }
-
-    return scene;
+    // Import failed => report it
+    else
+    {
+        std::cerr << "Impossible to import scene: " << sceneFilename << std::endl << " Reason : " << importer.GetErrorString() << std::endl;
+    }
 }
 
-GLenum AssimpLoader::mode(int meshIndex) const
+GLenum AssimpLoader::getMode(unsigned int assimpMode)
 {
     GLenum ret = GL_POINTS;
 
-    switch (m_scene->mMeshes[meshIndex]->mPrimitiveTypes)
+    switch (assimpMode)
     {
     case aiPrimitiveType_LINE:
         ret = GL_LINES;
@@ -126,9 +133,14 @@ GLenum AssimpLoader::mode(int meshIndex) const
     return ret;
 }
 
+GLenum AssimpLoader::mode(int meshIndex) const
+{
+    return m_modes[meshIndex];
+}
+
 unsigned int AssimpLoader::meshCount() const
 {
-    return m_scene->mNumMeshes;
+    return m_nbMesh;
 }
 
 const std::vector< GLfloat >& AssimpLoader::vertices(int meshIndex) const

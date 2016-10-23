@@ -34,7 +34,6 @@ template <typename T>
  */
 glm::vec3 toGLMVec3(const std::array<T, 3>& vec);
 
-
 /// Définitions
 template <typename T>
 glm::vec3 toGLMVec3(const std::array<T, 3>& vec)
