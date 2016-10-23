@@ -10,7 +10,7 @@
 
 #include <memory>
 
-#include <GL/glut.h>
+#include <GLES3/gl3.h>
 
 #include "Models/Textures/texturemanager.h"
 
@@ -31,7 +31,10 @@ public:
     };
 
 private:
-    std::unique_ptr<Loader> m_object; ///< Scène ou objet chargé.
+    std::unique_ptr<Loader> m_object;   ///< Scène ou objet chargé.
+
+    std::vector<GLuint> m_vertexBufferObjectIDs;    ///< Ids des VBOs des sommets, normales, coordonnées de texture du maillage.
+    std::vector<GLuint> m_elementBufferObjectIDs;   ///< Ids des VBOs des indices des sommets définissant les faces du maillage.
 
     /**
      * @brief Charge un objet correspondant au type de modèle spécifié.
@@ -39,6 +42,19 @@ private:
      * @return Instance du modèle choisi.
      */
     Loader* loadObject(RenderModel::ModelType type);
+
+    /**
+     * @brief Alloue et initialise les VBO destinés à la mémoire vidéo à partir des données de l'objet.
+     * @param usage Pattern d'utilisation des données envoyées.
+     * @param meshIndex Indice du mesh à traiter.
+     */
+    void createVBOs(GLenum usage, int meshIndex = 0);
+
+    /**
+     * @brief Rend actif le VBO lié au mesh dont l'indice est spécifié.
+     * @param meshIndex Indice du mesh à activer.
+     */
+    void enableVBOs(int meshIndex = 0) const;
 
 public:
     /**

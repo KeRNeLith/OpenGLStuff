@@ -36,9 +36,9 @@ private:
     Assimp::Importer m_importer;    ///< Importeur de fichier (Assimp).
     const aiScene* m_scene;         ///< Scène 3D (Désallocation managée par m_importer).
 
-    std::vector< std::vector< GLfloat* > > m_vertices;              ///< Tableau des tableaux de vertices (Chaque entrée du tableau correspond aux vertices d'un mesh ASSIMP).
-    std::vector< std::vector< std::vector<unsigned int> > > m_faces;///< Tableau des tableaux de faces (Chaque entrée du tableau correspond aux faces d'un mesh ASSIMP, chaque face comportant un tableau de ).
-    std::vector< std::vector< GLfloat* > > m_texCoords;             ///< Tableau des tableaux des coordonnées de texture (Chaque entrée du tableau correspond aux coordonnées de textures d'un mesh ASSIMP).
+    std::vector< std::vector< GLfloat > > m_vertices;       ///< Tableau des tableaux de vertices (Chaque entrée du tableau correspond aux vertices d'un mesh ASSIMP dont les coordonnées sont placés de manière contigus).
+    std::vector< std::vector< unsigned int > > m_faces;     ///< Tableau des tableaux de faces (Chaque entrée du tableau correspond aux faces d'un mesh ASSIMP, dont les indices sont placés de manière contigus).
+    std::vector< std::vector< GLfloat > > m_texCoords;      ///< Tableau des tableaux des coordonnées de texture (Chaque entrée du tableau correspond aux coordonnées de textures d'un mesh ASSIMP dont les coordonnées sont placés de manière contigus).
 
     /**
      * @brief Charge la scène dont le nom de fichier est spécifié.
@@ -74,15 +74,15 @@ public:
     /**
      * @brief See Loader#vertices(int)
      */
-    const std::vector< GLfloat* >& vertices(int meshIndex = 0) const override;
+    const std::vector< GLfloat >& vertices(int meshIndex = 0) const override;
     /**
      * @brief See Loader#faces(int)
      */
-    const std::vector< std::vector<unsigned int> >& faces(int meshIndex = 0) const override;
+    const std::vector< unsigned int >& faces(int meshIndex = 0) const override;
     /**
      * @brief See Loader#texCoords(int)
      */
-    const std::vector< GLfloat* >& texCoords(int meshIndex = 0) const override;
+    const std::vector< GLfloat >& texCoords(int meshIndex = 0) const override;
 };
 
 #endif // ASSIMPLOADER_H

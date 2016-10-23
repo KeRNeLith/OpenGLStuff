@@ -11,3 +11,7 @@ RenderScene::RenderScene(const Model& model)
     : m_model(model)
 {
 }
+
+RenderScene::~RenderScene()
+{
+}

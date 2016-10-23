@@ -28,6 +28,11 @@ public:
     RenderScene(const Model& model);
 
     /**
+     * @brief Destucteur.
+     */
+    virtual ~RenderScene();
+
+    /**
      * @brief Dessine la scène.
      */
     virtual void drawScene() const =0;

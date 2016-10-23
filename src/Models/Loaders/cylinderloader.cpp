@@ -25,32 +25,37 @@ CylinderLoader::CylinderLoader(double height, double radius, unsigned int nbMeri
         x = GLfloat(std::cos(step * i) * radius);
         z = GLfloat(std::sin(step * i) * radius);
 
-        GLfloat* vertex1 = new GLfloat[3] { x, GLfloat(m_height/double(2)), z };
-        GLfloat* vertex2 = new GLfloat[3] { x, -GLfloat(m_height/double(2)), z };
+        /// Création des vertices
+        // Vertex 1
+        m_vertices.push_back(x);
+        m_vertices.push_back(GLfloat(m_height/double(2)));
+        m_vertices.push_back(z);
 
-        m_vertices.push_back(vertex1);
-        m_vertices.push_back(vertex2);
+        // Vertex 2
+        m_vertices.push_back(x);
+        m_vertices.push_back(-GLfloat(m_height/double(2)));
+        m_vertices.push_back(z);
 
-        // Création des faces
-        std::vector< unsigned int > face1(3);
-        face1[0] = 2 * i;
-        face1[1] = (i+1) == m_nbMeridians ? 0 : 2 * i + 2;
-        face1[2] = 2 * i + 1;
 
-        std::vector< unsigned int > face2(3);
-        face2[0] = 2 * i + 1;
-        face2[1] = (i+1) == m_nbMeridians ? 0 : 2 * i + 2;
-        face2[2] = (i+1) == m_nbMeridians ? 1 : 2 * i + 3;
+        /// Création des faces
+        // Face 1
+        m_faces.push_back(2*i);
+        m_faces.push_back(((i+1) == m_nbMeridians ? 0 : 2 * i + 2));
+        m_faces.push_back(2*i+1);
 
-        m_faces.push_back(face1);
-        m_faces.push_back(face2);
+        // Face 2
+        m_faces.push_back(2*i+1);
+        m_faces.push_back(((i+1) == m_nbMeridians ? 0 : 2 * i + 2));
+        m_faces.push_back(((i+1) == m_nbMeridians ? 0 : 2 * i +3));
 
-        // Coordonnées de texture
-        GLfloat* texCoord1 = new GLfloat[2] { GLfloat(i / double(m_nbMeridians)), 0.0 };
-        GLfloat* texCoord2 = new GLfloat[2] { GLfloat(i / double(m_nbMeridians)), 1.0 };
+        /// Création des coordonnées de texture
+        // Coordonnée texture vertex 1
+        m_texCoords.push_back(GLfloat(i / double(m_nbMeridians)));
+        m_texCoords.push_back(0.0);
 
-        m_texCoords.push_back(texCoord1);
-        m_texCoords.push_back(texCoord2);
+        // Coordonnée texture vertex 2
+        m_texCoords.push_back(GLfloat(i / double(m_nbMeridians)));
+        m_texCoords.push_back(1.0);
     }
 }
 

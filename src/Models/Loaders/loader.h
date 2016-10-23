@@ -21,7 +21,7 @@
 class Loader
 {
 private:
-    std::shared_ptr<TextureManager> m_texture;
+    std::shared_ptr<TextureManager> m_texture;  ///< Texture de l'objet
 
 public:
     /**
@@ -49,25 +49,25 @@ public:
     virtual GLenum mode(int meshIndex = 0) const =0;
 
     /**
-     * @brief Récupère le tableaux des sommets associés au maillage spécifié en paramètre.
+     * @brief Récupère le tableaux des sommets associés au maillage spécifié en paramètre (sommets donnés de manière contigu).
      * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
      * @return Tableau des sommets du maillage spécifié.
      */
-    virtual const std::vector< GLfloat* >& vertices(int meshIndex = 0) const =0;
+    virtual const std::vector< GLfloat >& vertices(int meshIndex = 0) const =0;
 
     /**
-     * @brief Récupère le tableaux des faces associées au maillage spécifié en paramètre.
+     * @brief Récupère le tableaux des faces associées au maillage spécifié en paramètre (indices donnés de manière contigu).
      * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
      * @return Tableau des faces du maillage spécifié (Indices des sommets nécessaires).
      */
-    virtual const std::vector< std::vector<unsigned int> >& faces(int meshIndex = 0) const =0;
+    virtual const std::vector< unsigned int >& faces(int meshIndex = 0) const =0;
 
     /**
-     * @brief Récupère le tableaux des coordonnées de texture associées au maillage spécifié en paramètre.
+     * @brief Récupère le tableaux des coordonnées de texture associées au maillage spécifié en paramètre (coordonnées données de manière contigu).
      * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
      * @return Tableau des coordonnées de texture du maillage spécifié.
      */
-    virtual const std::vector< GLfloat* >& texCoords(int meshIndex = 0) const =0;
+    virtual const std::vector< GLfloat >& texCoords(int meshIndex = 0) const =0;
 
     /**
      * @brief Sélectionne la texture.

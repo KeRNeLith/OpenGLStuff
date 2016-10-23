@@ -10,7 +10,7 @@ class CustomScene
         : public RenderScene
 {
 private:
-    RenderModel m_cylinderRender;  ///< Modèle de cylindre.
+    RenderModel m_objectRender;     ///< Modèle de rendu d'un objet.
 
 public:
     /**

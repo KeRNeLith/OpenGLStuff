@@ -28,13 +28,14 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     , m_camera(new CartesianCamera(// Perspective
                                    50.0, m_windowWidth / GLdouble(m_windowHeight),
                                    // Plans clipping
-                                   1.0, 1000.0,
+                                   1.0, 10000.0,
                                    // Position
-                                   0.0, 0.0, 20.0,
+                                   0.0, 0.0, 3000.0,
                                    // Focus
                                    0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
+    , m_scene(new CustomScene(m_model))
 {
     FramesData::init();
     RenderModel::init();
@@ -60,8 +61,6 @@ void DisplayManager::display()
     //////////////
     /// TEST CODE
     //////////////
-    CustomScene s(m_model);
-    s.drawScene();
     //GLint nvertices = 3;
     unsigned int nfaces = 1;
 
@@ -91,6 +90,8 @@ void DisplayManager::display()
             }
         }
     glEnd();
+
+    m_scene->drawScene();
     //////////////////
     /// END TEST CODE
     //////////////////

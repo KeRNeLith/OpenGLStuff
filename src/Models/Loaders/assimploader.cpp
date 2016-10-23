@@ -36,26 +36,30 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
     {
         const aiMesh* mesh = m_scene->mMeshes[m];
 
-        std::vector< GLfloat* > meshVertices;
-        std::vector< GLfloat* > meshTexCoords;
+        std::vector< GLfloat > meshVertices;
+        std::vector< GLfloat > meshTexCoords;
 
-        /// Traite les vertices
+        /// Traite les vertices et coordonnées de texture
         const unsigned int numVertices = mesh->mNumVertices;
         // Pour chaque sommet du mesh
         for (unsigned int v = 0 ; v < numVertices ; ++v)
         {
             aiVector3D& pos = mesh->mVertices[v];
-            aiVector3D& tex = mesh->mTextureCoords[0][v];
+            meshVertices.push_back(pos.x);
+            meshVertices.push_back(pos.y);
+            meshVertices.push_back(pos.z);
+        }
 
-            // Utilise les données d'Assimp sans copie
-            // ATTENTION: Il est nécessaire que les GLfloat et les float aient la même taille
-            // sur la machine utilisée pour compiler. Ce qui est généralement le cas sur les architectures
-            // actuelles. En effet, on se base sur la principe qui fait
-            // que les données membres d'une classe sont contigues en mémoire.
-            meshVertices.push_back( (GLfloat*) &(pos.x) );
-
-            // Il y a autant de coordonnées de textures que de sommets
-            meshTexCoords.push_back( (GLfloat*) &(tex.x) );
+        // S'il y a des coordonnées de texture
+        if (mesh->mTextureCoords[0])
+        {
+            // Pour chaque sommet du mesh
+            for (unsigned int v = 0 ; v < numVertices ; ++v)
+            {
+                aiVector3D& tex = mesh->mTextureCoords[0][v];
+                meshTexCoords.push_back(tex.x);
+                meshTexCoords.push_back(tex.y);
+            }
         }
 
         m_vertices.push_back(meshVertices);
@@ -63,17 +67,14 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
 
         /// Traite les faces
         const unsigned int numFaces = mesh->mNumFaces;
-        std::vector< std::vector<unsigned int> > meshFaces;
+        std::vector< unsigned int > meshFaces;
 
         // Pour chaque face de l'objet
         for (unsigned int f = 0 ; f < numFaces ; ++f)
         {
             const aiFace& face = mesh->mFaces[f];
 
-            std::vector<unsigned int> faceVertices( &(face.mIndices[0]),
-                                                    &(face.mIndices[0]) + face.mNumIndices);
-
-            meshFaces.push_back(faceVertices);
+            std::copy(face.mIndices, face.mIndices + face.mNumIndices, std::back_inserter(meshFaces));
         }
 
         m_faces.push_back(meshFaces);
@@ -130,17 +131,17 @@ unsigned int AssimpLoader::meshCount() const
     return m_scene->mNumMeshes;
 }
 
-const std::vector< GLfloat* >& AssimpLoader::vertices(int meshIndex) const
+const std::vector< GLfloat >& AssimpLoader::vertices(int meshIndex) const
 {
     return m_vertices[meshIndex];
 }
 
-const std::vector< std::vector<unsigned int> >& AssimpLoader::faces(int meshIndex) const
+const std::vector< unsigned int >& AssimpLoader::faces(int meshIndex) const
 {
     return m_faces[meshIndex];
 }
 
-const std::vector< GLfloat* >& AssimpLoader::texCoords(int meshIndex) const
+const std::vector< GLfloat > &AssimpLoader::texCoords(int meshIndex) const
 {
     return m_texCoords[meshIndex];
 }
