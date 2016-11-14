@@ -153,7 +153,23 @@ const std::vector< unsigned int >& AssimpLoader::faces(int meshIndex) const
     return m_faces[meshIndex];
 }
 
-const std::vector< GLfloat > &AssimpLoader::texCoords(int meshIndex) const
+const std::vector< GLfloat >& AssimpLoader::texCoords(int meshIndex) const
 {
     return m_texCoords[meshIndex];
+}
+
+std::shared_ptr<Node> AssimpLoader::getGraph() const
+{
+    // Création du graph
+    std::shared_ptr<Node> graph(new Node());
+
+    // TODO
+    /*for(unsigned int i = 0 ; i < m_nbMesh ; ++i)
+    {
+        std::shared_ptr<DrawableNode> mesh = new DrawableNode();
+        // TODO : charger les données dans le DrawableNode
+        graph.addChild(mesh);
+    }*/
+
+    return graph;
 }

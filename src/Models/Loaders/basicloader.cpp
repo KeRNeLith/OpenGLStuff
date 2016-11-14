@@ -27,3 +27,13 @@ const std::vector< GLfloat >& BasicLoader::texCoords(int /*meshIndex*/) const
 {
     return m_texCoords;
 }
+
+std::shared_ptr<Node> BasicLoader::getGraph() const
+{
+    // Création du graph
+    std::shared_ptr<Node> graph(new Node());
+
+    // TODO
+
+    return graph;
+}

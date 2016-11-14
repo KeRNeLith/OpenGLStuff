@@ -13,6 +13,8 @@
 
 #include <GL/glut.h>
 
+#include "Graph/node.h"
+
 #include "Models/Textures/texturemanager.h"
 
 /**
@@ -68,6 +70,12 @@ public:
      * @return Tableau des coordonnées de texture du maillage spécifié.
      */
     virtual const std::vector< GLfloat >& texCoords(int meshIndex = 0) const =0;
+
+    /**
+     * @brief Crée une graph contenant les objets loadés par le loader.
+     * @return Graph.
+     */
+    virtual std::shared_ptr<Node> getGraph() const =0;
 
     /**
      * @brief Sélectionne la texture.
