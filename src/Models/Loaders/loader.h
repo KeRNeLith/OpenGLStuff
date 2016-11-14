@@ -85,6 +85,12 @@ public:
     }
 
     /**
+     * @brief Crée une graph contenant les objets loadés par le loader.
+     * @return Graph.
+     */
+    virtual std::shared_ptr<Node> getGraph() = 0;
+
+    /**
      * @brief Affecte ou met à jour la texture de l'objet.
      * @param texture Nouvelle texture.
      */

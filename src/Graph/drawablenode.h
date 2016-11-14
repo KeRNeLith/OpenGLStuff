@@ -12,6 +12,7 @@ class DrawableNode
 {
 protected:
     std::shared_ptr<ShaderProgram> m_shader;
+    std::shared_ptr<RenderModel> m_renderModel;
 
 public:
     DrawableNode();
