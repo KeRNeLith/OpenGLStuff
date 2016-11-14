@@ -1,7 +1,7 @@
 #include "drawablenode.h"
 
-DrawableNode::DrawableNode()
-    : m_shader(nullptr)
+DrawableNode::DrawableNode(const std::shared_ptr<ShaderProgram>& shader)
+    : m_shader(shader)
 {
 
 }
@@ -9,6 +9,12 @@ DrawableNode::DrawableNode()
 void DrawableNode::apply()
 {
     // Dessin du modele 3D
+    if (m_shader)
+    {
+        m_shader->useProgram();
+    }
+
+    // TODO
 
     Node::apply();
 }

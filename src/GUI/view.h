@@ -16,9 +16,9 @@
 
 #include "Camera/camera.h"
 
-#include "Models/model.h"
+#include "Graph/node.h"
 
-#include "Models/Renders/renderscene.h"
+#include "Models/model.h"
 
 /**
  * @brief The DisplayManager class Gère les paramètres d'affichage de la vue.
@@ -33,7 +33,7 @@ private:
 
     std::unique_ptr<Camera> m_camera;   ///< Caméra visionnant la scène.
 
-    std::unique_ptr<RenderScene> m_scene;   ///< Scène à réaliser le rendu.
+    std::unique_ptr<Node> m_root;       ///< Graphe de scène à rendre.
 
 public:
     /**

@@ -13,6 +13,9 @@
 
 #include "Camera/cartesiancamera.h"
 
+#include "Graph/drawablenode.h"
+#include "Graph/transformnode.h"
+
 #include "Models/Renders/customscene.h"
 
 #include "Shaders/shaderutils.h"
@@ -30,12 +33,12 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Plans clipping
                                    1.0, 10000.0,
                                    // Position
-                                   0.0, 0.0, 3000.0,
+                                   0.0, 0.0, 30.0,
                                    // Focus
                                    0.0, 0.0, 0.0,
                                    // Verticale
                                    0.0, 1.0, 0.0))
-    , m_scene(new CustomScene(m_model))
+    , m_root(new Node())
 {
     FramesData::init();
     RenderModel::init();
@@ -91,7 +94,7 @@ void DisplayManager::display()
         }
     glEnd();
 
-    m_scene->drawScene();
+    m_root->apply();
     //////////////////
     /// END TEST CODE
     //////////////////

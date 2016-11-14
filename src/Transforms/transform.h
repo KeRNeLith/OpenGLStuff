@@ -12,49 +12,25 @@
 
 #include <cstdint>
 
+#include <stack>
+
+#include <glm/glm.hpp>
+
 /**
- * @brief The GeometricTransform struct gère des transformations géométriques.
+ * @brief The GeometricTransform class Gère des transformations géométriques.
  * Elle sert de Wrapper vers une bibliothèque d'affichage 3D (ici OpenGL, mais pourrait être DirectX).
  */
-struct GeometricTransform
+class GeometricTransform
 {
-    /**
-     * @brief Définit la zone visible (Viewport).
-     * @param viewCenterX Coordonnée X du centre de la vision.
-     * @param viewCenterY Coordonnée Y du centre de la vision.
-     * @param viewWidth Largeur de la zone de vision.
-     * @param viewHeight Hauteur de la zone de vision.
-     */
-    static void viewport(int32_t viewCenterX,  int32_t viewCenterY, uint32_t viewWidth, uint32_t viewHeight);
+private:
+    static glm::mat4 m_currentMatrix;                   ///< Matrice de transformation courante.
+    static std::stack< glm::mat4 > m_transformsStack;   ///< Pile de matrices de transformations.
 
+public:
     /**
-     * @brief Applique une nouvelle projection sur les primitives graphiques, définit par les paramètres.
-     * Note: Seuls les objets affichés ultérieurement sont affectés.
-     * @param openAngleY Angle d'ouverture Y de la caméra.
-     * @param aspect Affinité orthogonale en XY.
-     * @param zNear Plan de clipping proche.
-     * @param zFar Plan de clipping loin.
+     * @brief Réinitialise la transformation Model à l'identité.
      */
-    static void applyPerspectiveProjection(double openAngleY, double aspect, double zNear, double zFar);
-
-    /**
-     * @brief Réinitialise la transformation ModelView à l'identité.
-     */
-    static void clearModelView();
-
-    /**
-     * @brief Réinitialise la transformation Projection à l'identité.
-     */
-    static void clearProjection();
-
-    /**
-     * @brief Réalise les opérations nécessaire au positionnement de la caméra et son orientation.
-     * Note : Appel à gluLookAt.
-     * @param position Coordonnées de la caméra.
-     * @param targetPoint Coordonnées du point cible.
-     * @param verticalVector Verteur vertical à l'axe de vision de la caméra.
-     */
-    static void lookAt(double position[3], double targetPoint[3], double verticalVector[3]);
+    static void clearModelMatrix();
 
     /**
      * @brief Applique une translation (de vecteur donné).
@@ -80,6 +56,13 @@ struct GeometricTransform
      * @param factorZ Changement d'échelle sur l'axe Z.
      */
     static void scale(double factorX, double factorY, double factorZ);
+
+    /**
+     * @brief Applique la transformation de matrix à la matrice courante.
+     * Matrice courante = matrice courante * matrix.
+     * @param matrix Matrice de transformation.
+     */
+    static void applyTransform(const glm::mat4& matrix);
 
     /**
      * @brief Sauvegarde la matrice courante dans la pile des matrices de transformations.

@@ -1,11 +1,7 @@
 #include "shadercollection.h"
 
-std::map< std::string, std::unique_ptr<ShaderProgram> > ShaderCollection::m_shaders;
-
-ShaderCollection::ShaderCollection()
-{
-
-}
+// Static init
+std::map< std::string, std::shared_ptr<ShaderProgram> > ShaderCollection::m_shaders;
 
 bool ShaderCollection::addOrUpdateShader(const std::string& name, const std::string& vertexShaderPath, const std::string& fragmentShaderPath)
 {
@@ -17,7 +13,7 @@ bool ShaderCollection::addOrUpdateShader(const std::string& name, const std::str
         ret = true;
     }
 
-    m_shaders[name] = std::unique_ptr<ShaderProgram>(new ShaderProgram(vertexShaderPath, fragmentShaderPath));
+    m_shaders[name] = std::shared_ptr<ShaderProgram>(new ShaderProgram(vertexShaderPath, fragmentShaderPath));
 
     return ret;
 }
@@ -29,7 +25,7 @@ std::shared_ptr<ShaderProgram> ShaderCollection::getShader(const std::string& sh
     auto itF = m_shaders.find(shaderName);
     if (itF != m_shaders.cend())
     {
-        program = std::move(itF->second);
+        program = itF->second;
     }
 
     return program;

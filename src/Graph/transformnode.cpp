@@ -1,17 +1,19 @@
 #include "transformnode.h"
 
-TransformNode::TransformNode()
-    : m_transform(1.0)
+#include "Transforms/transform.h"
+
+TransformNode::TransformNode(const glm::mat4& transform)
+    : m_transform(transform)
 {
 
 }
 
 void TransformNode::apply()
 {
-    //glPushMatrix();
-    //glLoadMatrix( (float*)m_fvMatrix );
+    GeometricTransform::pushMatrix();
+    GeometricTransform::applyTransform(m_transform);
 
     Node::apply();
 
-    //glPopMatrix();
+    GeometricTransform::popMatrix();
 }

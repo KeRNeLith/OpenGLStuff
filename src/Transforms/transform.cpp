@@ -9,63 +9,47 @@
 
 #include "transform.h"
 
-#include <GL/glut.h>
+#include <glm/gtc/matrix_transform.hpp> // Réglages perspectives, lookAt, etc.
 
+// Static init
+glm::mat4 GeometricTransform::m_currentMatrix = glm::mat4(1.0);
+std::stack< glm::mat4 > GeometricTransform::m_transformsStack;
 
-void GeometricTransform::viewport(int32_t viewCenterX,  int32_t viewCenterY, uint32_t viewWidth, uint32_t viewHeight)
+void GeometricTransform::clearModelMatrix()
 {
-    glViewport(viewCenterX, viewCenterY, viewWidth, viewHeight);
-}
+    m_currentMatrix = glm::mat4(1.0);
 
-void GeometricTransform::applyPerspectiveProjection(double openAngleY, double aspect, double zNear, double zFar)
-{
-    // Réinitialisation des paramètres intrinsèques de la caméra
-    clearProjection();
-    gluPerspective(openAngleY, aspect, zNear, zFar);
-}
-
-void GeometricTransform::clearModelView()
-{
-    // Réinitialisation des paramètres de la caméra
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-}
-
-void GeometricTransform::clearProjection()
-{
-    // Réinitialisation des paramètres de projection de la caméra
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-}
-
-void GeometricTransform::lookAt(double position[3], double targetPoint[3], double verticalVector[3])
-{
-    gluLookAt(  position[0], position[1], position[2],
-                targetPoint[0], targetPoint[1], targetPoint[2],
-                verticalVector[0], verticalVector[1], verticalVector[2]);
+    // "Clear" transform stack
+    m_transformsStack = std::stack< glm::mat4 >();
 }
 
 void GeometricTransform::translate(double vecX, double vecY, double vecZ)
 {
-    glTranslated(vecX, vecY, vecZ);
+    m_currentMatrix = glm::translate(m_currentMatrix, glm::vec3(vecX, vecY, vecZ));
 }
 
 void GeometricTransform::rotate(double angle, double vecX, double vecY, double vecZ)
 {
-    glRotated(angle, vecX, vecY, vecZ);
+    m_currentMatrix = glm::rotate(m_currentMatrix, float(angle), glm::vec3(vecX, vecY, vecZ));
 }
 
 void GeometricTransform::scale(double factorX, double factorY, double factorZ)
 {
-    glScaled(factorX, factorY, factorZ);
+    m_currentMatrix = glm::scale(m_currentMatrix, glm::vec3(factorX, factorY, factorZ));
+}
+
+void GeometricTransform::applyTransform(const glm::mat4& matrix)
+{
+    m_currentMatrix = m_currentMatrix * matrix;
 }
 
 void GeometricTransform::pushMatrix()
 {
-    glPushMatrix();
+    m_transformsStack.push(m_currentMatrix);
 }
 
 void GeometricTransform::popMatrix()
 {
-    glPopMatrix();
+    m_currentMatrix = m_transformsStack.top();
+    m_transformsStack.pop();
 }

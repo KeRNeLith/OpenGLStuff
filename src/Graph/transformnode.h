@@ -5,15 +5,25 @@
 
 #include "node.h"
 
+/**
+ * @brief The TransformNode class Stocke une transformation géométrique à appliquer.
+ */
 class TransformNode
         : public Node
 {
 protected:
-    glm::mat4 m_transform;
+    glm::mat4 m_transform;  ///< Transformation à appliquer.
 
 public:
-    TransformNode();
+    /**
+     * @brief Constructeur.
+     * @param transform Transformation du noeud.
+     */
+    TransformNode(const glm::mat4& transform = glm::mat4(1.0));
     
+    /**
+     * @see Node#apply()
+     */
     void apply() override;
 };
 
