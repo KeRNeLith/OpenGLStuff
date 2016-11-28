@@ -21,7 +21,7 @@ public:
      * @brief Constructeur.
      * @param shader Programme shader à utiliser.
      */
-    DrawableNode(const std::shared_ptr<ShaderProgram>& shader = nullptr);
+    DrawableNode(const std::shared_ptr<ShaderProgram>& shader);
 
     /**
      * @see Node#apply()

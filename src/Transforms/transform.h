@@ -73,6 +73,12 @@ public:
      * @brief Restaure la matrice du dessus de la pile des matrices de transformations.
      */
     static void popMatrix();
+
+    /**
+     * @brief Get the current transformation.
+     * @return Transformation.
+     */
+    static const glm::mat4& getTransform();
 };
 
 #endif	// GEOMETRIC_TRANSFORM_H

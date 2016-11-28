@@ -1,30 +1,21 @@
 #include "shaderutils.h"
 
-ShaderUtils::ShaderUtils()
-    : m_shader(nullptr)
-{
+#include <glm/gtc/type_ptr.hpp> // Accès bas niveau au données
 
+void ShaderUtils::sendProjectionMatrix(const ShaderProgram& program, const glm::mat4& projection)
+{
+    // Envoi la matrice de Projection au shader
+    glUniformMatrix4fv(	glGetUniformLocation(program.getProgramId(), "matrixP"), 1, GL_FALSE, glm::value_ptr(projection) );
 }
 
-ShaderUtils::~ShaderUtils()
+void ShaderUtils::sendVisualisationMatrix(const ShaderProgram& program, const glm::mat4& visualisation)
 {
-
+    // Envoi la matrice de Visualisation au shader
+    glUniformMatrix4fv(	glGetUniformLocation(program.getProgramId(), "matrixV"), 1, GL_FALSE, glm::value_ptr(visualisation) );
 }
 
-void ShaderUtils::setActiveShaderProgram(const std::shared_ptr<ShaderProgram>& shaderProg)
+void ShaderUtils::sendModelisationMatrix(const ShaderProgram& program, const glm::mat4& modelisation)
 {
-    m_shader = shaderProg;
-    m_shader->useProgram();
-}
-
-void ShaderUtils::sendTransformMatrix(const glm::mat4& projection, const glm::mat4& visualisation, const glm::mat4& modelisation)
-{
-    if (!m_shader)
-        return;
-
-    // Calcul de la matrice de Modélisation, Visualisation, Projection
-    glm::mat4 matrixMVP = projection * visualisation * modelisation;
-
-    // Envoi la matrice de Modélisation, Visualisation, Projection aux shaders
-    glUniformMatrix4fv(	glGetUniformLocation(m_shader->getProgramId(), "matrixMVP"), 1, GL_FALSE, glm::value_ptr(matrixMVP) );
+    // Envoi la matrice de Modélisation au shader
+    glUniformMatrix4fv(	glGetUniformLocation(program.getProgramId(), "matrixM"), 1, GL_FALSE, glm::value_ptr(modelisation) );
 }

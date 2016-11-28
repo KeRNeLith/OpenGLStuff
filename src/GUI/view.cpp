@@ -18,6 +18,7 @@
 
 #include "Models/Renders/customscene.h"
 
+#include "Shaders/shadercollection.h"
 #include "Shaders/shaderutils.h"
 
 #include "Tools/frames.h"
@@ -42,6 +43,12 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
 {
     FramesData::init();
     RenderModel::init();
+
+    ShaderCollection::addOrUpdateShader("default",
+                                        "src/Shaders/src/vertexShader.vert",
+                                        "src/Shaders/src/fragmentShader.frag");
+
+    ShaderProgram::setCamera(m_camera);
 }
 
 void DisplayManager::display()
@@ -58,7 +65,9 @@ void DisplayManager::display()
     m_camera->applyCameraTransformation();
 
      // Applique le changement de repère de la caméra (envoi de la matrice de transformation aux shaders)
-    ShaderUtils::instance().sendTransformMatrix(m_camera->getProjection(), m_camera->getVisualisation(), glm::mat4(1.0));
+    std::shared_ptr<ShaderProgram> shader = ShaderCollection::getShader("default"); // TEmporary
+    shader->useProgram();   // Temporary
+    ShaderUtils::sendModelisationMatrix(*shader, glm::mat4(1.0));   // Temporary
 
     // Dessin
     //////////////

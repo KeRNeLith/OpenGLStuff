@@ -8,9 +8,12 @@
 #ifndef SHADERPROGRAM_H
 #define SHADERPROGRAM_H
 
+#include <memory>
 #include <string>
 
 #include <GLES3/gl3.h>
+
+#include "Camera/camera.h"
 
 /**
  * @brief The ShaderProgram class Gère la création et l'utilisation d'un programme OpenGL (Shader).
@@ -19,6 +22,8 @@ class ShaderProgram
 {
 private:
     GLuint m_programId; ///< Id du programme shader.
+
+    static std::shared_ptr<Camera> m_camera;    ///< Caméra en cours d'utilisation (gérant la visualisation et la projection).
 
     /**
      * @brief Charge un fichier shader et retourne son contenu.
@@ -70,7 +75,7 @@ public:
      */
     void useProgram();
 
-    // Accesseur
+    // Accesseur / Setters
     /**
      * @brief Récupère l'id du programme OpenGL (Shader).
      * @return Id du programme.
@@ -78,6 +83,15 @@ public:
     GLuint getProgramId() const
     {
         return m_programId;
+    }
+
+    /**
+     * @brief Met à jour la caméra utilisé par les shaders.
+     * @param camera Nouvelle caméra.
+     */
+    static void setCamera(const std::shared_ptr<Camera>& camera)
+    {
+        m_camera = camera;
     }
 };
 

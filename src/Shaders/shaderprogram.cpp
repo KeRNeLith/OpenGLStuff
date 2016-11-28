@@ -14,6 +14,11 @@
 
 #include <GL/glut.h>
 
+#include "shaderutils.h"
+
+// Static init
+std::shared_ptr<Camera> ShaderProgram::m_camera = nullptr;
+
 #define getOpenGLError() printOpenGLError(__FILE__, __LINE__)
 
 ShaderProgram::ShaderProgram(const std::string& vertexShader, const std::string& fragmentShader)
@@ -172,4 +177,17 @@ GLint ShaderProgram::checkProgramState()
 void ShaderProgram::useProgram()
 {
     glUseProgram(m_programId);
+
+    // Envoi les matrices de projection et visualisation
+    if (m_camera)
+    {
+        ShaderUtils::sendProjectionMatrix(*this, m_camera->getProjection());
+        ShaderUtils::sendVisualisationMatrix(*this, m_camera->getVisualisation());
+    }
+    // Cas où aucune caméra n'est utilisé => ne devrait jamais arrivé
+    else
+    {
+        ShaderUtils::sendProjectionMatrix(*this, glm::mat4(1.0));
+        ShaderUtils::sendVisualisationMatrix(*this, glm::mat4(1.0));
+    }
 }

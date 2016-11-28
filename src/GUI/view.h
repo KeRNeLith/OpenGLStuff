@@ -31,7 +31,7 @@ private:
 
     Model m_model;          ///< Modèle de données à afficher.
 
-    std::unique_ptr<Camera> m_camera;   ///< Caméra visionnant la scène.
+    std::shared_ptr<Camera> m_camera;   ///< Caméra visionnant la scène.
 
     std::unique_ptr<Node> m_root;       ///< Graphe de scène à rendre.
 
@@ -71,7 +71,7 @@ public:
      * @brief Permet l'accès au modèle de la caméra en lecture/écriture.
      * @return Modèle de la caméra.
      */
-    std::unique_ptr<Camera>& camera()
+    std::shared_ptr<Camera>& camera()
     {
         return m_camera;
     }

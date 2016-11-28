@@ -20,7 +20,6 @@
 class Model
 {
 private:
-    std::shared_ptr<ShaderProgram> m_program;    ///< Programme shader.
 
 public:
     /**
@@ -34,14 +33,7 @@ public:
 	void update();
 	
 	// Accesseurs
-    /**
-     * @brief Récupère le programme shader actif.
-     * @return Programme shader.
-     */
-    std::weak_ptr<ShaderProgram> getShaderProgram() const
-    {
-        return m_program;
-    }
+
 };
 
 #endif	// MODEL_H

@@ -53,3 +53,8 @@ void GeometricTransform::popMatrix()
     m_currentMatrix = m_transformsStack.top();
     m_transformsStack.pop();
 }
+
+const glm::mat4& GeometricTransform::getTransform()
+{
+    return m_currentMatrix;
+}

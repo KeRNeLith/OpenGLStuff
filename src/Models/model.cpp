@@ -9,14 +9,8 @@
 
 #include "model.h"
 
-#include "Shaders/shaderutils.h"
-
 Model::Model()
-    // Charge les shaders via un programme OpenGL
-    : m_program(new ShaderProgram(  "src/Shaders/src/vertexShader.vert",
-                                    "src/Shaders/src/fragmentShader.frag"))
 {
-    ShaderUtils::instance().setActiveShaderProgram(m_program);
 }
 
 void Model::update()
