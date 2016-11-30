@@ -161,3 +161,16 @@ const std::vector< GLfloat >& AssimpLoader::texCoords(int meshIndex) const
 {
     return m_texCoords[meshIndex];
 }
+
+std::shared_ptr<Node> AssimpLoader::getGraph() const
+{
+    std::shared_ptr<Node> graph(new Node);
+
+    for (unsigned int i = 0 ; i < m_vertices.size() ; ++i)
+    {
+        std::shared_ptr<RenderModel> model(new RenderModel(ShaderCollection::getShader("default"), *this, i));
+        graph->addChild(std::shared_ptr<Node>(new DrawableNode(model)));
+    }
+
+    return graph;
+}

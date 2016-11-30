@@ -72,6 +72,12 @@ public:
     virtual const std::vector< GLfloat >& texCoords(int meshIndex = 0) const =0;
 
     /**
+     * @brief Récupère un graph de scène correspondant au modèle chargé.
+     * @return Graph de scène.
+     */
+    virtual std::shared_ptr<Node> getGraph() const =0;
+
+    /**
      * @brief Sélectionne la texture.
      * Note : Il est nécessaire de vérifier auparavant que l'objet possède une texture via la méthode hasTexture().
      */

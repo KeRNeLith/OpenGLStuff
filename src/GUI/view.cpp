@@ -16,6 +16,7 @@
 #include "Graph/drawablenode.h"
 #include "Graph/transformnode.h"
 
+#include "Models/Loaders/assimploader.h"
 #include "Models/Loaders/cylinderloader.h"
 #include "Models/Renders/rendermodel.h"
 
@@ -35,7 +36,7 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                    // Plans clipping
                                    1.0, 10000.0,
                                    // Position
-                                   0.0, 0.0, 30.0,
+                                   0.0, 0.0, 3000.0,
                                    // Focus
                                    0.0, 0.0, 0.0,
                                    // Verticale
@@ -51,17 +52,9 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
 
     ShaderProgram::setCamera(m_camera);
 
-    // Test Code for graph
-    std::shared_ptr<RenderModel> renderModelTest(new RenderModel(ShaderCollection::getShader("default"), std::shared_ptr<Loader>(new CylinderLoader)));
-    std::shared_ptr<Node> drawableNode(new DrawableNode(renderModelTest));
-
-    // Test 1
-    m_root->addChild(drawableNode);
-
-    // Test 2
-    //std::shared_ptr<Node> transform(new TransformNode(glm::translate(glm::mat4(1.0), glm::vec3(2, 2, 0))));
-    //transform->addChild(drawableNode);
-    //m_root->addChild(transform);
+    // Ajoute une voiture au graph de scène
+    std::shared_ptr<Loader> loader(new AssimpLoader("data/fichiers3DS/Audi_tt.3ds"));
+    m_root->addChild(loader->getGraph());
 }
 
 void DisplayManager::display()
@@ -77,49 +70,8 @@ void DisplayManager::display()
     // Calcul la matrice de visualisation
     m_camera->applyCameraTransformation();
 
-     // Applique le changement de repère de la caméra (envoi de la matrice de transformation aux shaders)
-    std::shared_ptr<ShaderProgram> shader = ShaderCollection::getShader("default"); // TEmporary
-    shader->useProgram();   // Temporary
-    ShaderUtils::sendModelisationMatrix(*shader, glm::mat4(1.0));   // Temporary
-
     // Dessin
-    //////////////
-    /// TEST CODE
-    //////////////
-    //GLint nvertices = 3;
-    unsigned int nfaces = 1;
-
-    GLfloat vertices[][3] = {
-        { 0.0, -0.5, 3.0 },
-        { 0.5, 0.5, 3.0 },
-        { -0.5, 0.5, 3.0 }
-    };
-
-    GLfloat colors[][3] = {
-        { 1.0, 0.0, 0.0 },
-        { 0.0, 1.0, 0.0 },
-        { 0.0, 0.0, 1.0 }
-    };
-
-    GLuint faces[][3] = {
-        { 0, 1, 2 }
-    };
-
-    glBegin(GL_TRIANGLES);
-        for (unsigned int i = 0 ; i < nfaces ; ++i)
-        {
-            for (unsigned int j = 0 ; j < 3 ; ++j)
-            {
-                glColor3fv(colors[faces[i][j]]);
-                glVertex3fv(vertices[faces[i][j]]);
-            }
-        }
-    glEnd();
-
     m_root->apply();
-    //////////////////
-    /// END TEST CODE
-    //////////////////
 }
 
 void DisplayManager::resize(GLint l, GLint h)

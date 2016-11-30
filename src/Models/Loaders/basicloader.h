@@ -37,6 +37,10 @@ public:
      * @brief See Loader#texCoords(int)
      */
     const std::vector< GLfloat >& texCoords(int meshIndex = 0) const override;
+    /**
+     * @brief See Loader#getGraph()
+     */
+    std::shared_ptr<Node> getGraph() const override;
 };
 
 #endif // BASICLOADER_H

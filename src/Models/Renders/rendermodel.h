@@ -11,6 +11,8 @@
 #include <memory>
 #include <vector>
 
+#include "Models/Loaders/objectdatastorage.h"
+
 #include "Shaders/shaderprogram.h"
 
 class Loader;
@@ -29,13 +31,13 @@ private:
 
     std::shared_ptr<ShaderProgram> m_shader;    ///< Shader à utiliser.
 
+    ObjectDataStorage m_data;                   ///< Données de l'objet.
+
     /**
      * @brief Alloue et initialise le VBO destiné à la mémoire vidéo à partir des données de l'objet.
      * @param usage Pattern d'utilisation des données envoyées.
-     * @param loader Objet servant de base au rendu.
-     * @param meshIndex Indice du mesh à récupérer depuis le loader.
      */
-    void createVBOs(GLenum usage, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex = 0);
+    void createVBOs(GLenum usage);
 
     /**
      * @brief Rend actif le VBO lié au mesh.
@@ -46,10 +48,17 @@ public:
     /**
      * @brief Constructeur à partir d'un loader.
      * @param shader Shader associé au modèle à rendre.
+     * @param data Données de l'objet.
+     */
+    RenderModel(const std::shared_ptr<ShaderProgram>& shader, const ObjectDataStorage& data);
+
+    /**
+     * @brief Constructeur à partir d'un loader.
+     * @param shader Shader associé au modèle à rendre.
      * @param loader Objet servant de base au rendu.
      * @param meshIndex Indice du mesh à récupérer depuis le loader.
      */
-    RenderModel(const std::shared_ptr<ShaderProgram>& shader, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex = 0);
+    RenderModel(const std::shared_ptr<ShaderProgram>& shader, const Loader& loader, unsigned int meshIndex = 0);
 
     /**
      * @brief Destructeur.

@@ -10,14 +10,21 @@
 #include "Models/Loaders/assimploader.h"
 #include "Models/Loaders/cylinderloader.h"
 
-RenderModel::RenderModel(const std::shared_ptr<ShaderProgram>& shader, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex)
-    : m_mode(loader->mode(meshIndex))
-    , m_nbElements(GLsizei(loader->vertices(meshIndex).size()))
+RenderModel::RenderModel(const std::shared_ptr<ShaderProgram>& shader, const ObjectDataStorage& data)
+    : m_mode(GL_TRIANGLES)
+    , m_nbElements(GLsizei(data.vertices().size()))
     , m_vertexBufferObjectID(0)
     , m_elementBufferObjectID(0)
     , m_shader(shader)
+    , m_data(data)
 {
-    createVBOs(GL_STATIC_DRAW, loader, meshIndex);
+    createVBOs(GL_STATIC_DRAW);
+}
+
+RenderModel::RenderModel(const std::shared_ptr<ShaderProgram>& shader, const Loader& loader, unsigned int meshIndex)
+    : RenderModel(shader, ObjectDataStorage(loader, meshIndex))
+{
+    m_mode = loader.mode(meshIndex);
 }
 
 RenderModel::~RenderModel()
@@ -26,7 +33,7 @@ RenderModel::~RenderModel()
     glDeleteBuffers(1, &m_elementBufferObjectID);
 }
 
-void RenderModel::createVBOs(GLenum usage, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex)
+void RenderModel::createVBOs(GLenum usage)
 {
     ///////////////////////////////////////////////////////
     /// Envoi des sommets vers des buffers en mémoire vidéo
@@ -41,7 +48,7 @@ void RenderModel::createVBOs(GLenum usage, const std::shared_ptr<const Loader>& 
 
     // Alloue le buffer des données (sommets, etc.)
     glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(GLfloat) * loader->vertices(meshIndex).size() /* Taille total du buffer en octets (toutes données confonfues */,
+                 sizeof(GLfloat) * m_data.vertices().size() /* Taille total du buffer en octets (toutes données confonfues */,
                  nullptr,
                  usage);
 
@@ -49,8 +56,8 @@ void RenderModel::createVBOs(GLenum usage, const std::shared_ptr<const Loader>& 
     // Transfert les sommets de la RAM vers le buffer vidéo
     glBufferSubData(GL_ARRAY_BUFFER,
                     0 /* Offset des données dans le buffer */,
-                    sizeof(GLfloat) * loader->vertices(meshIndex).size() /* Taille des données en octet */,
-                    loader->vertices(meshIndex).data());
+                    sizeof(GLfloat) * m_data.vertices().size() /* Taille des données en octet */,
+                    m_data.vertices().data());
 
     /// Correspondance des données
     // Spécifie l'emplacement des données des sommets
@@ -73,8 +80,8 @@ void RenderModel::createVBOs(GLenum usage, const std::shared_ptr<const Loader>& 
 
     // Alloue et initialise le buffer avec les données des indices des sommets par face
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 sizeof(GLuint) * loader->faces(meshIndex).size() /* Taille en octets des indices de sommets des faces */,
-                 loader->faces(meshIndex).data(),
+                 sizeof(GLuint) * m_data.faces().size() /* Taille en octets des indices de sommets des faces */,
+                 m_data.faces().data(),
                  usage);
 }
 

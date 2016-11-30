@@ -31,3 +31,10 @@ const std::vector< GLfloat >& BasicLoader::texCoords(int /*meshIndex*/) const
 {
     return m_texCoords;
 }
+
+std::shared_ptr<Node> BasicLoader::getGraph() const
+{
+    std::shared_ptr<RenderModel> model(new RenderModel(ShaderCollection::getShader("default"), *this));
+
+    return std::shared_ptr<Node>(new DrawableNode(model));
+}
