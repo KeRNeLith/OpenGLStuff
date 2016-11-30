@@ -8,7 +8,7 @@ TransformNode::TransformNode(const glm::mat4& transform)
 
 }
 
-void TransformNode::apply()
+void TransformNode::apply() const
 {
     GeometricTransform::pushMatrix();
     GeometricTransform::applyTransform(m_transform);

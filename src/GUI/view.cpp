@@ -16,7 +16,8 @@
 #include "Graph/drawablenode.h"
 #include "Graph/transformnode.h"
 
-#include "Models/Renders/customscene.h"
+#include "Models/Loaders/cylinderloader.h"
+#include "Models/Renders/rendermodel.h"
 
 #include "Shaders/shadercollection.h"
 #include "Shaders/shaderutils.h"
@@ -49,6 +50,18 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
                                         "src/Shaders/src/fragmentShader.frag");
 
     ShaderProgram::setCamera(m_camera);
+
+    // Test Code for graph
+    std::shared_ptr<RenderModel> renderModelTest(new RenderModel(ShaderCollection::getShader("default"), std::shared_ptr<Loader>(new CylinderLoader)));
+    std::shared_ptr<Node> drawableNode(new DrawableNode(renderModelTest));
+
+    // Test 1
+    m_root->addChild(drawableNode);
+
+    // Test 2
+    //std::shared_ptr<Node> transform(new TransformNode(glm::translate(glm::mat4(1.0), glm::vec3(2, 2, 0))));
+    //transform->addChild(drawableNode);
+    //m_root->addChild(transform);
 }
 
 void DisplayManager::display()
@@ -59,7 +72,7 @@ void DisplayManager::display()
         std::cout << FramesData::getFPSDescriptor() << std::endl;
     }
 
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    RenderModel::resetView();
 
     // Calcul la matrice de visualisation
     m_camera->applyCameraTransformation();

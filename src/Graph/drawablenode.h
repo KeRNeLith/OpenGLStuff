@@ -3,7 +3,11 @@
 
 #include <memory>
 
+#include <GLES3/gl3.h>
+
 #include "node.h"
+
+#include "Models/Renders/rendermodel.h"
 
 #include "Shaders/shaderprogram.h"
 
@@ -14,37 +18,24 @@ class DrawableNode
         : public Node
 {
 protected:
-    std::shared_ptr<ShaderProgram> m_shader;    ///< Programme OpenGL à utiliser.
+    std::shared_ptr<RenderModel> m_object;      ///< Objet à rendre.
 
 public:
     /**
      * @brief Constructeur.
-     * @param shader Programme shader à utiliser.
+     * @param model Modèle à rendre sur le noeud.
      */
-    DrawableNode(const std::shared_ptr<ShaderProgram>& shader);
+    DrawableNode(const std::shared_ptr<RenderModel>& model);
+
+    /**
+     * @brief Destructeur.
+     */
+    ~DrawableNode();
 
     /**
      * @see Node#apply()
      */
-    void apply() override;
-
-    /**
-     * @brief Récupère le shader associé au noeud.
-     * @return Programme OpenGL.
-     */
-    const std::shared_ptr<ShaderProgram>& getShader() const
-    {
-        return m_shader;
-    }
-
-    /**
-     * @brief Met à jour le programme shader associé au noeud.
-     * @param shader Nouveau programme OpenGL à utiliser.
-     */
-    void setShader(const std::shared_ptr<ShaderProgram>& shader)
-    {
-        m_shader = shader;
-    }
+    void apply() const override;
 };
 
 #endif // DRAWABLENODE_H

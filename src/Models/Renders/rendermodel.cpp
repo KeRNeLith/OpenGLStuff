@@ -10,54 +10,23 @@
 #include "Models/Loaders/assimploader.h"
 #include "Models/Loaders/cylinderloader.h"
 
-RenderModel::RenderModel(RenderModel::ModelType type, const std::shared_ptr<TextureManager>& texture)
-    // Read the given file with some example postprocessing
-    : m_object(loadObject(type))
-    , m_vertexBufferObjectIDs(m_object->meshCount())
-    , m_elementBufferObjectIDs(m_object->meshCount())
+RenderModel::RenderModel(const std::shared_ptr<ShaderProgram>& shader, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex)
+    : m_mode(loader->mode(meshIndex))
+    , m_nbElements(GLsizei(loader->vertices(meshIndex).size()))
+    , m_vertexBufferObjectID(0)
+    , m_elementBufferObjectID(0)
+    , m_shader(shader)
 {
-    if (texture)
-    {
-        m_object->setTexture(texture);
-    }
-
-    const unsigned int nbMesh = m_object->meshCount();
-    for (unsigned int i = 0 ; i < nbMesh ; ++i)
-    {
-        createVBOs(GL_STATIC_DRAW, i);
-    }
-}
-
-RenderModel::RenderModel(const std::string& filename)
-    : m_object(new AssimpLoader(filename))
-    , m_vertexBufferObjectIDs(m_object->meshCount())
-    , m_elementBufferObjectIDs(m_object->meshCount())
-{
-    const unsigned int nbMesh = m_object->meshCount();
-    for (unsigned int i = 0 ; i < nbMesh ; ++i)
-    {
-        createVBOs(GL_STATIC_DRAW, i);
-    }
+    createVBOs(GL_STATIC_DRAW, loader, meshIndex);
 }
 
 RenderModel::~RenderModel()
 {
-    glDeleteBuffers(m_object->meshCount(), m_vertexBufferObjectIDs.data());
-    glDeleteBuffers(m_object->meshCount(), m_elementBufferObjectIDs.data());
+    glDeleteBuffers(1, &m_vertexBufferObjectID);
+    glDeleteBuffers(1, &m_elementBufferObjectID);
 }
 
-Loader* RenderModel::loadObject(RenderModel::ModelType type)
-{
-    switch (type)
-    {
-    case RenderModel::CYLINDER:
-        return new CylinderLoader();
-    default:
-        return new CylinderLoader();
-    }
-}
-
-void RenderModel::createVBOs(GLenum usage, int meshIndex)
+void RenderModel::createVBOs(GLenum usage, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex)
 {
     ///////////////////////////////////////////////////////
     /// Envoi des sommets vers des buffers en mémoire vidéo
@@ -65,14 +34,14 @@ void RenderModel::createVBOs(GLenum usage, int meshIndex)
 
     /// Allocations des buffers
     // Création d'un ID de buffer (VBO)
-    glGenBuffers(1, &m_vertexBufferObjectIDs[meshIndex]);
+    glGenBuffers(1, &m_vertexBufferObjectID);
 
     // Sélectionne le buffer
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObjectIDs[meshIndex]);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObjectID);
 
     // Alloue le buffer des données (sommets, etc.)
     glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(GLfloat) * m_object->vertices(meshIndex).size() /* Taille total du buffer en octets (toutes données confonfues */,
+                 sizeof(GLfloat) * loader->vertices(meshIndex).size() /* Taille total du buffer en octets (toutes données confonfues */,
                  nullptr,
                  usage);
 
@@ -80,8 +49,8 @@ void RenderModel::createVBOs(GLenum usage, int meshIndex)
     // Transfert les sommets de la RAM vers le buffer vidéo
     glBufferSubData(GL_ARRAY_BUFFER,
                     0 /* Offset des données dans le buffer */,
-                    sizeof(GLfloat) * m_object->vertices(meshIndex).size() /* Taille des données en octet */,
-                    m_object->vertices(meshIndex).data());
+                    sizeof(GLfloat) * loader->vertices(meshIndex).size() /* Taille des données en octet */,
+                    loader->vertices(meshIndex).data());
 
     /// Correspondance des données
     // Spécifie l'emplacement des données des sommets
@@ -97,27 +66,27 @@ void RenderModel::createVBOs(GLenum usage, int meshIndex)
     /////////////////////////////////////////////////////////////////////////////////////////
 
     // Création d'un ID de buffer
-    glGenBuffers(1, &m_elementBufferObjectIDs[meshIndex]);
+    glGenBuffers(1, &m_elementBufferObjectID);
 
     // Sélection le buffer
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBufferObjectIDs[meshIndex]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBufferObjectID);
 
     // Alloue et initialise le buffer avec les données des indices des sommets par face
     glBufferData(GL_ELEMENT_ARRAY_BUFFER,
-                 sizeof(GLuint) * m_object->faces(meshIndex).size() /* Taille en octets des indices de sommets des faces */,
-                 m_object->faces(meshIndex).data(),
+                 sizeof(GLuint) * loader->faces(meshIndex).size() /* Taille en octets des indices de sommets des faces */,
+                 loader->faces(meshIndex).data(),
                  usage);
 }
 
-void RenderModel::enableVBOs(int meshIndex) const
+void RenderModel::enableVBOs() const
 {
     // Activation du tableau des sommets
     glEnableVertexAttribArray(0);
 
     // On indique de quel buffer proviennent les sommets
-    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObjectIDs[meshIndex]);
+    glBindBuffer(GL_ARRAY_BUFFER, m_vertexBufferObjectID);
     // On indique de quel buffer proviennent les indices des sommets
-    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBufferObjectIDs[meshIndex]);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBufferObjectID);
 
     // Spécifie l'emplacement des données des sommets et leur format
     glVertexAttribPointer(0 /* Buffer objet utilisé */,
@@ -128,6 +97,27 @@ void RenderModel::enableVBOs(int meshIndex) const
                           nullptr /* Pas d'offset */);
 }
 
+void RenderModel::drawObject() const
+{
+    // Not Handled for the moment
+    /*if (m_object->hasTexture())
+    {
+        glEnable(GL_TEXTURE_2D);
+        m_object->selectTexture();
+    }*/
+
+    // Active les VBO pour l'affichage
+    enableVBOs();
+
+    // Dessin
+    glDrawElements(m_mode,
+                   m_nbElements,
+                   GL_UNSIGNED_INT,
+                   nullptr);
+
+    //glDisable(GL_TEXTURE_2D);
+}
+
 void RenderModel::init()
 {
     glEnable(GL_DEPTH_TEST);
@@ -136,32 +126,7 @@ void RenderModel::init()
     glClearColor(0.0, 0.0, 0.0, 1.0);
 }
 
-void RenderModel::initView()
+void RenderModel::resetView()
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-}
-
-void RenderModel::drawObject() const
-{
-    const auto numMesh = m_object->meshCount();
-    // Pour chaque objets de la scène
-    for (unsigned int m = 0 ; m < numMesh ; ++m)
-    {
-        if (m_object->hasTexture())
-        {
-            glEnable(GL_TEXTURE_2D);
-            m_object->selectTexture();
-        }
-
-        // Active les VBO pour l'affichage
-        enableVBOs(m);
-
-        // Dessin
-        glDrawElements(m_object->mode(m),
-                       GLsizei(m_object->vertices(m).size()) /* Nombre d'éléments */,
-                       GL_UNSIGNED_INT,
-                       nullptr);
-
-        glDisable(GL_TEXTURE_2D);
-    }
 }

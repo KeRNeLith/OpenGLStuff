@@ -1,5 +1,9 @@
 #include "basicloader.h"
 
+#include "Graph/drawablenode.h"
+#include "Models/Renders/rendermodel.h"
+#include "Shaders/shadercollection.h"
+
 BasicLoader::BasicLoader()
     : Loader()
     , m_vertices()
@@ -26,14 +30,4 @@ const std::vector< unsigned int >& BasicLoader::faces(int /*meshIndex*/) const
 const std::vector< GLfloat >& BasicLoader::texCoords(int /*meshIndex*/) const
 {
     return m_texCoords;
-}
-
-std::shared_ptr<Node> BasicLoader::getGraph() const
-{
-    // Création du graph
-    std::shared_ptr<Node> graph(new Node());
-
-    // TODO
-
-    return graph;
 }

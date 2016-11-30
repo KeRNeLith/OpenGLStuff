@@ -28,7 +28,7 @@ public:
     /**
      * @brief Applique le rôle du noeud.
      */
-    virtual void apply();
+    virtual void apply() const;
 
     /**
      * @brief Ajoute un noeud fils au noeud.

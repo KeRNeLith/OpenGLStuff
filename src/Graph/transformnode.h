@@ -24,7 +24,7 @@ public:
     /**
      * @see Node#apply()
      */
-    void apply() override;
+    void apply() const override;
 };
 
 #endif // TRANSFORMNODE_H

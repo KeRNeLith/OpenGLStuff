@@ -9,74 +9,57 @@
 #define RenderModel_H
 
 #include <memory>
+#include <vector>
 
-#include <GLES3/gl3.h>
-
-#include "Models/Textures/texturemanager.h"
+#include "Shaders/shaderprogram.h"
 
 class Loader;
 
 /**
- * @brief The Model class Gère le modèle de rendu et d'éclairage d'un objet.
+ * @brief The Model class Stocke les données nécessaires à la réalisation d'un rendu d'un modèle 3D en fournissant un shader et ses données (maillage, texture, etc.).
  */
 class RenderModel
 {
-public:
-    /**
-     * @brief The ModelType enum Enumère tous les types de modèles disponibles.
-     */
-    enum ModelType
-    {
-        CYLINDER
-    };
-
 private:
-    std::unique_ptr<Loader> m_object;   ///< Scène ou objet chargé.
+    GLenum m_mode;                              ///< Mode de dessin OpenGL.
+    GLsizei m_nbElements;                       ///< Nombre d'éléments à dessiner.
 
-    std::vector<GLuint> m_vertexBufferObjectIDs;    ///< Ids des VBOs des sommets, normales, coordonnées de texture du maillage.
-    std::vector<GLuint> m_elementBufferObjectIDs;   ///< Ids des VBOs des indices des sommets définissant les faces du maillage.
+    GLuint m_vertexBufferObjectID;              ///< Vertex buffer object Id.
+    GLuint m_elementBufferObjectID;             ///< Element buffer object Id.
 
-    /**
-     * @brief Charge un objet correspondant au type de modèle spécifié.
-     * @param type Type du modèle à instancier.
-     * @return Instance du modèle choisi.
-     */
-    Loader* loadObject(RenderModel::ModelType type);
+    std::shared_ptr<ShaderProgram> m_shader;    ///< Shader à utiliser.
 
     /**
-     * @brief Alloue et initialise les VBO destinés à la mémoire vidéo à partir des données de l'objet.
+     * @brief Alloue et initialise le VBO destiné à la mémoire vidéo à partir des données de l'objet.
      * @param usage Pattern d'utilisation des données envoyées.
-     * @param meshIndex Indice du mesh à traiter.
+     * @param loader Objet servant de base au rendu.
+     * @param meshIndex Indice du mesh à récupérer depuis le loader.
      */
-    void createVBOs(GLenum usage, int meshIndex = 0);
+    void createVBOs(GLenum usage, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex = 0);
 
     /**
-     * @brief Rend actif le VBO lié au mesh dont l'indice est spécifié.
-     * @param meshIndex Indice du mesh à activer.
+     * @brief Rend actif le VBO lié au mesh.
      */
-    void enableVBOs(int meshIndex = 0) const;
+    void enableVBOs() const;
 
 public:
     /**
-     * @brief Constructeur. Construit un objet du type spécifié.
-     * @param type Type d'objet.
-     * @param texture Texture à appliquer à l'objet.
+     * @brief Constructeur à partir d'un loader.
+     * @param shader Shader associé au modèle à rendre.
+     * @param loader Objet servant de base au rendu.
+     * @param meshIndex Indice du mesh à récupérer depuis le loader.
      */
-    RenderModel(RenderModel::ModelType type, const std::shared_ptr<TextureManager>& texture = nullptr);
+    RenderModel(const std::shared_ptr<ShaderProgram>& shader, const std::shared_ptr<const Loader>& loader, unsigned int meshIndex = 0);
 
-    /**
-     * @brief Constructeur. Instancie un objet chargé depuis un fichier via Assimp.
-     * @param filename Chemin vers le fichier à charger.
-     */
-    RenderModel(const std::string& filename);
-
-    // Interdit la copie
-    RenderModel(const RenderModel& other) = delete;
-    RenderModel& operator= (const RenderModel& other) = delete;
     /**
      * @brief Destructeur.
      */
     ~RenderModel();
+
+    /**
+     * @brief Envoi les données de dessin au GPU.
+     */
+    void drawObject() const;
 
     /**
      * @brief Initialiser les paramètres globaux du rendu de la scène.
@@ -86,12 +69,16 @@ public:
     /**
      * @brief Réinitialise la vue (efface l'écran).
      */
-    static void initView();
+    static void resetView();
 
     /**
-     * @brief Dessine l'objet chargé.
+     * @brief Récupère le shader associé au modèle.
+     * @return Programme shader.
      */
-    void drawObject() const;
+    const std::shared_ptr<ShaderProgram>& getShader() const
+    {
+        return m_shader;
+    }
 };
 
 #endif	// RenderModel_H

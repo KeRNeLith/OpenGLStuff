@@ -73,7 +73,7 @@ public:
     /**
      * @brief Rend le programme courant actif.
      */
-    void useProgram();
+    void useProgram() const;
 
     // Accesseur / Setters
     /**

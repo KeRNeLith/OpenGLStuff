@@ -3,21 +3,24 @@
 #include "Shaders/shaderutils.h"
 #include "Transforms/transform.h"
 
-DrawableNode::DrawableNode(const std::shared_ptr<ShaderProgram>& shader)
-    : m_shader(shader)
+DrawableNode::DrawableNode(const std::shared_ptr<RenderModel>& model)
+    : m_object(model)
 {
-
 }
 
-void DrawableNode::apply()
+DrawableNode::~DrawableNode()
+{
+}
+
+void DrawableNode::apply() const
 {
     // Dessin du modele 3D
-    m_shader->useProgram();
+    m_object->getShader()->useProgram();
     // Applique la tranformation de modélisation
-    ShaderUtils::sendModelisationMatrix(*m_shader, GeometricTransform::getTransform());
+    ShaderUtils::sendModelisationMatrix(*m_object->getShader(), GeometricTransform::getTransform());
 
     // Dessin du maillage
-    // TODO
+    m_object->drawObject();
 
     Node::apply();
 }

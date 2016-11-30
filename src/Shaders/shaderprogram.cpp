@@ -174,7 +174,7 @@ GLint ShaderProgram::checkProgramState()
     return status;
 }
 
-void ShaderProgram::useProgram()
+void ShaderProgram::useProgram() const
 {
     glUseProgram(m_programId);
 
