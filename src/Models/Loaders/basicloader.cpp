@@ -7,6 +7,7 @@
 BasicLoader::BasicLoader()
     : Loader()
     , m_vertices()
+    , m_normals()
     , m_faces()
     , m_texCoords()
 {
@@ -20,6 +21,11 @@ BasicLoader::~BasicLoader()
 const std::vector< GLfloat >& BasicLoader::vertices(int /*meshIndex*/) const
 {
     return m_vertices;
+}
+
+const std::vector< GLfloat >& BasicLoader::normals(int /*meshIndex*/) const
+{
+    return m_normals;
 }
 
 const std::vector< unsigned int >& BasicLoader::faces(int /*meshIndex*/) const

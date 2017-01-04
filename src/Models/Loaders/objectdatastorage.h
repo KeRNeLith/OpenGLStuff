@@ -14,6 +14,7 @@ class ObjectDataStorage
 {
 private:
     std::vector< GLfloat > m_vertices;      ///< Sommets définissant le modèle.
+    std::vector< GLfloat > m_normals;       ///< Normales définies sur le modèle.
     std::vector< unsigned int > m_faces;    ///< Faces du modèle.
     std::vector< GLfloat > m_texCoords;     ///< Coordonnées de textures associées aux sommets.
 
@@ -21,10 +22,14 @@ public:
     /**
      * @brief Constructeur.
      * @param v Tableau de sommets.
+     * @param n Tableau des normales.
      * @param f Tableau des faces (indices des sommets).
      * @param tc Tableau des coordonnées de texture.
      */
-    ObjectDataStorage(const std::vector< GLfloat >& v, const std::vector< unsigned int >& f, const std::vector< GLfloat >& tc);
+    ObjectDataStorage(const std::vector< GLfloat >& v,
+                      const std::vector< GLfloat >& n,
+                      const std::vector< unsigned int >& f,
+                      const std::vector< GLfloat >& tc);
 
     /**
      * @brief Constructeur.
@@ -35,11 +40,20 @@ public:
 
     /**
      * @brief Récupère le tableaux des sommets (indices donnés de manière contigu).
-     * @return Tableau des sommets (Indices des sommets nécessaires).
+     * @return Tableau des sommets.
      */
     const std::vector< GLfloat >& vertices() const
     {
         return m_vertices;
+    }
+
+    /**
+     * @brief Récupère le tableaux des normales (indices donnés de manière contigu).
+     * @return Tableau des normales.
+     */
+    const std::vector< GLfloat >& normals() const
+    {
+        return m_normals;
     }
 
     /**

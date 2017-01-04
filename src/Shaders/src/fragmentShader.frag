@@ -1,7 +1,12 @@
-#version 130
+#version 330
+
+in vec3 normalOut;
+in vec3 color;
+
+out vec4 colorOut;
 
 void main(void)
 {
         // Couleur
-        gl_FragColor = gl_Color;
+        colorOut = vec4(color, 1.0);
 }

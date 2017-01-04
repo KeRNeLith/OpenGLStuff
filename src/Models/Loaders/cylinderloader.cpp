@@ -36,6 +36,8 @@ CylinderLoader::CylinderLoader(double height, double radius, unsigned int nbMeri
         m_vertices.push_back(-GLfloat(m_height/double(2)));
         m_vertices.push_back(z);
 
+        /// Création des normales
+        // TODO normales
 
         /// Création des faces
         // Face 1

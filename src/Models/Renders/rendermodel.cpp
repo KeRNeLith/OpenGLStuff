@@ -48,7 +48,8 @@ void RenderModel::createVBOs(GLenum usage)
 
     // Alloue le buffer des données (sommets, etc.)
     glBufferData(GL_ARRAY_BUFFER,
-                 sizeof(GLfloat) * m_data.vertices().size() /* Taille total du buffer en octets (toutes données confonfues */,
+                 sizeof(GLfloat) * m_data.vertices().size()
+                 + sizeof(GLfloat) * m_data.normals().size() /* Taille total du buffer en octets (toutes données confonfues */,
                  nullptr,
                  usage);
 
@@ -59,6 +60,12 @@ void RenderModel::createVBOs(GLenum usage)
                     sizeof(GLfloat) * m_data.vertices().size() /* Taille des données en octet */,
                     m_data.vertices().data());
 
+    // Transfert des normales de la RAM vers le buffer vidéo
+    glBufferSubData (GL_ARRAY_BUFFER,
+                     sizeof(GLfloat) * m_data.vertices().size() /* Offset des données dans le buffer */,
+                     sizeof(GLfloat) * m_data.normals().size()  /* Taille des données en octet */,
+                     m_data.normals().data()) ;
+
     /// Correspondance des données
     // Spécifie l'emplacement des données des sommets
     glVertexAttribPointer(0 /* Numéro sous buffer */,
@@ -67,6 +74,10 @@ void RenderModel::createVBOs(GLenum usage)
                           GL_FALSE,
                           0,
                           nullptr /* Pas d'offset */);
+    // Spécifie l'emplacement des normales
+    glNormalPointer(GL_FLOAT,
+                    0 /* Offset entre normales */,
+                    (GLvoid*)(sizeof(GLfloat) * m_data.vertices().size()) /* Pointeur sur la première normale */);
 
     /////////////////////////////////////////////////////////////////////////////////////////
     /// Envoi des indices des sommet définissants les faces vers des buffers en mémoire vidéo
@@ -102,6 +113,10 @@ void RenderModel::enableVBOs() const
                           GL_FALSE,
                           0,
                           nullptr /* Pas d'offset */);
+    // Spécifie l'emplacement des normales
+    glNormalPointer(GL_FLOAT,
+                    0 /* Offset entre normales */,
+                    (GLvoid*)(sizeof(GLfloat) * m_data.vertices().size()) /* Pointeur sur la première normale */);
 }
 
 void RenderModel::drawObject() const

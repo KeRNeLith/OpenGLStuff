@@ -33,6 +33,7 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
     , m_nbMesh(0)
     , m_modes()
     , m_vertices()
+    , m_normals()
     , m_faces()
     , m_texCoords()
 {
@@ -63,8 +64,9 @@ void AssimpLoader::loadScene(const std::string& sceneFilename)
             /// Récupère le mode de dessin du mesh
             m_modes.push_back(getMode(mesh->mPrimitiveTypes));
 
-            /// Traite les vertices et coordonnées de texture
+            /// Traite les vertices, normales et coordonnées de texture
             std::vector< GLfloat > meshVertices;
+            std::vector< GLfloat > meshNormals;
             std::vector< GLfloat > meshTexCoords;
 
             const unsigned int numVertices = mesh->mNumVertices;
@@ -75,6 +77,11 @@ void AssimpLoader::loadScene(const std::string& sceneFilename)
                 meshVertices.push_back(pos.x);
                 meshVertices.push_back(pos.y);
                 meshVertices.push_back(pos.z);
+
+                aiVector3D& normal = mesh->mNormals[v];
+                meshNormals.push_back(normal.x);
+                meshNormals.push_back(normal.y + float(std::rand()%100));
+                meshNormals.push_back(normal.z + float(std::rand()%100));
             }
 
             // S'il y a des coordonnées de texture
@@ -90,6 +97,7 @@ void AssimpLoader::loadScene(const std::string& sceneFilename)
             }
 
             m_vertices.push_back(meshVertices);
+            m_normals.push_back(meshNormals);
             m_texCoords.push_back(meshTexCoords);
 
             /// Traite les faces
@@ -150,6 +158,11 @@ unsigned int AssimpLoader::meshCount() const
 const std::vector< GLfloat >& AssimpLoader::vertices(int meshIndex) const
 {
     return m_vertices[meshIndex];
+}
+
+const std::vector< GLfloat >& AssimpLoader::normals(int meshIndex) const
+{
+    return m_normals[meshIndex];
 }
 
 const std::vector< unsigned int >& AssimpLoader::faces(int meshIndex) const

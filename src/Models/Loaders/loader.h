@@ -65,6 +65,13 @@ public:
     virtual const std::vector< unsigned int >& faces(int meshIndex = 0) const =0;
 
     /**
+     * @brief Récupère le tableaux des normales associés sommets du maillage spécifié en paramètre.
+     * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
+     * @return Tableau des normales du maillage spécifié.
+     */
+    virtual const std::vector< GLfloat >& normals(int meshIndex = 0) const =0;
+
+    /**
      * @brief Récupère le tableaux des coordonnées de texture associées au maillage spécifié en paramètre (coordonnées données de manière contigu).
      * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
      * @return Tableau des coordonnées de texture du maillage spécifié.

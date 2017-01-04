@@ -11,6 +11,7 @@ class BasicLoader
 {
 protected:
     std::vector< GLfloat > m_vertices;      ///< Sommets définissant le modèle.
+    std::vector< GLfloat > m_normals;      ///< Normales définies sur le modèle.
     std::vector< unsigned int > m_faces;    ///< Faces du modèle.
     std::vector< GLfloat > m_texCoords;     ///< Coordonnées de textures associées aux sommets.
 
@@ -29,6 +30,10 @@ public:
      * @brief See Loader#vertices(int)
      */
     const std::vector< GLfloat >& vertices(int meshIndex = 0) const override;
+    /**
+     * @brief See Loader#normals(int)
+     */
+    const std::vector< GLfloat >& normals(int meshIndex = 0) const override;
     /**
      * @brief See Loader#faces(int)
      */
