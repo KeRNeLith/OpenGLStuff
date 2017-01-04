@@ -24,6 +24,8 @@ private:
     std::vector< std::vector< GLfloat > > m_vertices;       ///< Tableau des tableaux de vertices (Chaque entrée du tableau correspond aux vertices d'un mesh ASSIMP dont les coordonnées sont placés de manière contigus).
     std::vector< std::vector< GLfloat > > m_normals;        ///< Tableau des tableaux de normales (Chaque entrée du tableau correspond aux normales d'un mesh ASSIMP).
     std::vector< std::vector< unsigned int > > m_faces;     ///< Tableau des tableaux de faces (Chaque entrée du tableau correspond aux faces d'un mesh ASSIMP, dont les indices sont placés de manière contigus).
+    std::vector< Material > m_materials;                    ///< Tableau des matériaux (Chaque entrée du tableau correspond au matériau d'un mesh ASSIMP).
+    std::vector< unsigned int > m_meshMaterials;            ///< Tableau des indices des matériaux par maillage.
     std::vector< std::vector< GLfloat > > m_texCoords;      ///< Tableau des tableaux des coordonnées de texture (Chaque entrée du tableau correspond aux coordonnées de textures d'un mesh ASSIMP dont les coordonnées sont placés de manière contigus).
 
     /**
@@ -74,6 +76,10 @@ public:
      * @brief See Loader#faces(int)
      */
     const std::vector< unsigned int >& faces(int meshIndex = 0) const override;
+    /**
+     * @brief See Loader#materials(int)
+     */
+    const Material& materials(int meshIndex = 0) const override;
     /**
      * @brief See Loader#texCoords(int)
      */

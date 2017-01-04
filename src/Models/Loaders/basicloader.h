@@ -3,6 +3,8 @@
 
 #include "loader.h"
 
+#include "Models/Renders/material.h"
+
 /**
  * @brief The BasicLoader class Gère l'implémentation des structures de données basiques utilisé pour le wrapper sur des modèles définis manuellement.
  */
@@ -11,8 +13,9 @@ class BasicLoader
 {
 protected:
     std::vector< GLfloat > m_vertices;      ///< Sommets définissant le modèle.
-    std::vector< GLfloat > m_normals;      ///< Normales définies sur le modèle.
+    std::vector< GLfloat > m_normals;       ///< Normales définies sur le modèle.
     std::vector< unsigned int > m_faces;    ///< Faces du modèle.
+    Material m_material;                    ///< Matériau du modèle.
     std::vector< GLfloat > m_texCoords;     ///< Coordonnées de textures associées aux sommets.
 
 public:
@@ -38,6 +41,10 @@ public:
      * @brief See Loader#faces(int)
      */
     const std::vector< unsigned int >& faces(int meshIndex = 0) const override;
+    /**
+     * @brief See Loader#materials(int)
+     */
+    const Material& materials(int meshIndex = 0) const override;
     /**
      * @brief See Loader#texCoords(int)
      */

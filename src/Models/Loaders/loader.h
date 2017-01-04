@@ -15,6 +15,7 @@
 
 #include "Graph/node.h"
 
+#include "Models/Renders/material.h"
 #include "Models/Textures/texturemanager.h"
 
 /**
@@ -70,6 +71,13 @@ public:
      * @return Tableau des normales du maillage spécifié.
      */
     virtual const std::vector< GLfloat >& normals(int meshIndex = 0) const =0;
+
+    /**
+     * @brief Récupère le matériau associé du maillage spécifié en paramètre.
+     * @param meshIndex Indice du maillage désiré (Doit être strictement inférieur à meshCount(), sinon le résultat n'est pas garanti).
+     * @return Matériau.
+     */
+    virtual const Material& materials(int meshIndex = 0) const =0;
 
     /**
      * @brief Récupère le tableaux des coordonnées de texture associées au maillage spécifié en paramètre (coordonnées données de manière contigu).

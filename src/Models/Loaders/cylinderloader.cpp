@@ -58,6 +58,8 @@ CylinderLoader::CylinderLoader(double height, double radius, unsigned int nbMeri
         // Coordonnée texture vertex 2
         m_texCoords.push_back(GLfloat(i / double(m_nbMeridians)));
         m_texCoords.push_back(1.0);
+
+        // TODO Material
     }
 }
 

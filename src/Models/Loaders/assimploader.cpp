@@ -35,6 +35,8 @@ AssimpLoader::AssimpLoader(const std::string& sceneFilename)
     , m_vertices()
     , m_normals()
     , m_faces()
+    , m_materials()
+    , m_meshMaterials()
     , m_texCoords()
 {
     loadScene(sceneFilename);
@@ -50,7 +52,8 @@ void AssimpLoader::loadScene(const std::string& sceneFilename)
     const aiScene* scene = importer.ReadFile(   sceneFilename,
                                                 aiProcess_FindDegenerates |
                                                 aiProcess_Triangulate     |
-                                                aiProcess_SortByPType);
+                                                aiProcess_SortByPType     |
+                                                aiProcess_GenNormals);
 
     // If the import succeed load scene
     if (scene)
@@ -113,6 +116,42 @@ void AssimpLoader::loadScene(const std::string& sceneFilename)
             }
 
             m_faces.push_back(meshFaces);
+
+            // Indice du matériau du maillage
+            m_meshMaterials.push_back(mesh->mMaterialIndex);
+        }
+
+        /// Traite les matériaux
+        const unsigned int numMaterials = scene->mNumMaterials;
+        // Pour chaque matériau
+        for (unsigned int m = 0 ; m < numMaterials ; ++m)
+        {
+            const aiMaterial* mat = scene->mMaterials[m];
+
+            aiColor3D ambiant(0.0f, 0.0f, 0.0f);
+            aiColor3D diffuse(0.0f, 0.0f, 0.0f);
+            aiColor3D specular(0.0f, 0.0f, 0.0f);
+            float shininess = 0.0f;
+
+            // Récupère les valeurs du matériau
+            if (AI_SUCCESS == mat->Get(AI_MATKEY_COLOR_AMBIENT, ambiant)
+                && AI_SUCCESS == mat->Get(AI_MATKEY_COLOR_DIFFUSE, diffuse)
+                && AI_SUCCESS == mat->Get(AI_MATKEY_COLOR_SPECULAR, specular)
+                && AI_SUCCESS == mat->Get(AI_MATKEY_SHININESS, shininess))
+            {
+                // Construit le matériau correspondant
+                m_materials.push_back(Material( ambiant.r, ambiant.g, ambiant.b,
+                                                diffuse.r, diffuse.g, diffuse.b,
+                                                specular.r, specular.g, specular.b,
+                                                shininess));
+            }
+            // Cas où il y a eu un echec lors de la récupération des propriétés du matériau
+            // Ne devrait pas arriver
+            else
+            {
+                // Place un matériau par défaut
+                m_materials.push_back(Material());
+            }
         }
     }
     // Import failed => report it
@@ -168,6 +207,11 @@ const std::vector< GLfloat >& AssimpLoader::normals(int meshIndex) const
 const std::vector< unsigned int >& AssimpLoader::faces(int meshIndex) const
 {
     return m_faces[meshIndex];
+}
+
+const Material& AssimpLoader::materials(int meshIndex) const
+{
+    return m_materials[meshIndex];
 }
 
 const std::vector< GLfloat >& AssimpLoader::texCoords(int meshIndex) const
