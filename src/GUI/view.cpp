@@ -11,7 +11,7 @@
 
 #include <iostream>
 
-#include "Camera/cartesiancamera.h"
+#include "Camera/sphericalcamera.h"
 
 #include "Graph/drawablenode.h"
 #include "Graph/transformnode.h"
@@ -31,16 +31,11 @@ DisplayManager::DisplayManager(GLint windowWidth, GLint windowHeigth)
     : m_windowWidth(windowWidth)
     , m_windowHeight(windowHeigth)
     , m_model()// Construction du modèle
-    , m_camera(new CartesianCamera(// Perspective
+    , m_camera(new SphericalCamera(// Perspective
                                    50.0, m_windowWidth / GLdouble(m_windowHeight),
                                    // Plans clipping
                                    1.0, 10000.0,
-                                   // Position
-                                   0.0, 0.0, 3000.0,
-                                   // Focus
-                                   0.0, 0.0, 0.0,
-                                   // Verticale
-                                   0.0, 1.0, 0.0))
+                                   3000.0, 0.0, 0.0))
     , m_root(new Node())
 {
     FramesData::init();

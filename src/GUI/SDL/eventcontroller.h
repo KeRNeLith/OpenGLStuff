@@ -22,6 +22,8 @@ private:
     // Au cas où on ait besoin de modifier
     static SDL_TimerID m_timerId;   ///< Id du timer SDL.
 
+    static double m_motionSpeed;    ///< Vitesse des mouvements.
+
     // Fonctions de gestion des évènements
     // Clavier
     /**

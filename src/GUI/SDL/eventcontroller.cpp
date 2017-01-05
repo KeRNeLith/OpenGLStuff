@@ -9,11 +9,13 @@
 
 #include <iostream>
 
+#include "Camera/sphericalcamera.h"
 #include "Tools/mouse.h"
 #include "GUI/view.h"
 
 // Initialisation des variables statiques
 SDL_TimerID EventController::m_timerId;
+double EventController::m_motionSpeed = 0.1;
 
 void EventController::init(DisplayManager* displayParams)
 {
@@ -216,12 +218,16 @@ void EventController::handleMouseButtonUpEvent(SDL_Event* event, SDL_Window* /*w
     }
 }
 
-void EventController::handleMouseMotionEvent(SDL_Event* event, SDL_Window* /*window*/, DisplayManager* /*displayParams*/)
+void EventController::handleMouseMotionEvent(SDL_Event* event, SDL_Window* /*window*/, DisplayManager* displayParams)
 {
+    SphericalCamera* camera = static_cast<SphericalCamera*>(displayParams->camera().get());
+
     if (MouseData::leftButtonPressed)
     {
         // Mise à jour du modèle
-        // Non implémenté
+        camera->updateElevation((event->motion.y - MouseData::mouseY) * m_motionSpeed);
+        camera->updateAzimuth((event->motion.x - MouseData::mouseX) * m_motionSpeed);
+
         MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles
         MouseData::mouseY = event->motion.y; // Coordonnées de la souris
     }
@@ -229,7 +235,8 @@ void EventController::handleMouseMotionEvent(SDL_Event* event, SDL_Window* /*win
     if (MouseData::middleButtonPressed)
     {
         // Mise à jour du modèle
-        // Non implémenté
+        camera->updateDistance(event->motion.y - MouseData::mouseY);
+
         MouseData::mouseX = event->motion.x; // Enregistrement des nouvelles
         MouseData::mouseY = event->motion.y; // Coordonnées de la souris
     }
